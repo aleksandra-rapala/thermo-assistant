@@ -1,0 +1,35 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-family: Lato, Arial, sans-serif;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    font-size: medium;
+    padding: 0.3em 0;
+}
+
+input:focus {
+    outline: none;
+}
+
+button {
+    padding: 0.5em;
+    border: none;
+    border-radius: 0.3em;
+    width: 9em;
+    font-weight: bold;
+    font-size: medium;
+    color: white;
+    background: rgb(252, 201, 129);
+}
+
+button:hover {
+    background: rgb(255, 165, 0);
+}
