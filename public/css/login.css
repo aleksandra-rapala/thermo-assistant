@@ -23,8 +23,3 @@
 #login-panel button {
     align-self: flex-end;
 }
-
-#login-panel button,
-#login-panel input {
-    margin-bottom: 1.2em;
-}

@@ -1,0 +1,19 @@
+@import "form.css";
+
+#building-view .panel-title {
+    color: rgb(255, 165, 0);
+    font-family: sans-serif;
+}
+
+#building-view form {
+    display: flex;
+    flex-flow: row;
+    gap: 3em;
+}
+
+@media screen and (max-width: 600px) {
+    #building-view form {
+        flex-flow: column;
+        gap: 0;
+    }
+}
