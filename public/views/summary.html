@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8" />
+        <title>thermo-assistant</title>
+        <link rel="stylesheet" type="text/css" href="/public/css/summary.css" />
+    </head>
+
+    <body>
+        <div id="summary-view">
+            <form>
+                <div>
+                    <h2>Zanieczyszczenia</h2>
+
+                    <p>Zanieczyszczenia generowane przez Twój budynek w ciągu roku:</p>
+
+                    <table id="pollutions-table">
+                        <caption>Twój budynek ma umiarkowany wpływ na środowisko</caption>
+
+                        <thead>
+                            <tr>
+                                <th>Substancja</th>
+                                <th>Ilość [ton]</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>CO₂</td>
+                                <td>0</td>
+                            </tr>
+
+                            <tr>
+                                <td>BaP</td>
+                                <td>0</td>
+                            </tr>
+
+                            <tr>
+                                <td>Nox</td>
+                                <td>0</td>
+                            </tr>
+
+                            <tr>
+                                <td>SO₂</td>
+                                <td>0</td>
+                            </tr>
+
+                            <tr>
+                                <td>PM10</td>
+                                <td>0</td>
+                            </tr>
+
+                            <tr>
+                                <td>PM2,5</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h2>Centralna Ewidencja Emisyjności Budynków</h2>
+
+                    <p>Twój budynek spełnia wymogi rejestracji w systemie CEEB. Możesz dokonać tego za pośrednictwem <a href="https://pz.gov.pl/">profilu zaufanego</a>.</p>
+                </div>
+
+                <div>
+                    <h2>Oferty sponsorowane</h2>
+
+                    <div>
+                        <input type="checkbox" name="fuels-offers" id="fuels-offers-field">
+                        <label for="fuels-offers-field">Chcę otrzymywać oferty z punktów sprzedaży paliw działających na terenie mojej gminy</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="fuels-email-offers" id="fuels-email-offers-field">
+                        <label for="fuels-email-offers-field">Wiadomość e-mail</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="fuels-notification-offers" id="fuels-notification-offers-field">
+                        <label for="fuels-notification-offers-field">Powiadomienie w przeglądarce</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" name="modernization-offers" id="modernization-offers-field">
+                        <label for="modernization-offers-field">Chcę otrzymywać oferty dotyczące planowanych prac termomodernizacyjnych</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="modernization-email-offers" id="modernization-email-offers-field">
+                        <label for="modernization-email-offers-field">Wiadomość e-mail</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="modernization-notification-offers" id="modernization-notification-offers-field">
+                        <label for="modernization-notification-offers-field">Powiadomienie w przeglądarce</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" name="heater-offers" id="heater-offers-field">
+                        <label for="heater-offers-field">Chcę otrzymywać oferty dotyczące planowanych wymian kotłów lub instalacji kolektorów słonecznych</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="heater-email-offers" id="heater-email-offers-field">
+                        <label for="heater-email-offers-field">Wiadomość e-mail</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="heater-notification-offers" id="heater-notification-offers-field">
+                        <label for="heater-notification-offers-field">Powiadomienie w przeglądarce</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

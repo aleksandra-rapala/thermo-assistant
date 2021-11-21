@@ -1,0 +1,18 @@
+@import "form.css";
+
+#fuels-view form {
+    display: flex;
+    flex-flow: row;
+    gap: 3em;
+}
+
+.fuel-sales-points {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.fuel-sales-point {
+    display: flex;
+    flex-direction: column;
+}

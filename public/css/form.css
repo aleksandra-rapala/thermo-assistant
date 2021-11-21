@@ -1,0 +1,57 @@
+form h2 {
+    color: rgb(255, 165, 0);
+    font-family: sans-serif;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+}
+
+label, span, p, table {
+    font-family: Lato, Arial, sans-serif;
+}
+
+input, select {
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    font-size: medium;
+    padding: 0.3em 0;
+}
+
+input:focus, select:focus {
+    outline: none;
+}
+
+button {
+    padding: 0.5em;
+    border: none;
+    border-radius: 0.3em;
+    width: 9em;
+    font-weight: bold;
+    font-size: medium;
+    color: white;
+    background: rgb(252, 201, 129);
+}
+
+button:hover {
+    background: rgb(255, 165, 0);
+}
+
+button, input, select {
+    margin-bottom: 1.2em;
+}
+
+input[type="checkbox"] {
+    margin: 0;
+}
+
+.indented-checkbox {
+    margin-left: 1em;
+}
+
+a {
+    color: rgb(255, 165, 0);
+}
