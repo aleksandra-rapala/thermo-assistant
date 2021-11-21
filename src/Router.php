@@ -1,9 +1,11 @@
 <?php
 class Router {
     private $routes;
+    private $httpFlow;
 
-    public function __construct() {
+    public function __construct($httpFlow) {
         $this->routes = [];
+        $this->httpFlow = $httpFlow;
     }
 
     public function register($resource, $controller) {
@@ -14,7 +16,15 @@ class Router {
         if (array_key_exists($resource, $this->routes)) {
             $this->routes[$resource]->get();
         } else {
-            http_response_code(404);
+            $this->httpFlow->notFound();
+        }
+    }
+
+    public function post($resource, $properties) {
+        if (array_key_exists($resource, $this->routes)) {
+            $this->routes[$resource]->post($properties);
+        } else {
+            $this->httpFlow->notFound();
         }
     }
 }

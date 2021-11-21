@@ -1,14 +1,23 @@
 <?php
-require_once "src/Router.php";
-require_once "src/controllers/IndexController.php";
-require_once "src/controllers/LoginController.php";
+require_once("src/HttpFlow.php");
+require_once("src/Router.php");
+require_once("src/RenderingEngine.php");
+require_once("src/SessionContext.php");
+require_once("src/controllers/IndexController.php");
+require_once("src/controllers/LoginController.php");
+require_once("src/controllers/BuildingController.php");
 
-$router = new Router();
-$indexController = new IndexController();
-$loginController = new LoginController();
+$httpFlow = new HttpFlow();
+$router = new Router($httpFlow);
+$sessionContext = new SessionContext();
+$renderingEngine = new RenderingEngine();
+$indexController = new IndexController($httpFlow, $renderingEngine);
+$loginController = new LoginController($httpFlow, $sessionContext);
+$buildingController = new BuildingController($renderingEngine, $sessionContext);
 
 $router->register("", $indexController);
 $router->register("login", $loginController);
+$router->register("building", $buildingController);
 
 $resource = $_SERVER["REQUEST_URI"];
 $resource = trim($resource, "/");
@@ -18,6 +27,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case "GET":
         $router->get($resource);
         break;
+    case "POST":
+        $router->post($resource, $_POST);
+        break;
     default:
-        http_response_code(405);
+        $httpFlow->methodNotAllowed();
 }
