@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8" />
+        <title>thermo-assistant</title>
+        <link rel="stylesheet" type="text/css" href="/public/css/fuels.css" />
+    </head>
+
+    <body>
+        <div id="fuels-view">
+            <form>
+                <div>
+                    <h2>Zużycie paliw w ciągu roku</h2>
+
+                    <label for="lump-wood-field">Drewno kawałkowe</label>
+                    <input name="lump-wood" id="lump-wood-field" />
+
+                    <label for="nut-coal-field">Węgiel orzech</label>
+                    <input name="nut-coal" id="nut-coal-field" />
+
+                    <label for="pellet-field">Pellet</label>
+                    <input name="pellet" id="pellet-field" />
+
+                    <label for="natural-gas-field">Gaz ziemny</label>
+                    <input name="natural-gas" id="natural-gas-field" />
+
+                    <label for="gas-tanks-field">Gaz butla</label>
+                    <input name="gas-tanks" id="gas-tanks-field" />
+
+                    <label for="lignite-field">Węgiel brunatny</label>
+                    <input name="lignite" id="lignite-field" />
+
+                    <label for="oil-field">Olej opałowy</label>
+                    <input name="oil" id="oil-field" />
+                </div>
+
+                <div>
+                    <h2>Punkty sprzedaży paliw</h2>
+
+                    <div class="fuel-sales-points">
+                        <div class="fuel-sales-point">
+                            <span>TAR-DREW</span>
+                            <span>Punkt sprzedaży pelletu</span>
+                            <span>00-000 Sąsiednia Miejscowość, ul. Przykładowa 2</span>
+                        </div>
+
+                        <div class="fuel-sales-point">
+                            <span>DREW-TAR</span>
+                            <span>Punkt sprzedaży węgla</span>
+                            <span>00-001 Inna Gmina, ul. Kopalniana 5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2>Oferty sponsorowane</h2>
+
+                    <div>
+                        <input type="checkbox" name="fuels-offers" id="fuels-offers-field">
+                        <label for="fuels-offers-field">Chcę otrzymywać oferty z punktów sprzedaży paliw działających na terenie mojej gminy</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="fuels-email-offers" id="fuels-email-offers-field">
+                        <label for="fuels-email-offers-field">Wiadomość e-mail</label>
+                    </div>
+
+                    <div class="indented-checkbox">
+                        <input type="checkbox" name="fuels-notification-offers" id="fuels-notification-offers-field">
+                        <label for="fuels-notification-offers-field">Powiadomienie w przeglądarce</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
