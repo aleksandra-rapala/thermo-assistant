@@ -1,0 +1,7 @@
+@import "form.css";
+
+#heaters-view form {
+    display: flex;
+    flex-flow: row;
+    gap: 3em;
+}
