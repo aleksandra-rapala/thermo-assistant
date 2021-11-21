@@ -1,0 +1,33 @@
+@import "form.css";
+
+#summary-view form {
+    display: flex;
+    flex-flow: row;
+    gap: 3em;
+}
+
+#pollutions-table {
+    min-width: 18em;
+}
+
+#pollutions-table th {
+    background: rgb(252, 201, 129);
+    padding: 0.2em;
+}
+
+#pollutions-table tr:nth-of-type(even) {
+    background: rgb(252, 201, 129);
+}
+
+#pollutions-table td {
+    padding: 0.2em;
+}
+
+#pollutions-table td:nth-of-type(even) {
+    text-align: right;
+}
+
+#pollutions-table caption {
+    caption-side: bottom;
+    margin-top: 0.5em;
+}

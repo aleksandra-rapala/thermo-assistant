@@ -9,7 +9,7 @@ form > div {
     margin-bottom: 2em;
 }
 
-label, span {
+label, span, p, table {
     font-family: Lato, Arial, sans-serif;
 }
 
@@ -50,4 +50,8 @@ input[type="checkbox"] {
 
 .indented-checkbox {
     margin-left: 1em;
+}
+
+a {
+    color: rgb(255, 165, 0);
 }
