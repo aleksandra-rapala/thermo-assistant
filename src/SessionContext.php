@@ -16,4 +16,8 @@ class SessionContext {
         session_destroy();
         session_unset();
     }
+
+    public function isSignedIn() {
+        return $this->getUuid() !== null;
+    }
 }

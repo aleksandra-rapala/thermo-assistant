@@ -1,6 +1,6 @@
 @import "form.css";
 
-#login-view {
+#user-view {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -14,12 +14,12 @@
     height: 75%;
 }
 
-#login-panel {
+#user-panel {
     width: 25%;
     min-width: 16em;
     max-width: 24em;
 }
 
-#login-panel button {
+#user-panel button {
     align-self: flex-end;
 }

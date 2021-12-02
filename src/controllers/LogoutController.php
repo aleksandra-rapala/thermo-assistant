@@ -1,7 +1,7 @@
 <?php
 require_once("Controller.php");
 
-class IndexController implements Controller {
+class LogoutController implements Controller {
     private $httpFlow;
     private $sessionContext;
 
@@ -12,15 +12,13 @@ class IndexController implements Controller {
 
     public function get() {
         $this->sessionContext->init();
+        $this->sessionContext->kill();
 
-        if ($this->sessionContext->isSignedIn()) {
-            $this->httpFlow->redirectTo("/building");
-        } else {
-            $this->httpFlow->redirectTo("/signIn");
-        }
+        $this->httpFlow->redirectTo("/");
     }
 
     public function post($properties) {
-        $this->httpFlow->methodNotAllowed();
+        $this->sessionContext->kill();
+        $this->httpFlow->redirectTo("/");
     }
 }
