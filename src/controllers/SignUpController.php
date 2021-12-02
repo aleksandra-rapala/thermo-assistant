@@ -1,5 +1,5 @@
 <?php
-require_once("Controller.php");
+require_once("src/controllers/Controller.php");
 require_once("src/exceptions/UserAlreadyExistsException.php");
 require_once("src/exceptions/WeakPasswordException.php");
 

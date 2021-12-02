@@ -1,5 +1,5 @@
 <?php
-require_once("Controller.php");
+require_once("src/controllers/Controller.php");
 
 class BuildingController implements Controller {
     private $httpFlow;
