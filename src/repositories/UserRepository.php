@@ -8,30 +8,47 @@ class UserRepository {
         $this->database = $database;
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function findUserByEmail($email) {
         $query = "SELECT uuid, name, surname, e_mail, password FROM users WHERE e_mail = ?;";
-        $result = $this->database->execute($query, $email);
-        $result = $result[0];
+        $result = $this->database->executeAndFetchFirst($query, $email);
+
+        if (empty($result)) {
+            throw new UserNotFoundException();
+        }
+
+        $uuid = $result["uuid"];
+        $name = $result["name"];
+        $surname = $result["surname"];
+        $email = $result["e_mail"];
+        $password = $result["password"];
 
         $user = new User();
-        $user->setUuid($result["uuid"]);
-        $user->setName($result["name"]);
-        $user->setSurname($result["surname"]);
-        $user->setEmail($result["e_mail"]);
-        $user->setPassword($result["password"]);
+        $user->setUuid($uuid);
+        $user->setName($name);
+        $user->setSurname($surname);
+        $user->setEmail($email);
+        $user->setPassword($password);
 
         return $user;
     }
 
     public function existsByEmail($email) {
-        $query = "SELECT COUNT(*) FROM users WHERE e_mail = ?;";
-        $result = $this->database->execute($query, $email);
+        $query = "SELECT COUNT(*) AS count FROM users WHERE e_mail = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $email);
 
-        return $result[0]["count"] !== 0;
+        return $result["count"] !== 0;
     }
 
     public function save($user) {
         $query = "INSERT INTO users (name, surname, e_mail, password) VALUES (?, ?, ?, ?);";
-        $this->database->execute($query, $user->getName(), $user->getSurname(), $user->getEmail(), $user->getPassword());
+        $name = $user->getName();
+        $surname = $user->getSurname();
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+
+        $this->database->execute($query, $name, $surname, $email, $password);
     }
 }

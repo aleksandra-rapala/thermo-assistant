@@ -1,5 +1,5 @@
 <?php
-class Router {
+class RoutingService {
     private $routes;
     private $httpFlow;
 
