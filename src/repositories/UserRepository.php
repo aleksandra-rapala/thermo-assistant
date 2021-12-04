@@ -1,15 +1,54 @@
 <?php
+require_once("src/models/User.php");
+
 class UserRepository {
+    private $database;
+
+    public function __construct($database) {
+        $this->database = $database;
+    }
+
+    /**
+     * @throws UserNotFoundException
+     */
     public function findUserByEmail($email) {
-        $password = password_hash("example password", CRYPT_SHA256);
+        $query = "SELECT uuid, name, surname, e_mail, password FROM users WHERE e_mail = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $email);
+
+        if (empty($result)) {
+            throw new UserNotFoundException();
+        }
+
+        $uuid = $result["uuid"];
+        $name = $result["name"];
+        $surname = $result["surname"];
+        $email = $result["e_mail"];
+        $password = $result["password"];
 
         $user = new User();
-        $user->setUuid(123);
-        $user->setName("Name");
-        $user->setSurname("");
+        $user->setUuid($uuid);
+        $user->setName($name);
+        $user->setSurname($surname);
+        $user->setEmail($email);
         $user->setPassword($password);
-        $user->setEmail("email@example.com");
 
         return $user;
+    }
+
+    public function existsByEmail($email) {
+        $query = "SELECT COUNT(*) AS count FROM users WHERE e_mail = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $email);
+
+        return $result["count"] !== 0;
+    }
+
+    public function save($user) {
+        $query = "INSERT INTO users (name, surname, e_mail, password) VALUES (?, ?, ?, ?);";
+        $name = $user->getName();
+        $surname = $user->getSurname();
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+
+        $this->database->execute($query, $name, $surname, $email, $password);
     }
 }
