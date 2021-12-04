@@ -20,7 +20,7 @@ $database = new PgDatabase();
 $database->connect();
 $userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
-$indexController = new IndexController($httpFlow, $sessionContext);
+$indexController = new IndexController($httpFlow, $sessionContext, $database);
 $signInController = new SignInController($httpFlow, $renderingEngine, $sessionContext, $userService);
 $signUpController = new SignUpController($httpFlow, $renderingEngine, $sessionContext, $userService);
 $logoutController = new LogoutController($httpFlow, $sessionContext);

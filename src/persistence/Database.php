@@ -1,4 +1,4 @@
 <?php
 interface Database {
-    public function execute($query, $parameters);
+    public function execute($query, ...$parameters);
 }

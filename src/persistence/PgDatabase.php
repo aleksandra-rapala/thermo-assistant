@@ -35,7 +35,18 @@ class PgDatabase implements Database {
         }
     }
 
-    public function execute($query, $parameters) {
+    public function execute($query, ...$parameters) {
+        $parametersCount = count($parameters);
+        $statement = $this->connection->prepare($query);
 
+        for ($i = 0; $i < $parametersCount; $i++) {
+            $statement->bindParam($i + 1, $parameters[$i]);
+        }
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+        $statement->closeCursor();
+
+        return $result;
     }
 }
