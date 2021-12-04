@@ -10,12 +10,15 @@ require_once("src/controllers/SignInController.php");
 require_once("src/controllers/SignUpController.php");
 require_once("src/controllers/LogoutController.php");
 require_once("src/controllers/BuildingController.php");
+require_once("src/persistence/PgDatabase.php");
 
 $httpFlow = new HttpFlow();
 $router = new Router($httpFlow);
 $sessionContext = new SessionContext();
 $renderingEngine = new RenderingEngine();
-$userRepository = new UserRepository();
+$database = new PgDatabase();
+$database->connect();
+$userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
 $indexController = new IndexController($httpFlow, $sessionContext);
 $signInController = new SignInController($httpFlow, $renderingEngine, $sessionContext, $userService);

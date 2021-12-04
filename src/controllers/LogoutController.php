@@ -11,9 +11,7 @@ class LogoutController implements Controller {
     }
 
     public function get() {
-        $this->sessionContext->init();
         $this->sessionContext->kill();
-
         $this->httpFlow->redirectTo("/");
     }
 
