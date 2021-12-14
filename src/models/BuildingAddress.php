@@ -7,4 +7,12 @@ class BuildingAddress {
     private $street;
     private $buildingNo;
     private $apartmentNo;
+
+    public function setStreet($street) {
+        $this->street = $street;
+    }
+
+    public function getStreet() {
+        return $this->street;
+    }
 }

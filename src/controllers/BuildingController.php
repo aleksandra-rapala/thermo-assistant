@@ -5,11 +5,13 @@ class BuildingController implements Controller {
     private $httpFlow;
     private $renderingEngine;
     private $sessionContext;
+    private $buildingService;
 
-    public function __construct($httpFlow, $renderingEngine, $sessionContext) {
+    public function __construct($httpFlow, $renderingEngine, $sessionContext, $buildingService) {
         $this->httpFlow = $httpFlow;
         $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
+        $this->buildingService = $buildingService;
     }
 
     public function get() {
@@ -25,6 +27,13 @@ class BuildingController implements Controller {
     }
 
     public function post($properties) {
-        // create new building or update existing one
+        $uuid = $this->sessionContext->getUuid();
+        $building_exists = $this->buildingService->existsByUserId($uuid);
+
+        if ($building_exists) {
+            $this->buildingService->update($uuid, $properties);
+        } else {
+            $this->buildingService->create($uuid, $properties);
+        }
     }
 }

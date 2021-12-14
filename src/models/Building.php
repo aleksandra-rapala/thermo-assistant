@@ -3,6 +3,7 @@ class Building {
     private $address;
     private $details;
     private $heaters;
+    private $userId;
 
     public function setAddress($address) {
         $this->address = $address;
@@ -30,5 +31,13 @@ class Building {
 
     public function addHeater($heater) {
         array_push($this->heaters, $heater);
+    }
+
+    public function setUserId($userId) {
+        $this->userId = $userId;
+    }
+
+    public function getUserId() {
+        return $this->userId;
     }
 }
