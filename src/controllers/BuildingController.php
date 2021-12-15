@@ -18,22 +18,22 @@ class BuildingController implements Controller {
         $this->sessionContext->init();
 
         if ($this->sessionContext->isSignedIn()) {
-            $uuid = $this->sessionContext->getUuid();
+            $userId = $this->sessionContext->getUserId();
 
-            $this->renderingEngine->renderView("building", ["uuid" => $uuid]);
+            $this->renderingEngine->renderView("building", ["userId" => $userId]);
         } else {
             $this->httpFlow->redirectTo("/signIn");
         }
     }
 
     public function post($properties) {
-        $uuid = $this->sessionContext->getUuid();
-        $building_exists = $this->buildingService->existsByUserId($uuid);
+        $userId = $this->sessionContext->getUserId();
+        $building_exists = $this->buildingService->existsByUserId($userId);
 
         if ($building_exists) {
-            $this->buildingService->update($uuid, $properties);
+            $this->buildingService->update($userId, $properties);
         } else {
-            $this->buildingService->create($uuid, $properties);
+            $this->buildingService->create($userId, $properties);
         }
     }
 }

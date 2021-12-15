@@ -1,7 +1,12 @@
 <?php
 class Building {
     private $address;
-    private $details;
+    private $area;
+    private $storeys;
+    private $housemates;
+    private $waterUsage;
+    private $energyUsage;
+    private $destination;
     private $heaters;
     private $userId;
 
@@ -13,12 +18,52 @@ class Building {
         return $this->address;
     }
 
-    public function setDetails($details) {
-        $this->details = $details;
+    public function setArea($area) {
+        $this->area = $area;
     }
 
-    public function getDetails() {
-        return $this->details;
+    public function getArea() {
+        return $this->area;
+    }
+
+    public function setStoreys($storeys) {
+        $this->storeys = $storeys;
+    }
+
+    public function getStoreys() {
+        return $this->storeys;
+    }
+
+    public function setHousemates($housemates) {
+        $this->housemates = $housemates;
+    }
+
+    public function getHousemates() {
+        return $this->housemates;
+    }
+
+    public function setWaterUsage($waterUsage) {
+        $this->waterUsage = $waterUsage;
+    }
+
+    public function getWaterUsage() {
+        return $this->waterUsage;
+    }
+
+    public function setEnergyUsage($energyUsage) {
+        $this->energyUsage = $energyUsage;
+    }
+
+    public function getEnergyUsage() {
+        return $this->energyUsage;
+    }
+
+    public function setDestination($destination) {
+        $this->destination = $destination;
+    }
+
+    public function getDestination() {
+        return $this->destination;
     }
 
     public function setHeaters($heaters) {

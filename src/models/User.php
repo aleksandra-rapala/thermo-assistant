@@ -4,7 +4,7 @@ class User {
     private $surname;
     private $email;
     private $password;
-    private $uuid;
+    private $userId;
 
     public function setName($name) {
         $this->name = $name;
@@ -38,11 +38,11 @@ class User {
         return $this->password;
     }
 
-    public function setUuid($uuid) {
-        $this->uuid = $uuid;
+    public function setUserId($userId) {
+        $this->userId = $userId;
     }
 
-    public function getUuid() {
-        return $this->uuid;
+    public function getUserId() {
+        return $this->userId;
     }
 }

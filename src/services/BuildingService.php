@@ -1,12 +1,12 @@
 <?php
 require_once("src/models/Building.php");
-require_once("src/models/BuildingAddress.php");
+require_once("src/models/Address.php");
 
 class BuildingService {
     private $buildingRepository;
 
     public function __construct($buildingRepository) {
-        $this->buildingRepository =  $buildingRepository;
+        $this->buildingRepository = $buildingRepository;
     }
 
     public function existsByUserId($userId) {
@@ -16,7 +16,7 @@ class BuildingService {
     public function create($userId, $properties) {
         $street = $properties["street"];
 
-        $address = new BuildingAddress();
+        $address = new Address();
         $address->setStreet($street);
 
         $building = new Building();

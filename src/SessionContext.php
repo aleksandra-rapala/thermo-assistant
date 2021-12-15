@@ -4,11 +4,11 @@ class SessionContext {
         session_start();
     }
 
-    public function setUuid($uuid) {
-        $_SESSION["UUID"] = $uuid;
+    public function setUserId($userId) {
+        $_SESSION["UUID"] = $userId;
     }
 
-    public function getUuid() {
+    public function getUserId() {
         return $_SESSION["UUID"];
     }
 
@@ -19,6 +19,6 @@ class SessionContext {
     }
 
     public function isSignedIn() {
-        return $this->getUuid() !== null;
+        return $this->getUserId() !== null;
     }
 }
