@@ -1,5 +1,6 @@
 <?php
 require_once("src/models/Building.php");
+require_once("src/models/Details.php");
 require_once("src/models/Address.php");
 
 class BuildingService {
@@ -15,29 +16,39 @@ class BuildingService {
 
     public function create($userId, $properties) {
         $building = $this->mapToBuilding($properties);
+        $building->setHeaters([]);
+
         $this->buildingRepository->insert($userId, $building);
     }
 
-    private function mapToBuilding($properties, $heaters=[]) {
+    private function mapToBuilding($properties) {
+        $details = $this->mapToDetails($properties);
+        $address = $this->mapToAddress($properties);
+
+        $building = new Building();
+        $building->setDetails($details);
+        $building->setAddress($address);
+
+        return $building;
+    }
+
+    private function mapToDetails($properties) {
         $area = floatval($properties["area"]);
         $storeys = intval($properties["storeys-count"]);
         $housemates = intval($properties["housemates"]);
         $waterUsage = $properties["water-usage"];
         $energyUsage = $properties["electricity-usage"];
         $destination = $properties["destination"];
-        $address = $this->mapToAddress($properties);
 
-        $building = new Building();
-        $building->setArea($area);
-        $building->setStoreys($storeys);
-        $building->setHousemates($housemates);
-        $building->setWaterUsage($waterUsage);
-        $building->setEnergyUsage($energyUsage);
-        $building->setDestination($destination);
-        $building->setHeaters($heaters);
-        $building->setAddress($address);
+        $details = new Details();
+        $details->setArea($area);
+        $details->setStoreys($storeys);
+        $details->setHousemates($housemates);
+        $details->setWaterUsage($waterUsage);
+        $details->setEnergyUsage($energyUsage);
+        $details->setDestination($destination);
 
-        return $building;
+        return $details;
     }
 
     private function mapToAddress($properties) {
@@ -63,17 +74,12 @@ class BuildingService {
 
     public function update($userId, $properties) {
         $building = $this->mapToBuilding($properties);
-        $buildingId = $this->buildingRepository->findBuildingIdByUserId($userId);
-        $building->setId($buildingId);
+        $building->setHeaters([]);
 
-        $address = $building->getAddress();
-        $addressId = $this->buildingRepository->findAddressIdByBuildingId($buildingId);
-        $address->setId($addressId);
-
-        $this->buildingRepository->update($building);
+        $this->buildingRepository->update($userId, $building);
     }
 
-    public function getByUserId($userId) {
-        return $this->buildingRepository->findByUserId($userId);
+    public function findByUserId($userId) {
+        return $this->buildingRepository->selectByUserId($userId);
     }
 }

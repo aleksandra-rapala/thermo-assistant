@@ -19,11 +19,10 @@ class BuildingController implements Controller {
 
         if ($this->sessionContext->isSignedIn()) {
             $userId = $this->sessionContext->getUserId();
-            $building = $this->buildingService->getByUserId($userId);
+            $building = $this->buildingService->findByUserId($userId);
 
             $this->renderingEngine->renderView("building", [
-                "userId" => $userId,
-                "building" => $building,
+                "details" => $building->getDetails(),
                 "address" => $building->getAddress()
             ]);
         } else {

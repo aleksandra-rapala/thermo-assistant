@@ -9,8 +9,6 @@
 
     <body>
         <div id="building-view">
-            <h1>UUID: <?= $userId ?></h1>
-
             <form action="/building" method="post">
                 <div>
                     <h2>Adres</h2>
@@ -41,7 +39,7 @@
                     <h2>Szczegóły</h2>
 
                     <label for="area-field">Powierzchnia użytkowa</label>
-                    <input name="area" id="area-field" />
+                    <input name="area" id="area-field" value="<?= $details->getArea(); ?>" />
 
                     <label for="storeys-count-field">Liczba kondygnacji</label>
                     <input name="storeys-count" id="storeys-count-field" />

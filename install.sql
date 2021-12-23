@@ -1,4 +1,7 @@
-CREATE TABLE IF NOT EXISTS users (
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(64) NOT NULL,
     surname VARCHAR(64) NOT NULL,
@@ -7,22 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     is_admin BOOLEAN NOT NULL DEFAULT false
 );
 
-CREATE TYPE building_destinations AS ENUM ('residential', 'service', 'residential-n-service', 'industrial');
-CREATE TYPE consumptions AS ENUM ('little', 'standard', 'noticeable');
-
-CREATE TABLE IF NOT EXISTS buildings (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    address_id INT NOT NULL UNIQUE REFERENCES addresses(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    area DECIMAL(7, 3) NOT NULL,
-    storeys INT NOT NULL,
-    housemates INT NOT NULL,
-    water_usage consumptions NOT NULL,
-    energy_usage consumptions NOT NULL,
-    destination building_destinations NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS addresses (
+CREATE TABLE addresses (
     id SERIAL PRIMARY KEY,
     country VARCHAR(64) NOT NULL,
     district VARCHAR(64) NOT NULL,
@@ -33,12 +21,32 @@ CREATE TABLE IF NOT EXISTS addresses (
     apartment_no VARCHAR(16) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS modernizations (
+CREATE TYPE building_destinations AS ENUM ('residential', 'service', 'residential-n-service', 'industrial');
+CREATE TYPE consumptions AS ENUM ('little', 'standard', 'noticeable');
+
+CREATE TABLE details (
+    id SERIAL PRIMARY KEY,
+    area DECIMAL(7, 3) NOT NULL,
+    storeys INT NOT NULL,
+    housemates INT NOT NULL,
+    water_usage consumptions NOT NULL,
+    energy_usage consumptions NOT NULL,
+    destination building_destinations NOT NULL
+);
+
+CREATE TABLE buildings (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    address_id INT NOT NULL UNIQUE REFERENCES addresses(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    details_id INT NOT NULL UNIQUE REFERENCES details(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE modernizations (
     id SERIAL PRIMARY KEY,
     name VARCHAR(32) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS buildings_modernizations (
+CREATE TABLE buildings_modernizations (
     id INT PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     modernization_id INT NOT NULL REFERENCES modernizations(id) ON UPDATE CASCADE ON DELETE RESTRICT
@@ -48,24 +56,24 @@ CREATE TYPE combustion_chambers AS ENUM ('open', 'closed', 'none');
 CREATE TYPE data_sources AS ENUM ('tabliczka znamionowa', 'dokumentacja techniczna', 'wiedza właściciela');
 CREATE TYPE fuel_providers AS ENUM ('manual', 'automat', 'none');
 
-CREATE TABLE IF NOT EXISTS dust_extractors (
+CREATE TABLE dust_extractors (
     id SERIAL PRIMARY KEY,
     heater_id INT NOT NULL UNIQUE,
     efficiency DECIMAL(7, 3) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS heater_types (
+CREATE TABLE heater_types (
     id SERIAL PRIMARY KEY,
     name VARCHAR(64) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS heater_classes (
+CREATE TABLE heater_classes (
     id SERIAL PRIMARY KEY,
     name VARCHAR(64) NOT NULL,
     eco_project BOOLEAN NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS heaters (
+CREATE TABLE heaters (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -79,19 +87,19 @@ CREATE TABLE IF NOT EXISTS heaters (
     heater_class_id INT NOT NULL REFERENCES heater_classes ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE IF NOT EXISTS fuels (
+CREATE TABLE fuels (
     id SERIAL PRIMARY KEY,
     name VARCHAR(32) UNIQUE NOT NULL,
     unit VARCHAR(8) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS buildings_fuels (
+CREATE TABLE buildings_fuels (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     fuel_id INT NOT NULL REFERENCES fuels(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE IF NOT EXISTS emission_rules (
+CREATE TABLE emission_rules (
     id SERIAL PRIMARY KEY,
     heater_type INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     fuel_provider fuel_providers NOT NULL,
@@ -99,7 +107,7 @@ CREATE TABLE IF NOT EXISTS emission_rules (
     priority INT NOT NULL CHECK (priority > 0)
 );
 
-CREATE TABLE IF NOT EXISTS emission_indicators (
+CREATE TABLE emission_indicators (
     id SERIAL PRIMARY KEY,
     co2 INT NOT NULL CHECK (co2 > 0),
     pm10 INT NOT NULL CHECK (pm10 > 0),
@@ -110,7 +118,7 @@ CREATE TABLE IF NOT EXISTS emission_indicators (
     bap INT NOT NULL CHECK (bap > 0)
 );
 
-CREATE TABLE IF NOT EXISTS emission_indicator_rules (
+CREATE TABLE emission_indicator_rules (
     id SERIAL PRIMARY KEY,
     fuel_id INT NOT NULL REFERENCES fuels ON UPDATE CASCADE ON DELETE CASCADE,
     emission_rule_id INT NOT NULL REFERENCES emission_rules(id) ON UPDATE CASCADE ON DELETE CASCADE,

@@ -1,4 +1,8 @@
 <?php
+require_once("src/models/Building.php");
+require_once("src/models/Details.php");
+require_once("src/models/Address.php");
+
 class BuildingRepository {
     private $database;
 
@@ -14,10 +18,34 @@ class BuildingRepository {
     }
 
     public function insert($userId, $building) {
+        $details = $building->getDetails();
         $address = $building->getAddress();
+
+        $detailsId = $this->insertDetails($details);
         $addressId = $this->insertAddress($address);
 
-        $this->insertDetails($building, $userId, $addressId);
+        $this->insertBuilding($userId, $detailsId, $addressId);
+    }
+
+    private function insertDetails($details) {
+        $query = "
+            INSERT INTO details
+                (area, storeys, housemates, water_usage, energy_usage, destination)
+            VALUES
+                (?, ?, ?, ?, ?, ?)
+            RETURNING id;
+        ";
+
+        $result = $this->database->executeAndFetchFirst($query,
+            $details->getArea(),
+            $details->getStoreys(),
+            $details->getHousemates(),
+            $details->getWaterUsage(),
+            $details->getEnergyUsage(),
+            $details->getDestination()
+        );
+
+        return $result["id"];
     }
 
     private function insertAddress($address) {
@@ -42,39 +70,59 @@ class BuildingRepository {
         return $result["id"];
     }
 
-    private function insertDetails($building, $userId, $addressId) {
+    private function insertBuilding($userId, $detailsId, $addressId) {
         $query = "
             INSERT INTO buildings
-                (user_id, address_id, area, storeys, housemates, water_usage, energy_usage, destination)
+                (user_id, details_id, address_id)
             VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?);
-            ";
+                (?, ?, ?);
+        ";
 
-        $this->database->execute($query,
-            $userId,
-            $addressId,
-            $building->getArea(),
-            $building->getStoreys(),
-            $building->getHousemates(),
-            $building->getWaterUsage(),
-            $building->getEnergyUsage(),
-            $building->getDestination()
-        );
+        $this->database->execute($query, $userId, $detailsId, $addressId);
     }
 
-    public function update($building) {
-        $address = $building->getAddress();
+    public function update($userId, $building) {
+        $query = "SELECT details_id, address_id FROM buildings WHERE user_id = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $userId);
 
+        $addressId = $result["address_id"];
+        $detailsId = $result["details_id"];
+
+        $address = $building->getAddress();
+        $address->setId($addressId);
+
+        $details = $building->getDetails();
+        $details->setId($detailsId);
+
+        $this->updateDetails($details);
         $this->updateAddress($address);
-        $this->updateDetails($building);
+    }
+
+    private function updateDetails($details) {
+        $query = "
+            UPDATE details SET
+                area = ?, storeys = ?, housemates = ?, water_usage = ?, energy_usage = ?, destination = ?
+            WHERE
+                id = ?;
+        ";
+
+        $this->database->execute($query,
+            $details->getArea(),
+            $details->getStoreys(),
+            $details->getHousemates(),
+            $details->getWaterUsage(),
+            $details->getEnergyUsage(),
+            $details->getDestination(),
+            $details->getId()
+        );
     }
 
     private function updateAddress($address) {
         $query = "
             UPDATE addresses SET
-                country=?, district=?, community=?, location=?, street=?, building_no=?, apartment_no=?
+                country = ?, district = ?, community = ?, location = ?, street = ?, building_no = ?, apartment_no = ?
             WHERE
-                id=?;
+                id = ?;
         ";
 
         $this->database->execute($query,
@@ -89,74 +137,63 @@ class BuildingRepository {
         );
     }
 
-    private function updateDetails($building) {
-        $query = "
-            UPDATE buildings SET
-                area=?, storeys=?, housemates=?, water_usage=?, energy_usage=?, destination=?
-            WHERE
-                id=?;
-        ";
-
-        $this->database->execute($query,
-            $building->getArea(),
-            $building->getStoreys(),
-            $building->getHousemates(),
-            $building->getWaterUsage(),
-            $building->getEnergyUsage(),
-            $building->getDestination(),
-            $building->getId()
-        );
-    }
-
-    public function findBuildingIdByUserId($userId) {
+    public function selectByUserId($userId) {
         $query = "SELECT id FROM buildings WHERE user_id = ?;";
         $result = $this->database->executeAndFetchFirst($query, $userId);
+        $buildingId = $result["id"];
 
-        return $result["id"];
+        return $this->selectById($buildingId);
     }
 
-    public function findAddressIdByBuildingId($buildingId) {
-        $query = "SELECT address_id FROM buildings WHERE id = ?;";
-        $result = $this->database->executeAndFetchFirst($query, $buildingId);
-
-        return $result["address_id"];
-    }
-
-    public function findByUserId($userId) {
-        $query = "SELECT * FROM buildings WHERE user_id = ?;";
-        $details_result = $this->database->executeAndFetchFirst($query, $userId);
-        $query = "SELECT * FROM addresses JOIN buildings on addresses.id = buildings.address_id WHERE user_id = ?;";
-        $address_result = $this->database->executeAndFetchFirst($query, $userId);
-
-        return $this->mapToBuilding($details_result, $address_result);
-    }
-
-    private function mapToBuilding($details_result, $address_result) {
-        $id = $details_result["id"];
-        $area = $details_result["area"];
-        $storeys = $details_result["storeys-count"];
-        $housemates = $details_result["housemates"];
-        $waterUsage = $details_result["water_usage"];
-        $energyUsage = $details_result["energy_usage"];
-        $destination = $details_result["destination"];
-        $address = $this->mapToAddress($address_result);
+    private function selectById($buildingId) {
+        $details = $this->selectDetailsByBuildingId($buildingId);
+        $address = $this->selectAddressByBuildingId($buildingId);
 
         $building = new Building();
-        $building->setId($id);
-        $building->setArea($area);
-        $building->setStoreys($storeys);
-        $building->setHousemates($housemates);
-        $building->setWaterUsage($waterUsage);
-        $building->setEnergyUsage($energyUsage);
-        $building->setDestination($destination);
-        $building->setHeaters([]);
+        $building->setId($buildingId);
+        $building->setDetails($details);
         $building->setAddress($address);
 
         return $building;
     }
 
+    private function selectDetailsByBuildingId($buildingId) {
+        $query = "SELECT * FROM details JOIN buildings ON details.id = buildings.details_id WHERE buildings.id = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $buildingId);
+
+        return $this->mapToDetails($result);
+    }
+
+    private function mapToDetails($result) {
+        $id = $result["id"];
+        $area = $result["area"];
+        $storeys = $result["storeys-count"];
+        $housemates = $result["housemates"];
+        $waterUsage = $result["water_usage"];
+        $energyUsage = $result["energy_usage"];
+        $destination = $result["destination"];
+
+        $details = new Details();
+        $details->setId($id);
+        $details->setArea($area);
+        $details->setStoreys($storeys);
+        $details->setHousemates($housemates);
+        $details->setWaterUsage($waterUsage);
+        $details->setEnergyUsage($energyUsage);
+        $details->setDestination($destination);
+
+        return $details;
+    }
+    
+    private function selectAddressByBuildingId($buildingId) {
+        $query = "SELECT * FROM addresses JOIN buildings ON addresses.id = buildings.address_id WHERE buildings.id = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $buildingId);
+        
+        return $this->mapToAddress($result);
+    }
+
     private function mapToAddress($result) {
-        $id = $result["address_id"];
+        $id = $result["id"];
         $country = $result["country"];
         $district = $result["district"];
         $community = $result["community"];
