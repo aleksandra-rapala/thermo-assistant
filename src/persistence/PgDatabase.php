@@ -31,4 +31,24 @@ class PgDatabase implements Database {
 
         return $result;
     }
+
+    /**
+     * @throws Exception
+     */
+    public function withinTransaction($callback) {
+        $this->connection->beginTransaction();
+
+        try
+        {
+            $callback();
+        }
+        catch (Exception $exception)
+        {
+            $this->connection->rollBack();
+
+            throw $exception;
+        }
+
+        $this->connection->commit();
+    }
 }

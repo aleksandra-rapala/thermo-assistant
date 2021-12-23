@@ -21,10 +21,12 @@ class BuildingRepository {
         $details = $building->getDetails();
         $address = $building->getAddress();
 
-        $detailsId = $this->insertDetails($details);
-        $addressId = $this->insertAddress($address);
+        $this->database->withinTransaction(function() use ($userId, $details, $address) {
+            $detailsId = $this->insertDetails($details);
+            $addressId = $this->insertAddress($address);
 
-        $this->insertBuilding($userId, $detailsId, $addressId);
+            $this->insertBuilding($userId, $detailsId, $addressId);
+        });
     }
 
     private function insertDetails($details) {
@@ -88,14 +90,16 @@ class BuildingRepository {
         $addressId = $result["address_id"];
         $detailsId = $result["details_id"];
 
+        $details = $building->getDetails();
         $address = $building->getAddress();
+
+        $details->setId($detailsId);
         $address->setId($addressId);
 
-        $details = $building->getDetails();
-        $details->setId($detailsId);
-
-        $this->updateDetails($details);
-        $this->updateAddress($address);
+        $this->database->withinTransaction(function() use ($details, $address) {
+            $this->updateDetails($details);
+            $this->updateAddress($address);
+        });
     }
 
     private function updateDetails($details) {
