@@ -5,9 +5,11 @@ require_once("src/models/Address.php");
 
 class BuildingService {
     private $buildingRepository;
+    private $modernizationRepository;
 
-    public function __construct($buildingRepository) {
+    public function __construct($buildingRepository, $modernizationsRepository) {
         $this->buildingRepository = $buildingRepository;
+        $this->modernizationRepository = $modernizationsRepository;
     }
 
     public function existsByUserId($userId) {
@@ -25,9 +27,17 @@ class BuildingService {
         $details = $this->mapToDetails($properties);
         $address = $this->mapToAddress($properties);
 
+        $plannedModernizations = $properties["planned-modernization"];
+        $plannedModernizations = $this->modernizationRepository->selectAllByNames($plannedModernizations);
+
+        $completedModernizations = $properties["completed-modernization"];
+        $completedModernizations = $this->modernizationRepository->selectAllByNames($completedModernizations);
+
         $building = new Building();
         $building->setDetails($details);
         $building->setAddress($address);
+        $building->setPlannedModernizations($plannedModernizations);
+        $building->setCompletedModernizations($completedModernizations);
 
         return $building;
     }
@@ -81,5 +91,9 @@ class BuildingService {
 
     public function findByUserId($userId) {
         return $this->buildingRepository->selectByUserId($userId);
+    }
+
+    public function findAvailableModernizations() {
+        return $this->modernizationRepository->selectAll();
     }
 }

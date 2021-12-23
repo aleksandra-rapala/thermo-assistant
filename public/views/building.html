@@ -76,39 +76,23 @@
                 <div>
                     <h2>Wykonane termomodernizacje</h2>
 
+                    <?php foreach ($availableModernizations as $modernization): ?>
                     <div>
-                        <input type="checkbox" name="completed-roof-isolation" id="completed-roof-isolation-field">
-                        <label for="completed-roof-isolation-field">Ocieplenie dachu/stropu</label>
+                        <input type="checkbox" name="completed-modernization[]" value="<?= $modernization->getName(); ?>" id="completed-<?= $modernization->getName(); ?>-field" <?= in_array($modernization->getName(), $completedModernizations) ?: "checked"; ?>>
+                        <label for="completed-<?= $modernization->getName(); ?>-field"><?= $modernization->getLabel(); ?></label>
                     </div>
-
-                    <div>
-                        <input type="checkbox" name="completed-wall-isolation" id="completed-wall-isolation-field">
-                        <label for="completed-wall-isolation-field">Ocieplenie ścian</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="completed-woodwork-replacement" id="completed-woodwork-replacement-field">
-                        <label for="completed-woodwork-replacement-field">Wymiana stolarki drzwiowej/okiennej</label>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div>
                     <h2>Planowane termomodernizacje</h2>
 
+                    <?php foreach ($availableModernizations as $modernization): ?>
                     <div>
-                        <input type="checkbox" name="planned-roof-isolation" id="planned-roof-isolation-field">
-                        <label for="planned-roof-isolation-field">Ocieplenie dachu/stropu</label>
+                        <input type="checkbox" name="planned-modernization[]" value="<?= $modernization->getName(); ?>" id="planned-<?= $modernization->getName(); ?>-field" <?= in_array($modernization->getName(), $plannedModernizations) ?: "checked"; ?>>
+                        <label for="planned-<?= $modernization->getName(); ?>-field"><?= $modernization->getLabel(); ?></label>
                     </div>
-
-                    <div>
-                        <input type="checkbox" name="planned-wall-isolation" id="planned-wall-isolation-field">
-                        <label for="planned-wall-isolation-field">Ocieplenie ścian</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="planned-woodwork-replacement" id="planned-woodwork-replacement-field">
-                        <label for="planned-woodwork-replacement-field">Wymiana stolarki drzwiowej/okiennej</label>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div>

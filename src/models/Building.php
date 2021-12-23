@@ -4,6 +4,8 @@ class Building {
     private $address;
     private $details;
     private $heaters;
+    private $plannedModernizations;
+    private $completedModernizations;
 
     public function setId($id) {
         $this->id = $id;
@@ -37,7 +39,39 @@ class Building {
         return $this->heaters;
     }
 
-    public function addHeater($heater) {
-        array_push($this->heaters, $heater);
+    public function setPlannedModernizations($plannedModernizations) {
+        $this->plannedModernizations = $plannedModernizations;
+    }
+
+    public function getPlannedModernizations() {
+        return $this->plannedModernizations;
+    }
+
+    public function getPlannedModernizationNames() {
+        $names = [];
+
+        foreach ($this->plannedModernizations as $modernization) {
+            $names[] = $modernization->getName();
+        }
+
+        return $names;
+    }
+
+    public function setCompletedModernizations($completedModernizations) {
+        $this->completedModernizations = $completedModernizations;
+    }
+
+    public function getCompletedModernizations() {
+        return $this->completedModernizations;
+    }
+
+    public function getCompletedModernizationNames() {
+        $names = [];
+
+        foreach ($this->completedModernizations as $modernization) {
+            $names[] = $modernization->getName();
+        }
+
+        return $names;
     }
 }

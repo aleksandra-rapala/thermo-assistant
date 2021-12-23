@@ -43,13 +43,17 @@ CREATE TABLE buildings (
 
 CREATE TABLE modernizations (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(32) NOT NULL
+    name VARCHAR(32) NOT NULL UNIQUE,
+    label VARCHAR(64) NOT NULL UNIQUE
 );
 
+CREATE TYPE modernization_statuses AS ENUM ('planned', 'completed');
+
 CREATE TABLE buildings_modernizations (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    modernization_id INT NOT NULL REFERENCES modernizations(id) ON UPDATE CASCADE ON DELETE RESTRICT
+    modernization_id INT NOT NULL REFERENCES modernizations(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    status modernization_statuses NOT NULL
 );
 
 CREATE TYPE combustion_chambers AS ENUM ('open', 'closed', 'none');
@@ -124,3 +128,15 @@ CREATE TABLE emission_indicator_rules (
     emission_rule_id INT NOT NULL REFERENCES emission_rules(id) ON UPDATE CASCADE ON DELETE CASCADE,
     emission_indicator_id INT NOT NULL REFERENCES emission_indicators(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
+
+INSERT INTO users
+    (id, name, surname, e_mail, password)
+VALUES
+    (1, 'asd', 'asd', 'asd@asd.asd', '$2y$10$7Y1N8nmGNxgc0Svu2kwefO8GlxIPTceuyzWqtwCDARGhcnuAougKm');
+
+INSERT INTO modernizations
+    (id, name, label)
+VALUES
+    (1, 'roof-isolation', 'Ocieplenie dachu/stropu'),
+    (2, 'wall-isolation', 'Ocieplenie ścian'),
+    (3, 'woodwork-replacement', 'Wymiana stolarki drzwiowej/okiennej');

@@ -5,9 +5,11 @@ require_once("src/models/Address.php");
 
 class BuildingRepository {
     private $database;
+    private $modernizationRepository;
 
-    public function __construct($database) {
+    public function __construct($database, $modernizationRepository) {
         $this->database = $database;
+        $this->modernizationRepository = $modernizationRepository;
     }
 
     public function existsByUserId($userId) {
@@ -18,14 +20,16 @@ class BuildingRepository {
     }
 
     public function insert($userId, $building) {
-        $details = $building->getDetails();
-        $address = $building->getAddress();
+        $this->database->withinTransaction(function() use ($userId, $building) {
+            $details = $building->getDetails();
+            $address = $building->getAddress();
 
-        $this->database->withinTransaction(function() use ($userId, $details, $address) {
             $detailsId = $this->insertDetails($details);
             $addressId = $this->insertAddress($address);
+            $buildingId = $this->insertBuilding($userId, $detailsId, $addressId);
 
-            $this->insertBuilding($userId, $detailsId, $addressId);
+            $building->setId($buildingId);
+            $this->modernizationRepository->insert($building);
         });
     }
 
@@ -77,28 +81,34 @@ class BuildingRepository {
             INSERT INTO buildings
                 (user_id, details_id, address_id)
             VALUES
-                (?, ?, ?);
+                (?, ?, ?)
+            RETURNING id;
         ";
 
-        $this->database->execute($query, $userId, $detailsId, $addressId);
+        $result = $this->database->executeAndFetchFirst($query, $userId, $detailsId, $addressId);
+
+        return $result["id"];
     }
 
     public function update($userId, $building) {
-        $query = "SELECT details_id, address_id FROM buildings WHERE user_id = ?;";
-        $result = $this->database->executeAndFetchFirst($query, $userId);
+        $this->database->withinTransaction(function() use ($userId, $building) {
+            $query = "SELECT id, details_id, address_id FROM buildings WHERE user_id = ?;";
+            $result = $this->database->executeAndFetchFirst($query, $userId);
 
-        $addressId = $result["address_id"];
-        $detailsId = $result["details_id"];
+            $buildingId = $result["id"];
+            $detailsId = $result["details_id"];
+            $addressId = $result["address_id"];
 
-        $details = $building->getDetails();
-        $address = $building->getAddress();
+            $details = $building->getDetails();
+            $address = $building->getAddress();
 
-        $details->setId($detailsId);
-        $address->setId($addressId);
+            $details->setId($detailsId);
+            $address->setId($addressId);
+            $building->setId($buildingId);
 
-        $this->database->withinTransaction(function() use ($details, $address) {
             $this->updateDetails($details);
             $this->updateAddress($address);
+            $this->modernizationRepository->update($building);
         });
     }
 
@@ -157,6 +167,12 @@ class BuildingRepository {
         $building->setId($buildingId);
         $building->setDetails($details);
         $building->setAddress($address);
+
+        $modernizations = $this->modernizationRepository->selectAllAssignedToBuilding($building, "planned");
+        $building->setPlannedModernizations($modernizations);
+
+        $modernizations = $this->modernizationRepository->selectAllAssignedToBuilding($building, "completed");
+        $building->setCompletedModernizations($modernizations);
 
         return $building;
     }

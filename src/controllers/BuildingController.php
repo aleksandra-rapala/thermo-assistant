@@ -23,7 +23,10 @@ class BuildingController implements Controller {
 
             $this->renderingEngine->renderView("building", [
                 "details" => $building->getDetails(),
-                "address" => $building->getAddress()
+                "address" => $building->getAddress(),
+                "availableModernizations" => $this->buildingService->findAvailableModernizations(),
+                "plannedModernizations" => $building->getPlannedModernizationNames(),
+                "completedModernizations" => $building->getCompletedModernizationNames(),
             ]);
         } else {
             $this->httpFlow->redirectTo("/signIn");
