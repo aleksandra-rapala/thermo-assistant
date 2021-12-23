@@ -27,6 +27,8 @@ class BuildingController implements Controller {
     }
 
     public function post($properties) {
+        $this->sessionContext->init();
+
         $userId = $this->sessionContext->getUserId();
         $building_exists = $this->buildingService->existsByUserId($userId);
 

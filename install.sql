@@ -4,26 +4,26 @@ CREATE TABLE IF NOT EXISTS users (
     surname VARCHAR(64) NOT NULL,
     e_mail VARCHAR(128) NOT NULL,
     password VARCHAR(80) NOT NULL,
-    is_admin BOOLEAN
+    is_admin BOOLEAN NOT NULL DEFAULT false
 );
 
-CREATE TYPE building_destinations AS ENUM ('mieszkalny', 'usługowy', 'mieszkalno-usługowy', 'przemysłowy');
-CREATE TYPE consumptions AS ENUM ('niskie', 'średnie', 'duże');
+CREATE TYPE building_destinations AS ENUM ('residential', 'service', 'residential-n-service', 'industrial');
+CREATE TYPE consumptions AS ENUM ('little', 'standard', 'noticeable');
 
 CREATE TABLE IF NOT EXISTS buildings (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL UNIQUE REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    address_id INT NOT NULL UNIQUE REFERENCES addresses(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     area DECIMAL(7, 3) NOT NULL,
     storeys INT NOT NULL,
     housemates INT NOT NULL,
-    water_usage consumptions,
-    energy_usage consumptions,
-    destination building_destinations
+    water_usage consumptions NOT NULL,
+    energy_usage consumptions NOT NULL,
+    destination building_destinations NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS addresses (
     id SERIAL PRIMARY KEY,
-    building_id INT NOT NULL UNIQUE,
     country VARCHAR(64) NOT NULL,
     district VARCHAR(64) NOT NULL,
     community VARCHAR(64) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS addresses (
 
 CREATE TABLE IF NOT EXISTS modernizations (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(32)
+    name VARCHAR(32) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS buildings_modernizations (
@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS buildings_modernizations (
     modernization_id INT NOT NULL REFERENCES modernizations(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TYPE combustion_chambers AS ENUM ('otwarta', 'zamknięta', 'brak');
+CREATE TYPE combustion_chambers AS ENUM ('open', 'closed', 'none');
 CREATE TYPE data_sources AS ENUM ('tabliczka znamionowa', 'dokumentacja techniczna', 'wiedza właściciela');
-CREATE TYPE fuel_providers AS ENUM ('ręczny', 'automatyczny', 'brak');
+CREATE TYPE fuel_providers AS ENUM ('manual', 'automat', 'none');
 
 CREATE TABLE IF NOT EXISTS dust_extractors (
     id SERIAL PRIMARY KEY,
@@ -56,13 +56,13 @@ CREATE TABLE IF NOT EXISTS dust_extractors (
 
 CREATE TABLE IF NOT EXISTS heater_types (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(64)
+    name VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS heater_classes (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(64),
-    eco_project BOOLEAN
+    name VARCHAR(64) NOT NULL,
+    eco_project BOOLEAN NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS heaters (
@@ -70,12 +70,12 @@ CREATE TABLE IF NOT EXISTS heaters (
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     power DECIMAL(7, 3) NOT NULL,
-    combustion_chamber combustion_chambers,
+    combustion_chamber combustion_chambers NOT NULL,
     efficiency DECIMAL(7, 3) NOT NULL,
     installation_year INT NOT NULL,
     production_year INT NOT NULL,
-    data_source data_sources,
-    fuel_provider fuel_providers,
+    data_source data_sources NOT NULL,
+    fuel_provider fuel_providers NOT NULL,
     heater_class_id INT NOT NULL REFERENCES heater_classes ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS buildings_fuels (
 
 CREATE TABLE IF NOT EXISTS emission_rules (
     id SERIAL PRIMARY KEY,
-    heater_type INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT ,
-    fuel_provider fuel_providers,
+    heater_type INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    fuel_provider fuel_providers NOT NULL,
     heater_class INT NOT NULL REFERENCES heater_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     priority INT NOT NULL CHECK (priority > 0)
 );

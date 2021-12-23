@@ -12,21 +12,21 @@ class UserRepository {
      * @throws UserNotFoundException
      */
     public function findUserByEmail($email) {
-        $query = "SELECT userId, name, surname, e_mail, password FROM users WHERE e_mail = ?;";
+        $query = "SELECT id, name, surname, e_mail, password FROM users WHERE e_mail = ?;";
         $result = $this->database->executeAndFetchFirst($query, $email);
 
         if (empty($result)) {
             throw new UserNotFoundException();
         }
 
-        $userId = $result["userId"];
+        $id = $result["id"];
         $name = $result["name"];
         $surname = $result["surname"];
         $email = $result["e_mail"];
         $password = $result["password"];
 
         $user = new User();
-        $user->setUserId($userId);
+        $user->setId($id);
         $user->setName($name);
         $user->setSurname($surname);
         $user->setEmail($email);

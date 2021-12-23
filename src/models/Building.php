@@ -1,5 +1,6 @@
 <?php
 class Building {
+    private $id;
     private $address;
     private $area;
     private $storeys;
@@ -8,7 +9,14 @@ class Building {
     private $energyUsage;
     private $destination;
     private $heaters;
-    private $userId;
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
 
     public function setAddress($address) {
         $this->address = $address;
@@ -76,13 +84,5 @@ class Building {
 
     public function addHeater($heater) {
         array_push($this->heaters, $heater);
-    }
-
-    public function setUserId($userId) {
-        $this->userId = $userId;
-    }
-
-    public function getUserId() {
-        return $this->userId;
     }
 }

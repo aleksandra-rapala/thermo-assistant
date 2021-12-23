@@ -15,12 +15,8 @@
                 <div>
                     <h2>Adres</h2>
 
-                    <label for="voivodeship-field">Województwo</label>
-
-                    <select id="voivodeship-field">
-                        <option>Małopolskie</option>
-                        <option>Podkarpackie</option>
-                    </select>
+                    <label for="country-field">Kraj</label>
+                    <input name="country" id="country-field" />
 
                     <label for="district-field">Powiat</label>
                     <input name="district" id="district-field" />
@@ -50,12 +46,12 @@
                     <label for="storeys-count-field">Liczba kondygnacji</label>
                     <input name="storeys-count" id="storeys-count-field" />
 
-                    <label for="locators-count-field">Liczba domowników</label>
-                    <input name="locators-count" id="locators-count-field" />
+                    <label for="housemates-field">Liczba domowników</label>
+                    <input name="housemates" id="housemates-field" />
 
                     <label for="water-usage-field">Postrzegane zużycie wody</label>
 
-                    <select id="water-usage-field">
+                    <select name="water-usage" id="water-usage-field">
                         <option value="little">Niewielkie</option>
                         <option value="standard">Standardowe</option>
                         <option value="noticeable">Zauważalne</option>
@@ -63,7 +59,7 @@
 
                     <label for="electricity-usage-field">Postrzegane zużycie elektryczności</label>
 
-                    <select id="electricity-usage-field">
+                    <select name="electricity-usage" id="electricity-usage-field">
                         <option value="little">Niewielkie</option>
                         <option value="standard">Standardowe</option>
                         <option value="noticeable">Zauważalne</option>
@@ -71,7 +67,7 @@
 
                     <label for="destination-field">Przeznaczenie budynku</label>
 
-                    <select id="destination-field">
+                    <select name="destination" id="destination-field">
                         <option value="residential">Mieszkalny</option>
                         <option value="service">Usługowy</option>
                         <option value="industrial">Przemysłowy</option>

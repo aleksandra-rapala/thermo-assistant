@@ -1,5 +1,6 @@
 <?php
 class Address {
+    private $id;
     private $country;
     private $district;
     private $community;
@@ -7,6 +8,14 @@ class Address {
     private $street;
     private $buildingNo;
     private $apartmentNo;
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
 
     public function setCountry($country) {
         $this->country = $country;
