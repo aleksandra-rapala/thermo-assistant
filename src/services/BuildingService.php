@@ -72,4 +72,8 @@ class BuildingService {
 
         $this->buildingRepository->update($building);
     }
+
+    public function getByUserId($userId) {
+        return $this->buildingRepository->findByUserId($userId);
+    }
 }

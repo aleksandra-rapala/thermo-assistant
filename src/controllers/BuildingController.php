@@ -19,8 +19,13 @@ class BuildingController implements Controller {
 
         if ($this->sessionContext->isSignedIn()) {
             $userId = $this->sessionContext->getUserId();
+            $building = $this->buildingService->getByUserId($userId);
 
-            $this->renderingEngine->renderView("building", ["userId" => $userId]);
+            $this->renderingEngine->renderView("building", [
+                "userId" => $userId,
+                "building" => $building,
+                "address" => $building->getAddress()
+            ]);
         } else {
             $this->httpFlow->redirectTo("/signIn");
         }

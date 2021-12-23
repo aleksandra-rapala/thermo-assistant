@@ -121,4 +121,60 @@ class BuildingRepository {
 
         return $result["address_id"];
     }
+
+    public function findByUserId($userId) {
+        $query = "SELECT * FROM buildings WHERE user_id = ?;";
+        $details_result = $this->database->executeAndFetchFirst($query, $userId);
+        $query = "SELECT * FROM addresses JOIN buildings on addresses.id = buildings.address_id WHERE user_id = ?;";
+        $address_result = $this->database->executeAndFetchFirst($query, $userId);
+
+        return $this->mapToBuilding($details_result, $address_result);
+    }
+
+    private function mapToBuilding($details_result, $address_result) {
+        $id = $details_result["id"];
+        $area = $details_result["area"];
+        $storeys = $details_result["storeys-count"];
+        $housemates = $details_result["housemates"];
+        $waterUsage = $details_result["water_usage"];
+        $energyUsage = $details_result["energy_usage"];
+        $destination = $details_result["destination"];
+        $address = $this->mapToAddress($address_result);
+
+        $building = new Building();
+        $building->setId($id);
+        $building->setArea($area);
+        $building->setStoreys($storeys);
+        $building->setHousemates($housemates);
+        $building->setWaterUsage($waterUsage);
+        $building->setEnergyUsage($energyUsage);
+        $building->setDestination($destination);
+        $building->setHeaters([]);
+        $building->setAddress($address);
+
+        return $building;
+    }
+
+    private function mapToAddress($result) {
+        $id = $result["address_id"];
+        $country = $result["country"];
+        $district = $result["district"];
+        $community = $result["community"];
+        $location = $result["location"];
+        $street = $result["street"];
+        $buildingNo = $result["building_no"];
+        $apartmentNo = $result["apartment_no"];
+
+        $address = new Address();
+        $address->setId($id);
+        $address->setCountry($country);
+        $address->setDistrict($district);
+        $address->setCommunity($community);
+        $address->setLocation($location);
+        $address->setStreet($street);
+        $address->setBuildingNo($buildingNo);
+        $address->setApartmentNo($apartmentNo);
+
+        return $address;
+    }
 }
