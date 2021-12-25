@@ -27,27 +27,25 @@ class BuildingService {
         $details = $this->mapToDetails($properties);
         $address = $this->mapToAddress($properties);
 
-        $plannedModernizations = $properties["planned-modernization"];
-        $plannedModernizations = $this->modernizationRepository->selectAllByNames($plannedModernizations);
-
-        $completedModernizations = $properties["completed-modernization"];
-        $completedModernizations = $this->modernizationRepository->selectAllByNames($completedModernizations);
-
         $building = new Building();
         $building->setDetails($details);
         $building->setAddress($address);
-        $building->setPlannedModernizations($plannedModernizations);
-        $building->setCompletedModernizations($completedModernizations);
+
+        $modernizations = $properties["planned-modernizations"] ?: [];
+        $building->setPlannedModernizations($modernizations);
+
+        $modernizations = $properties["completed-modernizations"] ?: [];
+        $building->setCompletedModernizations($modernizations);
 
         return $building;
     }
 
     private function mapToDetails($properties) {
         $area = floatval($properties["area"]);
-        $storeys = intval($properties["storeys-count"]);
+        $storeys = intval($properties["storeys"]);
         $housemates = intval($properties["housemates"]);
         $waterUsage = $properties["water-usage"];
-        $energyUsage = $properties["electricity-usage"];
+        $energyUsage = $properties["energy-usage"];
         $destination = $properties["destination"];
 
         $details = new Details();
@@ -95,5 +93,13 @@ class BuildingService {
 
     public function findAvailableModernizations() {
         return $this->modernizationRepository->selectAll();
+    }
+
+    public function findAvailableUsageOptions() {
+        return ["little" => "Niewielkie", "standard" => "Standardowe", "noticeable" => "Zauważalne"];
+    }
+
+    public function findAvailableDestinationOptions() {
+        return ["residential" => "Mieszkalny", "service" => "Usługowy", "industrial" => "Przemysłowy", "residential-n-service" => "Mieszkalno-Usługowy"];
     }
 }

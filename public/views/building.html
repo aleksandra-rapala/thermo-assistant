@@ -13,64 +13,31 @@
                 <div>
                     <h2>Adres</h2>
 
-                    <label for="country-field">Kraj</label>
-                    <input name="country" id="country-field" value="<?= $address->getCountry(); ?>" />
-
-                    <label for="district-field">Powiat</label>
-                    <input name="district" id="district-field" />
-
-                    <label for="community-field">Gmina</label>
-                    <input name="community" id="community-field" />
-
-                    <label for="location-field">Miejscowość</label>
-                    <input name="location" id="location-field" />
-
-                    <label for="street-field">Ulica</label>
-                    <input name="street" id="street-field" />
-
-                    <label for="building-no-field">Numer budynku</label>
-                    <input name="building-no" id="building-no-field" />
-
-                    <label for="apartment-no-field">Numer mieszkania</label>
-                    <input name="apartment-no" id="apartment-no-field" />
+                    <?php
+                    $this->renderTextField("Kraj", "country", $address->getCountry());
+                    $this->renderTextField("Powiat", "district", $address->getDistrict());
+                    $this->renderTextField("Gmina", "community", $address->getCommunity());
+                    $this->renderTextField("Miejscowość", "location", $address->getLocation());
+                    $this->renderTextField("Ulica", "street", $address->getStreet());
+                    $this->renderTextField("Numer budynku", "building-no", $address->getBuildingNo());
+                    $this->renderTextField("Numer mieszkania", "apartment-no", $address->getApartmentNo());
+                    ?>
                 </div>
 
                 <div>
                     <h2>Szczegóły</h2>
 
-                    <label for="area-field">Powierzchnia użytkowa</label>
-                    <input name="area" id="area-field" value="<?= $details->getArea(); ?>" />
+                    <?php
+                    $this->renderTextField("Powierzchnia użytkowa", "area", $details->getArea());
+                    $this->renderTextField("Liczba kondygnacji", "storeys", $details->getStoreys());
+                    $this->renderTextField("Liczba domowników", "housemates", $details->getHousemates());
+                    ?>
 
-                    <label for="storeys-count-field">Liczba kondygnacji</label>
-                    <input name="storeys-count" id="storeys-count-field" />
-
-                    <label for="housemates-field">Liczba domowników</label>
-                    <input name="housemates" id="housemates-field" />
-
-                    <label for="water-usage-field">Postrzegane zużycie wody</label>
-
-                    <select name="water-usage" id="water-usage-field">
-                        <option value="little">Niewielkie</option>
-                        <option value="standard">Standardowe</option>
-                        <option value="noticeable">Zauważalne</option>
-                    </select>
-
-                    <label for="electricity-usage-field">Postrzegane zużycie elektryczności</label>
-
-                    <select name="electricity-usage" id="electricity-usage-field">
-                        <option value="little">Niewielkie</option>
-                        <option value="standard">Standardowe</option>
-                        <option value="noticeable">Zauważalne</option>
-                    </select>
-
-                    <label for="destination-field">Przeznaczenie budynku</label>
-
-                    <select name="destination" id="destination-field">
-                        <option value="residential">Mieszkalny</option>
-                        <option value="service">Usługowy</option>
-                        <option value="industrial">Przemysłowy</option>
-                        <option value="residential-n-service">Mieszkalno-Usługowy</option>
-                    </select>
+                    <?php
+                    $this->renderCombobox("Postrzegane zużycie wody", "water-usage", $usageOptions, $details->getWaterUsage());
+                    $this->renderCombobox("Postrzegane zużycie energii", "energy-usage", $usageOptions, $details->getEnergyUsage());
+                    $this->renderCombobox("Przeznaczenie budynku", "destination", $destinationOptions, $details->getDestination());
+                    ?>
                 </div>
 
                 <div>
@@ -78,8 +45,7 @@
 
                     <?php foreach ($availableModernizations as $modernization): ?>
                     <div>
-                        <input type="checkbox" name="completed-modernization[]" value="<?= $modernization->getName(); ?>" id="completed-<?= $modernization->getName(); ?>-field" <?= in_array($modernization->getName(), $completedModernizations) ?: "checked"; ?>>
-                        <label for="completed-<?= $modernization->getName(); ?>-field"><?= $modernization->getLabel(); ?></label>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "completed-modernizations[]", $modernization->getName(), in_array($name, $completedModernizations)); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -89,8 +55,7 @@
 
                     <?php foreach ($availableModernizations as $modernization): ?>
                     <div>
-                        <input type="checkbox" name="planned-modernization[]" value="<?= $modernization->getName(); ?>" id="planned-<?= $modernization->getName(); ?>-field" <?= in_array($modernization->getName(), $plannedModernizations) ?: "checked"; ?>>
-                        <label for="planned-<?= $modernization->getName(); ?>-field"><?= $modernization->getLabel(); ?></label>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "planned-modernizations[]", $modernization->getName(), in_array($name, $plannedModernizations)); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>

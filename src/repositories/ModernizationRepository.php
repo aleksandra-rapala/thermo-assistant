@@ -11,7 +11,7 @@ class ModernizationRepository {
     public function selectAllAssignedToBuilding($building, $status) {
         $query = "
             SELECT
-                m.id AS id, m.name AS name, m.label AS label
+                m.name AS name
             FROM
                 modernizations m
             JOIN
@@ -22,19 +22,18 @@ class ModernizationRepository {
 
         $buildingId = $building->getId();
         $result = $this->database->executeAndFetchAll($query, $buildingId, $status);
-        $modernizations = $this->mapToModernizations($result);
 
-        return $modernizations;
+        return $this->mapToModernizationNames($result);
     }
 
-    private function mapToModernizations($result) {
-        $modernizations = [];
+    private function mapToModernizationNames($result) {
+        $modernizationNames = [];
 
         foreach ($result as $row) {
-            $modernizations[] = $this->mapToModernization($row);
+            $modernizationNames[] = $row["name"];
         }
 
-        return $modernizations;
+        return $modernizationNames;
     }
 
     private function mapToModernization($result) {
@@ -48,23 +47,6 @@ class ModernizationRepository {
         $modernization->setLabel($label);
 
         return $modernization;
-    }
-
-    public function selectAllByNames($names) {
-        $modernizations = [];
-
-        foreach ($names as $name) {
-            $modernizations[] = $this->selectByName($name);
-        }
-
-        return $modernizations;
-    }
-
-    private function selectByName($name) {
-        $query = "SELECT id, name, label FROM modernizations WHERE name = ?";
-        $result = $this->database->executeAndFetchFirst($query, $name);
-
-        return $this->mapToModernization($result);
     }
 
     public function update($building) {
@@ -91,12 +73,11 @@ class ModernizationRepository {
             INSERT INTO buildings_modernizations
                 (building_id, modernization_id, status)
             VALUES
-                (?, ?, ?);
+                (?, (SELECT id FROM modernizations WHERE name = ?), ?);
         ";
 
         foreach ($modernizations as $modernization) {
-            $modernizationId = $modernization->getId();
-            $this->database->execute($query, $buildingId, $modernizationId, $status);
+            $this->database->execute($query, $buildingId, $modernization, $status);
         }
     }
 
@@ -104,6 +85,16 @@ class ModernizationRepository {
         $query = "SELECT id, name, label FROM modernizations;";
         $result = $this->database->executeAndFetchAll($query);
         $modernizations = $this->mapToModernizations($result);
+
+        return $modernizations;
+    }
+
+    private function mapToModernizations($result) {
+        $modernizations = [];
+
+        foreach ($result as $row) {
+            $modernizations[] = $this->mapToModernization($row);
+        }
 
         return $modernizations;
     }

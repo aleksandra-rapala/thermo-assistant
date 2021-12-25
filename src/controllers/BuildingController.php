@@ -25,8 +25,10 @@ class BuildingController implements Controller {
                 "details" => $building->getDetails(),
                 "address" => $building->getAddress(),
                 "availableModernizations" => $this->buildingService->findAvailableModernizations(),
-                "plannedModernizations" => $building->getPlannedModernizationNames(),
-                "completedModernizations" => $building->getCompletedModernizationNames(),
+                "plannedModernizations" => $building->getPlannedModernizations(),
+                "completedModernizations" => $building->getCompletedModernizations(),
+                "usageOptions" => $this->buildingService->findAvailableUsageOptions(),
+                "destinationOptions" => $this->buildingService->findAvailableDestinationOptions()
             ]);
         } else {
             $this->httpFlow->redirectTo("/signIn");

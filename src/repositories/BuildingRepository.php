@@ -187,7 +187,7 @@ class BuildingRepository {
     private function mapToDetails($result) {
         $id = $result["id"];
         $area = $result["area"];
-        $storeys = $result["storeys-count"];
+        $storeys = $result["storeys"];
         $housemates = $result["housemates"];
         $waterUsage = $result["water_usage"];
         $energyUsage = $result["energy_usage"];
