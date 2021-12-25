@@ -6,6 +6,7 @@ class Building {
     private $heaters;
     private $plannedModernizations;
     private $completedModernizations;
+    private $heatersToInstall;
 
     public function setId($id) {
         $this->id = $id;
@@ -53,5 +54,13 @@ class Building {
 
     public function getCompletedModernizations() {
         return $this->completedModernizations;
+    }
+
+    public function setHeatersToInstall($heatersToInstall) {
+        $this->heatersToInstall = $heatersToInstall;
+    }
+
+    public function getHeatersToInstall() {
+        return $this->heatersToInstall;
     }
 }

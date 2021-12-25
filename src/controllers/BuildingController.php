@@ -24,11 +24,13 @@ class BuildingController implements Controller {
             $this->renderingEngine->renderView("building", [
                 "details" => $building->getDetails(),
                 "address" => $building->getAddress(),
-                "availableModernizations" => $this->buildingService->findAvailableModernizations(),
+                "modernizations" => $this->buildingService->findAvailableModernizations(),
                 "plannedModernizations" => $building->getPlannedModernizations(),
                 "completedModernizations" => $building->getCompletedModernizations(),
                 "usageOptions" => $this->buildingService->findAvailableUsageOptions(),
-                "destinationOptions" => $this->buildingService->findAvailableDestinationOptions()
+                "destinationOptions" => $this->buildingService->findAvailableDestinationOptions(),
+                "heatersToInstall" => $building->getHeatersToInstall(),
+                "heaterTypes" => $this->buildingService->findAvailableHeaterTypes()
             ]);
         } else {
             $this->httpFlow->redirectTo("/signIn");

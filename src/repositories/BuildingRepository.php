@@ -6,10 +6,12 @@ require_once("src/models/Address.php");
 class BuildingRepository {
     private $database;
     private $modernizationRepository;
+    private $heaterRepository;
 
-    public function __construct($database, $modernizationRepository) {
+    public function __construct($database, $modernizationRepository, $heaterRepository) {
         $this->database = $database;
         $this->modernizationRepository = $modernizationRepository;
+        $this->heaterRepository = $heaterRepository;
     }
 
     public function existsByUserId($userId) {
@@ -30,6 +32,7 @@ class BuildingRepository {
 
             $building->setId($buildingId);
             $this->modernizationRepository->insert($building);
+            $this->heatersRepository->insert($building);
         });
     }
 
@@ -109,6 +112,7 @@ class BuildingRepository {
             $this->updateDetails($details);
             $this->updateAddress($address);
             $this->modernizationRepository->update($building);
+            $this->heaterRepository->update($building);
         });
     }
 
@@ -173,6 +177,9 @@ class BuildingRepository {
 
         $modernizations = $this->modernizationRepository->selectAllAssignedToBuilding($building, "completed");
         $building->setCompletedModernizations($modernizations);
+
+        $heatersToInstall = $this->heaterRepository->selectAllToInstall($building);
+        $building->setHeatersToInstall($heatersToInstall);
 
         return $building;
     }

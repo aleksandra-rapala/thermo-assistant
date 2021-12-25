@@ -43,9 +43,9 @@
                 <div>
                     <h2>Wykonane termomodernizacje</h2>
 
-                    <?php foreach ($availableModernizations as $modernization): ?>
+                    <?php foreach ($modernizations as $modernization): ?>
                     <div>
-                        <?php $this->renderCheckbox($modernization->getLabel(), "completed-modernizations[]", $modernization->getName(), in_array($name, $completedModernizations)); ?>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "completed-modernizations[]", $modernization->getName(), in_array($modernization->getName(), $completedModernizations)); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -53,9 +53,9 @@
                 <div>
                     <h2>Planowane termomodernizacje</h2>
 
-                    <?php foreach ($availableModernizations as $modernization): ?>
+                    <?php foreach ($modernizations as $modernization): ?>
                     <div>
-                        <?php $this->renderCheckbox($modernization->getLabel(), "planned-modernizations[]", $modernization->getName(), in_array($name, $plannedModernizations)); ?>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "planned-modernizations[]", $modernization->getName(), in_array($modernization->getName(), $plannedModernizations)); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -63,35 +63,11 @@
                 <div>
                     <h2>Planowane instalacje źródeł ciepła</h2>
 
+                    <?php foreach ($heaterTypes as $heaterType): ?>
                     <div>
-                        <input type="checkbox" name="solar-panels-installation" id="solar-panels-installation-field">
-                        <label for="solar-panels-installation-field">Kolektory słoneczne</label>
+                        <?php $this->renderCheckbox($heaterType->getLabel(), "heaters-to-install[]", $heaterType->getName(), in_array($heaterType->getName(), $heatersToInstall)); ?>
                     </div>
-
-                    <div>
-                        <input type="checkbox" name="heat-pump-installation" id="heat-pump-installation-field">
-                        <label for="heat-pump-installation-field">Pompa ciepła</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="heating-network-installation" id="heating-network-installation-field">
-                        <label for="heating-network-installation-field">Sieć ciepłownicza</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="gas-heater-installation" id="gas-heater-installation-field">
-                        <label for="gas-heater-installation-field">Ogrzewanie gazowe</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="electrical-heater-installation" id="electrical-heater-installation-field">
-                        <label for="electrical-heater-installation-field">Ogrzewanie elektryczne</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="pellet-heater-installation" id="pellet-heater-installation-field">
-                        <label for="pellet-heater-installation-field">Kocioł na pellet</label>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <button></button>

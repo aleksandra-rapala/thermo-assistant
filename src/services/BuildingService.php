@@ -6,10 +6,12 @@ require_once("src/models/Address.php");
 class BuildingService {
     private $buildingRepository;
     private $modernizationRepository;
+    private $heaterRepository;
 
-    public function __construct($buildingRepository, $modernizationsRepository) {
+    public function __construct($buildingRepository, $modernizationRepository, $heaterRepository) {
         $this->buildingRepository = $buildingRepository;
-        $this->modernizationRepository = $modernizationsRepository;
+        $this->modernizationRepository = $modernizationRepository;
+        $this->heaterRepository = $heaterRepository;
     }
 
     public function existsByUserId($userId) {
@@ -36,6 +38,9 @@ class BuildingService {
 
         $modernizations = $properties["completed-modernizations"] ?: [];
         $building->setCompletedModernizations($modernizations);
+
+        $heatersToInstall = $properties["heaters-to-install"] ?: [];
+        $building->setHeatersToInstall($heatersToInstall);
 
         return $building;
     }
@@ -101,5 +106,9 @@ class BuildingService {
 
     public function findAvailableDestinationOptions() {
         return ["residential" => "Mieszkalny", "service" => "Usługowy", "industrial" => "Przemysłowy", "residential-n-service" => "Mieszkalno-Usługowy"];
+    }
+
+    public function findAvailableHeaterTypes() {
+        return $this->heaterRepository->selectAllTypes();
     }
 }

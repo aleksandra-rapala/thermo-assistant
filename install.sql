@@ -68,7 +68,14 @@ CREATE TABLE dust_extractors (
 
 CREATE TABLE heater_types (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(64) NOT NULL
+    name VARCHAR(16) NOT NULL UNIQUE,
+    label VARCHAR(32) NOT NULL UNIQUE
+);
+
+CREATE TABLE heaters_to_install (
+    id SERIAL PRIMARY KEY,
+    building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE heater_classes (
@@ -105,7 +112,7 @@ CREATE TABLE buildings_fuels (
 
 CREATE TABLE emission_rules (
     id SERIAL PRIMARY KEY,
-    heater_type INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     fuel_provider fuel_providers NOT NULL,
     heater_class INT NOT NULL REFERENCES heater_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     priority INT NOT NULL CHECK (priority > 0)
@@ -140,3 +147,13 @@ VALUES
     (1, 'roof-isolation', 'Ocieplenie dachu/stropu'),
     (2, 'wall-isolation', 'Ocieplenie ścian'),
     (3, 'woodwork-replacement', 'Wymiana stolarki drzwiowej/okiennej');
+
+INSERT INTO heater_types
+    (id, name, label)
+VALUES
+    (1, 'solar-panels', 'Kolektory słoneczne'),
+    (2, 'pump', 'Pompa ciepła'),
+    (3, 'heat-network', 'Sieć ciepłownicza'),
+    (4, 'gas-heater', 'Ogrzewanie gazowe'),
+    (5, 'electric-heater', 'Ogrzewanie elektryczne'),
+    (6, 'pellet-heater', 'Kocioł na pellet');
