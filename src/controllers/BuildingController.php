@@ -22,14 +22,12 @@ class BuildingController implements Controller {
             $building = $this->buildingService->findByUserId($userId);
 
             $this->renderingEngine->renderView("building", [
+                "building" => $building,
                 "details" => $building->getDetails(),
                 "address" => $building->getAddress(),
                 "modernizations" => $this->buildingService->findAvailableModernizations(),
-                "plannedModernizations" => $building->getPlannedModernizations(),
-                "completedModernizations" => $building->getCompletedModernizations(),
                 "usageOptions" => $this->buildingService->findAvailableUsageOptions(),
                 "destinationOptions" => $this->buildingService->findAvailableDestinationOptions(),
-                "heatersToInstall" => $building->getHeatersToInstall(),
                 "heaterTypes" => $this->buildingService->findAvailableHeaterTypes()
             ]);
         } else {

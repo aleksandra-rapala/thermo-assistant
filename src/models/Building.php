@@ -8,6 +8,18 @@ class Building {
     private $completedModernizations;
     private $heatersToInstall;
 
+    public function hasCompletedModernization($modernizationName) {
+        return in_array($modernizationName, $this->completedModernizations);
+    }
+
+    public function hasPlannedModernization($modernizationName) {
+        return in_array($modernizationName, $this->plannedModernizations);
+    }
+
+    public function hasHeaterToInstall($heaterTypeName) {
+        return in_array($heaterTypeName, $this->heatersToInstall);
+    }
+
     public function setId($id) {
         $this->id = $id;
     }

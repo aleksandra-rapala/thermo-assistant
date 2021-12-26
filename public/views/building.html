@@ -45,7 +45,7 @@
 
                     <?php foreach ($modernizations as $modernization): ?>
                     <div>
-                        <?php $this->renderCheckbox($modernization->getLabel(), "completed-modernizations[]", $modernization->getName(), in_array($modernization->getName(), $completedModernizations)); ?>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "completed-modernizations[]", $modernization->getName(), $building->hasCompletedModernization($modernization->getName())); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -55,7 +55,7 @@
 
                     <?php foreach ($modernizations as $modernization): ?>
                     <div>
-                        <?php $this->renderCheckbox($modernization->getLabel(), "planned-modernizations[]", $modernization->getName(), in_array($modernization->getName(), $plannedModernizations)); ?>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "planned-modernizations[]", $modernization->getName(), $building->hasPlannedModernization($modernization->getName())); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -65,12 +65,14 @@
 
                     <?php foreach ($heaterTypes as $heaterType): ?>
                     <div>
-                        <?php $this->renderCheckbox($heaterType->getLabel(), "heaters-to-install[]", $heaterType->getName(), in_array($heaterType->getName(), $heatersToInstall)); ?>
+                        <?php $this->renderCheckbox($heaterType->getLabel(), "heaters-to-install[]", $heaterType->getName(), $building->hasHeaterToInstall($heaterType->getName())); ?>
                     </div>
                     <?php endforeach; ?>
                 </div>
 
-                <button></button>
+                <div>
+                    <button>Zapisz</button>
+                </div>
             </form>
         </div>
     </body>

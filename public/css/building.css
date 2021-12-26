@@ -1,8 +1,8 @@
 @import "form.css";
 
 #building-view form {
-    display: flex;
-    flex-flow: row;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 3em;
 }
 
