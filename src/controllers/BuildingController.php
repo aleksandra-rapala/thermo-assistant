@@ -5,26 +5,46 @@ class BuildingController implements Controller {
     private $httpFlow;
     private $renderingEngine;
     private $sessionContext;
+    private $buildingService;
 
-    public function __construct($httpFlow, $renderingEngine, $sessionContext) {
+    public function __construct($httpFlow, $renderingEngine, $sessionContext, $buildingService) {
         $this->httpFlow = $httpFlow;
         $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
+        $this->buildingService = $buildingService;
     }
 
     public function get() {
         $this->sessionContext->init();
 
         if ($this->sessionContext->isSignedIn()) {
-            $uuid = $this->sessionContext->getUuid();
+            $userId = $this->sessionContext->getUserId();
+            $building = $this->buildingService->findByUserId($userId);
 
-            $this->renderingEngine->renderView("building", ["uuid" => $uuid]);
+            $this->renderingEngine->renderView("building", [
+                "building" => $building,
+                "details" => $building->getDetails(),
+                "address" => $building->getAddress(),
+                "modernizations" => $this->buildingService->findAvailableModernizations(),
+                "usageOptions" => $this->buildingService->findAvailableUsageOptions(),
+                "destinationOptions" => $this->buildingService->findAvailableDestinationOptions(),
+                "heaterTypes" => $this->buildingService->findAvailableHeaterTypes()
+            ]);
         } else {
             $this->httpFlow->redirectTo("/signIn");
         }
     }
 
     public function post($properties) {
-        // create new building or update existing one
+        $this->sessionContext->init();
+
+        $userId = $this->sessionContext->getUserId();
+        $building_exists = $this->buildingService->existsByUserId($userId);
+
+        if ($building_exists) {
+            $this->buildingService->update($userId, $properties);
+        } else {
+            $this->buildingService->create($userId, $properties);
+        }
     }
 }

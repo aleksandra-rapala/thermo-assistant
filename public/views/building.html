@@ -9,146 +9,69 @@
 
     <body>
         <div id="building-view">
-            <h1>UUID: <?= $uuid ?></h1>
-
-            <form>
+            <form action="/building" method="post">
                 <div>
                     <h2>Adres</h2>
 
-                    <label for="voivodeship-field">Województwo</label>
-
-                    <select id="voivodeship-field">
-                        <option>Małopolskie</option>
-                        <option>Podkarpackie</option>
-                    </select>
-
-                    <label for="district-field">Powiat</label>
-                    <input name="district" id="district-field" />
-
-                    <label for="community-field">Gmina</label>
-                    <input name="community" id="community-field" />
-
-                    <label for="location-field">Miejscowość</label>
-                    <input name="location" id="location-field" />
-
-                    <label for="street-field">Ulica</label>
-                    <input name="street" id="street-field" />
-
-                    <label for="building-no-field">Numer budynku</label>
-                    <input name="building-no" id="building-no-field" />
-
-                    <label for="apartment-no-field">Numer mieszkania</label>
-                    <input name="apartment-no" id="apartment-no-field" />
+                    <?php
+                    $this->renderTextField("Kraj", "country", $address->getCountry());
+                    $this->renderTextField("Powiat", "district", $address->getDistrict());
+                    $this->renderTextField("Gmina", "community", $address->getCommunity());
+                    $this->renderTextField("Miejscowość", "location", $address->getLocation());
+                    $this->renderTextField("Ulica", "street", $address->getStreet());
+                    $this->renderTextField("Numer budynku", "building-no", $address->getBuildingNo());
+                    $this->renderTextField("Numer mieszkania", "apartment-no", $address->getApartmentNo());
+                    ?>
                 </div>
 
                 <div>
                     <h2>Szczegóły</h2>
 
-                    <label for="area-field">Powierzchnia użytkowa</label>
-                    <input name="area" id="area-field" />
+                    <?php
+                    $this->renderTextField("Powierzchnia użytkowa", "area", $details->getArea());
+                    $this->renderTextField("Liczba kondygnacji", "storeys", $details->getStoreys());
+                    $this->renderTextField("Liczba domowników", "housemates", $details->getHousemates());
+                    ?>
 
-                    <label for="storeys-count-field">Liczba kondygnacji</label>
-                    <input name="storeys-count" id="storeys-count-field" />
-
-                    <label for="locators-count-field">Liczba domowników</label>
-                    <input name="locators-count" id="locators-count-field" />
-
-                    <label for="water-usage-field">Postrzegane zużycie wody</label>
-
-                    <select id="water-usage-field">
-                        <option value="little">Niewielkie</option>
-                        <option value="standard">Standardowe</option>
-                        <option value="noticeable">Zauważalne</option>
-                    </select>
-
-                    <label for="electricity-usage-field">Postrzegane zużycie elektryczności</label>
-
-                    <select id="electricity-usage-field">
-                        <option value="little">Niewielkie</option>
-                        <option value="standard">Standardowe</option>
-                        <option value="noticeable">Zauważalne</option>
-                    </select>
-
-                    <label for="destination-field">Przeznaczenie budynku</label>
-
-                    <select id="destination-field">
-                        <option value="residential">Mieszkalny</option>
-                        <option value="service">Usługowy</option>
-                        <option value="industrial">Przemysłowy</option>
-                        <option value="residential-n-service">Mieszkalno-Usługowy</option>
-                    </select>
+                    <?php
+                    $this->renderCombobox("Postrzegane zużycie wody", "water-usage", $usageOptions, $details->getWaterUsage());
+                    $this->renderCombobox("Postrzegane zużycie energii", "energy-usage", $usageOptions, $details->getEnergyUsage());
+                    $this->renderCombobox("Przeznaczenie budynku", "destination", $destinationOptions, $details->getDestination());
+                    ?>
                 </div>
 
                 <div>
                     <h2>Wykonane termomodernizacje</h2>
 
+                    <?php foreach ($modernizations as $modernization): ?>
                     <div>
-                        <input type="checkbox" name="completed-roof-isolation" id="completed-roof-isolation-field">
-                        <label for="completed-roof-isolation-field">Ocieplenie dachu/stropu</label>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "completed-modernizations[]", $modernization->getName(), $building->hasCompletedModernization($modernization->getName())); ?>
                     </div>
-
-                    <div>
-                        <input type="checkbox" name="completed-wall-isolation" id="completed-wall-isolation-field">
-                        <label for="completed-wall-isolation-field">Ocieplenie ścian</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="completed-woodwork-replacement" id="completed-woodwork-replacement-field">
-                        <label for="completed-woodwork-replacement-field">Wymiana stolarki drzwiowej/okiennej</label>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div>
                     <h2>Planowane termomodernizacje</h2>
 
+                    <?php foreach ($modernizations as $modernization): ?>
                     <div>
-                        <input type="checkbox" name="planned-roof-isolation" id="planned-roof-isolation-field">
-                        <label for="planned-roof-isolation-field">Ocieplenie dachu/stropu</label>
+                        <?php $this->renderCheckbox($modernization->getLabel(), "planned-modernizations[]", $modernization->getName(), $building->hasPlannedModernization($modernization->getName())); ?>
                     </div>
-
-                    <div>
-                        <input type="checkbox" name="planned-wall-isolation" id="planned-wall-isolation-field">
-                        <label for="planned-wall-isolation-field">Ocieplenie ścian</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="planned-woodwork-replacement" id="planned-woodwork-replacement-field">
-                        <label for="planned-woodwork-replacement-field">Wymiana stolarki drzwiowej/okiennej</label>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div>
                     <h2>Planowane instalacje źródeł ciepła</h2>
 
+                    <?php foreach ($heaterTypes as $heaterType): ?>
                     <div>
-                        <input type="checkbox" name="solar-panels-installation" id="solar-panels-installation-field">
-                        <label for="solar-panels-installation-field">Kolektory słoneczne</label>
+                        <?php $this->renderCheckbox($heaterType->getLabel(), "heaters-to-install[]", $heaterType->getName(), $building->hasHeaterToInstall($heaterType->getName())); ?>
                     </div>
+                    <?php endforeach; ?>
+                </div>
 
-                    <div>
-                        <input type="checkbox" name="heat-pump-installation" id="heat-pump-installation-field">
-                        <label for="heat-pump-installation-field">Pompa ciepła</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="heating-network-installation" id="heating-network-installation-field">
-                        <label for="heating-network-installation-field">Sieć ciepłownicza</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="gas-heater-installation" id="gas-heater-installation-field">
-                        <label for="gas-heater-installation-field">Ogrzewanie gazowe</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="electrical-heater-installation" id="electrical-heater-installation-field">
-                        <label for="electrical-heater-installation-field">Ogrzewanie elektryczne</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="pellet-heater-installation" id="pellet-heater-installation-field">
-                        <label for="pellet-heater-installation-field">Kocioł na pellet</label>
-                    </div>
+                <div>
+                    <button>Zapisz</button>
                 </div>
             </form>
         </div>

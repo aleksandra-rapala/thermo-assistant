@@ -27,5 +27,6 @@ class IndexController implements Controller {
         // installing an application
         // setting up database tables
         $this->database->execute("CREATE TABLE IF NOT EXISTS users (uuid SERIAL PRIMARY KEY, name VARCHAR(64), surname VARCHAR(64), e_mail VARCHAR(128), password VARCHAR(80));");
+        $this->database->execute("CREATE TABLE IF NOT EXISTS buildings (id SERIAL PRIMARY KEY, user_id INT NOT NULL UNIQUE);");
     }
 }

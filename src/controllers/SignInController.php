@@ -32,10 +32,10 @@ class SignInController implements Controller {
 
     private function processSignIn($email, $password) {
         $user = $this->userService->getUser($email, $password);
-        $uuid = $user->getUuid();
+        $userId = $user->getId();
 
         $this->sessionContext->init();
-        $this->sessionContext->setUuid($uuid);
+        $this->sessionContext->setUserId($userId);
 
         $this->httpFlow->redirectTo("/building");
     }
