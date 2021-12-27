@@ -100,14 +100,17 @@ CREATE TABLE heaters (
 
 CREATE TABLE fuels (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(32) UNIQUE NOT NULL,
-    unit VARCHAR(8) UNIQUE NOT NULL
+    name VARCHAR(16) UNIQUE NOT NULL,
+    label VARCHAR(32) UNIQUE NOT NULL,
+    unit VARCHAR(8) NOT NULL
 );
 
 CREATE TABLE buildings_fuels (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    fuel_id INT NOT NULL REFERENCES fuels(id) ON UPDATE CASCADE ON DELETE RESTRICT
+    fuel_id INT NOT NULL REFERENCES fuels(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    consumption DECIMAL(7, 3) NOT NULL CHECK (consumption > 0),
+    UNIQUE(building_id, fuel_id)
 );
 
 CREATE TABLE emission_rules (
@@ -157,3 +160,14 @@ VALUES
     (4, 'gas-heater', 'Ogrzewanie gazowe'),
     (5, 'electric-heater', 'Ogrzewanie elektryczne'),
     (6, 'pellet-heater', 'Kocioł na pellet');
+
+INSERT INTO fuels
+    (id, name, label, unit)
+VALUES
+    (1, 'lump-wood', 'Drewno kawałkowe', 'kg'),
+    (2, 'nut-coal', 'Węgiel orzech', 'kg'),
+    (3, 'pellet', 'Pellet', 'kg'),
+    (4, 'natural-gas', 'Gaz ziemny', 'm³'),
+    (5, 'gas-tanks', 'Gaz butla', 'szt'),
+    (6, 'lignite', 'Węgiel brunatny', 'kg'),
+    (7, 'oil', 'Olej opałowy', 'litr');

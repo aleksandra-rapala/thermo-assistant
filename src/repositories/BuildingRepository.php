@@ -32,7 +32,7 @@ class BuildingRepository {
 
             $building->setId($buildingId);
             $this->modernizationRepository->insert($building);
-            $this->heatersRepository->insert($building);
+            $this->heaterRepository->insert($building);
         });
     }
 

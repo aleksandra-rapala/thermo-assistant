@@ -9,30 +9,25 @@
 
     <body>
         <div id="fuels-view">
-            <form>
+            <form acion="/fuels" method="post">
                 <div>
                     <h2>Zużycie paliw w ciągu roku</h2>
 
-                    <label for="lump-wood-field">Drewno kawałkowe</label>
-                    <input name="lump-wood" id="lump-wood-field" />
+                    <?php
+                    foreach ($fuels as $fuel) {
+                        $fuelLabel = $fuel->getLabel();
+                        $fuelName = $fuel->getName();
+                        $fuelConsumption = $fuelsConsumption[$fuelName];
 
-                    <label for="nut-coal-field">Węgiel orzech</label>
-                    <input name="nut-coal" id="nut-coal-field" />
+                        if ($fuelConsumption === null) {
+                            $value = 0;
+                        } else {
+                            $value = $fuelConsumption->getValue();
+                        }
 
-                    <label for="pellet-field">Pellet</label>
-                    <input name="pellet" id="pellet-field" />
-
-                    <label for="natural-gas-field">Gaz ziemny</label>
-                    <input name="natural-gas" id="natural-gas-field" />
-
-                    <label for="gas-tanks-field">Gaz butla</label>
-                    <input name="gas-tanks" id="gas-tanks-field" />
-
-                    <label for="lignite-field">Węgiel brunatny</label>
-                    <input name="lignite" id="lignite-field" />
-
-                    <label for="oil-field">Olej opałowy</label>
-                    <input name="oil" id="oil-field" />
+                        $this->renderTextField($fuelLabel, $fuelName, $value);
+                    }
+                    ?>
                 </div>
 
                 <div>
@@ -70,6 +65,10 @@
                         <input type="checkbox" name="fuels-notification-offers" id="fuels-notification-offers-field">
                         <label for="fuels-notification-offers-field">Powiadomienie w przeglądarce</label>
                     </div>
+                </div>
+
+                <div>
+                    <button>Zapisz</button>
                 </div>
             </form>
         </div>
