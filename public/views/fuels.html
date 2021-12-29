@@ -34,17 +34,21 @@
                     <h2>Punkty sprzedaży paliw</h2>
 
                     <div class="fuel-sales-points">
-                        <div class="fuel-sales-point">
-                            <span>TAR-DREW</span>
-                            <span>Punkt sprzedaży pelletu</span>
-                            <span>00-000 Sąsiednia Miejscowość, ul. Przykładowa 2</span>
-                        </div>
+                        <?php foreach ($distributors as $distributor): ?>
+                            <div class="fuel-sales-point">
+                                <span><?= $distributor->getCompanyName(); ?></span>
 
-                        <div class="fuel-sales-point">
-                            <span>DREW-TAR</span>
-                            <span>Punkt sprzedaży węgla</span>
-                            <span>00-001 Inna Gmina, ul. Kopalniana 5</span>
-                        </div>
+                                <dl>
+                                    <dt>Oferowane paliwa:</dt>
+
+                                    <?php foreach ($distributor->getFuels() as $fuel): ?>
+                                        <dd><?= $fuel; ?></dd>
+                                    <?php endforeach; ?>
+                                </dl>
+
+                                <span><?= $distributor->getAddress(); ?></span>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 

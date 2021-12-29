@@ -9,6 +9,7 @@ require_once("src/repositories/BuildingRepository.php");
 require_once("src/repositories/ModernizationRepository.php");
 require_once("src/repositories/HeaterRepository.php");
 require_once("src/repositories/FuelRepository.php");
+require_once("src/repositories/AddressRepository.php");
 require_once("src/services/UserService.php");
 require_once("src/services/BuildingService.php");
 require_once("src/services/FuelService.php");
@@ -34,11 +35,12 @@ $signUpController = new SignUpController($httpFlow, $renderingEngine, $sessionCo
 $logoutController = new LogoutController($httpFlow, $sessionContext);
 $modernizationRepository = new ModernizationRepository($database);
 $heaterRepository = new HeaterRepository($database);
-$buildingRepository = new BuildingRepository($database, $modernizationRepository, $heaterRepository);
+$addressRepository = new AddressRepository($database);
+$buildingRepository = new BuildingRepository($database, $modernizationRepository, $heaterRepository, $addressRepository);
 $buildingService = new BuildingService($buildingRepository, $modernizationRepository, $heaterRepository);
 $buildingController = new BuildingController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
-$fuelRepository = new FuelRepository($database);
-$fuelService = new FuelService($fuelRepository);
+$fuelRepository = new FuelRepository($database, $addressRepository);
+$fuelService = new FuelService($fuelRepository, $addressRepository);
 $fuelController = new FuelController($httpFlow, $renderingEngine, $sessionContext, $fuelService);
 
 $routingService->register("", $indexController);

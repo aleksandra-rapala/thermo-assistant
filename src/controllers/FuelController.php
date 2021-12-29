@@ -18,11 +18,14 @@ class FuelController implements Controller {
         $this->sessionContext->init();
 
         $userId = $this->sessionContext->getUserId();
-        $fuelsConsumption = $this->fuelService->findFuelsConsumptionByUserId($userId);
+        $buildingId = 1;
+        $fuelsConsumption = $this->fuelService->findFuelsConsumptionByBuildingId($buildingId);
+        $distributors = $this->fuelService->findDistributorsByBuildingId($buildingId);
 
         $this->renderingEngine->renderView("fuels", [
             "fuels" => $this->fuelService->findAvailableFuels(),
-            "fuelsConsumption" => $fuelsConsumption
+            "fuelsConsumption" => $fuelsConsumption,
+            "distributors" => $distributors
         ]);
     }
 

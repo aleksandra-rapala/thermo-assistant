@@ -1,20 +1,22 @@
 <?php
 class FuelService {
     private $fuelRepository;
+    private $addressRepository;
 
-    public function __construct($fuelRepository) {
+    public function __construct($fuelRepository, $addressRepository) {
         $this->fuelRepository = $fuelRepository;
+        $this->addressRepository = $addressRepository;
     }
 
     public function findAvailableFuels() {
         return $this->fuelRepository->selectAll();
     }
 
-    public function findFuelsConsumptionByUserId($userId) {
-        return $this->fuelRepository->selectFuelsConsumptionByUserId($userId);
+    public function findFuelsConsumptionByBuildingId($buildingId) {
+        return $this->fuelRepository->selectFuelsConsumptionByBuildingId($buildingId);
     }
 
-    public function updateFuelsConsumptionByUserId($userId, $properties) {
+    public function updateFuelsConsumptionByBuildingId($buildingId, $properties) {
         $fuelsConsumption = [];
 
         foreach ($properties as $fuelName => $value) {
@@ -25,6 +27,13 @@ class FuelService {
             $fuelsConsumption[] = $fuelConsumption;
         }
 
-        $this->fuelRepository->updateFuelConsumptionByUserId($userId, $fuelsConsumption);
+        $this->fuelRepository->updateFuelConsumptionByBuildingId($buildingId, $fuelsConsumption);
+    }
+
+    public function findDistributorsByBuildingId($buildingId) {
+        $community = $this->addressRepository->selectCommunityByBuildingId($buildingId);
+        $distributors = $this->fuelRepository->selectDistributorsByCommunity($community);
+
+        return $distributors;
     }
 }

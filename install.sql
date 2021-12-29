@@ -113,6 +113,19 @@ CREATE TABLE buildings_fuels (
     UNIQUE(building_id, fuel_id)
 );
 
+CREATE TABLE distributors (
+    id SERIAL PRIMARY KEY,
+    company_name VARCHAR(64) NOT NULL,
+    address_id INT NOT NULL REFERENCES addresses(id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE distributors_fuels (
+    id SERIAL PRIMARY KEY,
+    distributor_id INT NOT NULL REFERENCES distributors(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    fuel_id INT NOT NULL REFERENCES fuels(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    UNIQUE(distributor_id, fuel_id)
+);
+
 CREATE TABLE emission_rules (
     id SERIAL PRIMARY KEY,
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -171,3 +184,18 @@ VALUES
     (5, 'gas-tanks', 'Gaz butla', 'szt'),
     (6, 'lignite', 'Węgiel brunatny', 'kg'),
     (7, 'oil', 'Olej opałowy', 'litr');
+
+INSERT INTO addresses
+    (id, country, district, community, location, street, building_no, apartment_no)
+VALUES
+    (1, 'Polska', 'Powiat', 'Gmina', 'Miejscowość', 'Ulica', '1A', '5');
+
+INSERT INTO distributors
+    (id, company_name, address_id)
+VALUES
+    (1, 'company-A', 1);
+
+INSERT INTO distributors_fuels
+    (id, distributor_id, fuel_id)
+VALUES
+    (1, 1, 1);
