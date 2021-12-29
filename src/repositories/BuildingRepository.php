@@ -7,11 +7,13 @@ class BuildingRepository {
     private $database;
     private $modernizationRepository;
     private $heaterRepository;
+    private $addressRepository;
 
-    public function __construct($database, $modernizationRepository, $heaterRepository) {
+    public function __construct($database, $modernizationRepository, $heaterRepository, $addressRepository) {
         $this->database = $database;
         $this->modernizationRepository = $modernizationRepository;
         $this->heaterRepository = $heaterRepository;
+        $this->addressRepository = $addressRepository;
     }
 
     public function existsByUserId($userId) {
@@ -32,7 +34,7 @@ class BuildingRepository {
 
             $building->setId($buildingId);
             $this->modernizationRepository->insert($building);
-            $this->heatersRepository->insert($building);
+            $this->heaterRepository->insert($building);
         });
     }
 
@@ -165,7 +167,7 @@ class BuildingRepository {
 
     private function selectById($buildingId) {
         $details = $this->selectDetailsByBuildingId($buildingId);
-        $address = $this->selectAddressByBuildingId($buildingId);
+        $address = $this->addressRepository->selectAddressByBuildingId($buildingId);
 
         $building = new Building();
         $building->setId($buildingId);
@@ -210,35 +212,5 @@ class BuildingRepository {
         $details->setDestination($destination);
 
         return $details;
-    }
-    
-    private function selectAddressByBuildingId($buildingId) {
-        $query = "SELECT * FROM addresses JOIN buildings ON addresses.id = buildings.address_id WHERE buildings.id = ?;";
-        $result = $this->database->executeAndFetchFirst($query, $buildingId);
-        
-        return $this->mapToAddress($result);
-    }
-
-    private function mapToAddress($result) {
-        $id = $result["id"];
-        $country = $result["country"];
-        $district = $result["district"];
-        $community = $result["community"];
-        $location = $result["location"];
-        $street = $result["street"];
-        $buildingNo = $result["building_no"];
-        $apartmentNo = $result["apartment_no"];
-
-        $address = new Address();
-        $address->setId($id);
-        $address->setCountry($country);
-        $address->setDistrict($district);
-        $address->setCommunity($community);
-        $address->setLocation($location);
-        $address->setStreet($street);
-        $address->setBuildingNo($buildingNo);
-        $address->setApartmentNo($apartmentNo);
-
-        return $address;
     }
 }

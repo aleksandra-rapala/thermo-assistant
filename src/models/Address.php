@@ -72,4 +72,8 @@ class Address {
     public function getStreet() {
         return $this->street;
     }
+
+    public function __toString() {
+        return "$this->location, ul. $this->street $this->buildingNo" . ($this->apartmentNo? "/$this->apartmentNo" : "");
+    }
 }
