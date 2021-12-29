@@ -34,20 +34,24 @@
                     <h2>Punkty sprzedaży paliw</h2>
 
                     <div class="fuel-sales-points">
+                        <?php if (empty($distributors)): ?>
+                        <span>Brak ofert w Twojej okolicy!</span>
+                        <?php endif; ?>
+
                         <?php foreach ($distributors as $distributor): ?>
-                            <div class="fuel-sales-point">
-                                <span><?= $distributor->getCompanyName(); ?></span>
+                        <div class="fuel-sales-point">
+                            <span><?= $distributor->getCompanyName(); ?></span>
 
-                                <dl>
-                                    <dt>Oferowane paliwa:</dt>
+                            <dl>
+                                <dt>Oferowane paliwa:</dt>
 
-                                    <?php foreach ($distributor->getFuels() as $fuel): ?>
-                                        <dd><?= $fuel; ?></dd>
-                                    <?php endforeach; ?>
-                                </dl>
+                                <?php foreach ($distributor->getFuels() as $fuel): ?>
+                                <dd><?= $fuel; ?></dd>
+                                <?php endforeach; ?>
+                            </dl>
 
-                                <span><?= $distributor->getAddress(); ?></span>
-                            </div>
+                            <span><?= $distributor->getAddress(); ?></span>
+                        </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
