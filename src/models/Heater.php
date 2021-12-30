@@ -7,7 +7,7 @@ class Heater {
     private $installationYear;
     private $productionYear;
     private $dataSource;
-    private $thermalEfficiencyClass;
+    private $thermalClass;
     private $ecoProject;
     private $dustExtractor;
 
@@ -67,12 +67,12 @@ class Heater {
         return $this->dataSource;
     }
 
-    public function setThermalEfficiencyClass($thermalEfficiencyClass) {
-        $this->thermalEfficiencyClass = $thermalEfficiencyClass;
+    public function setThermalClass($thermalClass) {
+        $this->thermalClass = $thermalClass;
     }
 
-    public function getThermalEfficiencyClass() {
-        return $this->thermalEfficiencyClass;
+    public function getThermalClass() {
+        return $this->thermalClass;
     }
 
     public function setEcoProject($ecoProject) {
@@ -87,7 +87,7 @@ class Heater {
         $this->dustExtractor = $dustExtractor;
     }
 
-    public function getDustExtractor() {
+    public function hasDustExtractor() {
         return $this->dustExtractor;
     }
 }

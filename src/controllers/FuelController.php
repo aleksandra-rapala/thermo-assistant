@@ -2,13 +2,11 @@
 require_once("src/controllers/Controller.php");
 
 class FuelController implements Controller {
-    private $httpFlow;
     private $renderingEngine;
     private $sessionContext;
     private $fuelService;
 
-    public function __construct($httpFlow, $renderingEngine, $sessionContext, $fuelService) {
-        $this->httpFlow = $httpFlow;
+    public function __construct($renderingEngine, $sessionContext, $fuelService) {
         $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
         $this->fuelService = $fuelService;

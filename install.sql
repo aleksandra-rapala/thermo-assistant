@@ -57,7 +57,6 @@ CREATE TABLE buildings_modernizations (
 );
 
 CREATE TYPE combustion_chambers AS ENUM ('open', 'closed', 'none');
-CREATE TYPE data_sources AS ENUM ('tabliczka znamionowa', 'dokumentacja techniczna', 'wiedza właściciela');
 CREATE TYPE fuel_providers AS ENUM ('manual', 'automat', 'none');
 
 CREATE TABLE dust_extractors (
@@ -78,7 +77,7 @@ CREATE TABLE heaters_to_install (
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE heater_classes (
+CREATE TABLE thermal_classes (
     id SERIAL PRIMARY KEY,
     name VARCHAR(64) NOT NULL,
     eco_project BOOLEAN NOT NULL
@@ -89,13 +88,13 @@ CREATE TABLE heaters (
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     power DECIMAL(7, 3) NOT NULL,
-    combustion_chamber combustion_chambers NOT NULL,
+    combustion_chamber BOOLEAN NOT NULL,
     efficiency DECIMAL(7, 3) NOT NULL,
     installation_year INT NOT NULL,
     production_year INT NOT NULL,
-    data_source data_sources NOT NULL,
+    data_source VARCHAR(255) NOT NULL,
     fuel_provider fuel_providers NOT NULL,
-    heater_class_id INT NOT NULL REFERENCES heater_classes ON UPDATE CASCADE ON DELETE RESTRICT
+    thermal_class_id INT NOT NULL REFERENCES thermal_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE fuels (
@@ -130,7 +129,7 @@ CREATE TABLE emission_rules (
     id SERIAL PRIMARY KEY,
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     fuel_provider fuel_providers NOT NULL,
-    heater_class INT NOT NULL REFERENCES heater_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    heater_class INT NOT NULL REFERENCES thermal_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     priority INT NOT NULL CHECK (priority > 0)
 );
 
@@ -188,7 +187,8 @@ VALUES
 INSERT INTO addresses
     (id, country, district, community, location, street, building_no, apartment_no)
 VALUES
-    (1, 'Polska', 'Powiat', 'Gmina', 'Miejscowość', 'Ulica', '1A', '5');
+    (1, 'Polska', 'Powiat', 'Gmina', 'Miejscowość', 'Ulica', '1A', '5'),
+    (2, 'Polska', 'Powiat', 'Inna Gmina', 'Inna Miejscowość', 'Inna Ulica', '5', '');
 
 INSERT INTO distributors
     (id, company_name, address_id)
@@ -199,3 +199,27 @@ INSERT INTO distributors_fuels
     (id, distributor_id, fuel_id)
 VALUES
     (1, 1, 1);
+
+INSERT INTO thermal_classes
+    (id, name, eco_project)
+VALUES
+    (1, 'Klasa III', false),
+    (2, 'Klasa IV', false),
+    (3, 'Klasa V', false),
+    (4, 'Klasa V + Eco', true),
+    (5, 'Eco', true);
+
+INSERT INTO details
+    (id, area, storeys, housemates, water_usage, energy_usage, destination)
+VALUES
+    (1, 50, 2, 3, 'standard', 'standard', 'residential');
+
+INSERT INTO buildings
+    (id, user_id, address_id, details_id)
+VALUES
+    (1, 1, 2, 1);
+
+INSERT INTO heaters
+    (id, building_id, heater_type_id, power, combustion_chamber, efficiency, installation_year, production_year, data_source, fuel_provider, thermal_class_id)
+VALUES
+    (1, 1, 1, 0, false, 100, 2021, 2020, 'Tabliczka znamionowa', 'manual', 1);

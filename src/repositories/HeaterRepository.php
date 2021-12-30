@@ -1,11 +1,30 @@
 <?php
 require_once("src/models/HeaterType.php");
+require_once("src/models/Heater.php");
 
 class HeaterRepository {
     private $database;
 
     public function __construct($database) {
         $this->database = $database;
+    }
+
+    public function selectAllByBuildingId($buildingId) {
+        $query = "SELECT * FROM heaters WHERE building_id = ?;";
+        $result = $this->database->executeAndFetchAll($query, $buildingId);
+        $heaters = [];
+
+        foreach ($result as $row) {
+            $heaters[] = $this->mapToHeater($row);
+        }
+
+        return $heaters;
+    }
+
+    private function mapToHeater($row) {
+        $heater = new Heater();
+
+        return $heater;
     }
 
     public function selectAllToInstall($building) {

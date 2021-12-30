@@ -10,69 +10,23 @@
     <body>
         <div id="heaters-view">
             <form>
+                <?php foreach ($heaters as $index => $heater): ?>
                 <div>
-                    <h2>Źródło ciepła #1</h2>
+                    <h2>Źródło ciepła #<?= $index + 1; ?></h2>
 
-                    <label for="type-field">Rodzaj</label>
-
-                    <select id="type-field">
-                        <option value="solid-fuel-heater">Ogrzewanie na paliwo stałe</option>
-                        <option value="oil-fuel-heater">Ogrzewanie olejowe</option>
-                        <option value="gas-fuel-heater">Ogrzewanie gazowe</option>
-                        <option value="bio-fuel-heater">Ogrzewanie na biomasę/pellet</option>
-                    </select>
-
-                    <label for="power-field">Moc</label>
-                    <input name="power" id="power-field" />
-
-                    <span>Komora spalania</span>
-
-                    <div>
-                        <input type="radio" name="combustion-chamber" value="open" id="open-combustion-chamber-field" checked="checked" />
-                        <label for="open-combustion-chamber-field">Otwarta</label>
-                    </div>
-
-                    <div>
-                        <input type="radio" name="combustion-chamber" value="closed" id="closed-combustion-chamber-field" />
-                        <label for="closed-combustion-chamber-field">Zamknięta</label>
-                    </div>
-
-                    <label for="efficiency-field">Sprawność cieplna</label>
-                    <input name="efficiency" id="efficiency-field" />
-
-                    <label for="installation-year-field">Rok instalacji</label>
-                    <input name="installation-year" id="installation-year-field" />
-
-                    <label for="production-year-field">Rok produkcji</label>
-                    <input name="production-year" id="production-year-field" />
-
-                    <label for="data-source-field">Źródło danych</label>
-                    <input name="data-source" id="data-source-field" list="data-sources" />
-
-                    <datalist id="data-sources">
-                        <option>Tabliczka znamionowa</option>
-                        <option>Dokumentacja techniczna</option>
-                        <option>Właściciel</option>
-                    </datalist>
-
-                    <label for="class-field">Klasa kotła</label>
-
-                    <select id="class-field">
-                        <option value="third-class">Klasa III</option>
-                        <option value="fourth-class">Klasa IV</option>
-                        <option value="fifth-class">Klasa V</option>
-                    </select>
-
-                    <div>
-                        <input type="checkbox" name="ecoproject" id="ecoproject-field">
-                        <label for="ecoproject-field">Spełnia wymogi ekoprojektu</label>
-                    </div>
-
-                    <div>
-                        <input type="checkbox" name="dust-extractor" id="dust-extractor-field">
-                        <label for="dust-extractor-field">Urządzenie odpylające</label>
-                    </div>
+                    <?php
+                    $this->renderCombobox("Rodzaj", "type", $heaterTypes, $heater->getType());
+                    $this->renderTextField("Moc", "power", $heater->getPower());
+                    $this->renderRadioGroup("Komora spalania", "combustion-chamber", ["open" => "Otwarta", "closed" => "Zamknięta"], $heater->getCombustionChamber() === "open");
+                    $this->renderTextField("Sprawność cieplna", "efficiency", $heater->getEfficiency());
+                    $this->renderTextField("Rok instalacji", "installation-year", $heater->getInstallationYear());
+                    $this->renderTextField("Rok produkcji", "production-year", $heater->getProductionYear());
+                    $this->renderTextFieldWithSuggestions("Źródło danych", "data-source", $heater->getDataSource(), ["Tabliczka znamionowa", "Dokumentacja techniczna", "Wiedza właściciela"]);
+                    $this->renderCombobox("Klasa kotła", "thermal-class", $thermalClasses, $heater->getThermalClass());
+                    $this->renderCheckbox("Urządzenie odpylające", "dust-extractor", "dust-extractor", $heater->hasDustExtractor());
+                    ?>
                 </div>
+                <?php endforeach; ?>
             </form>
         </div>
     </body>
