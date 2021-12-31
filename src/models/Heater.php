@@ -8,7 +8,6 @@ class Heater {
     private $productionYear;
     private $dataSource;
     private $thermalClass;
-    private $ecoProject;
     private $dustExtractor;
 
     public function setType($type) {
@@ -73,14 +72,6 @@ class Heater {
 
     public function getThermalClass() {
         return $this->thermalClass;
-    }
-
-    public function setEcoProject($ecoProject) {
-        $this->ecoProject = $ecoProject;
-    }
-
-    public function getEcoProject() {
-        return $this->ecoProject;
     }
 
     public function setDustExtractor($dustExtractor) {

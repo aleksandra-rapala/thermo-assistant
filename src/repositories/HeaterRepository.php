@@ -11,7 +11,19 @@ class HeaterRepository {
     }
 
     public function selectAllByBuildingId($buildingId) {
-        $query = "SELECT * FROM heaters WHERE building_id = ?;";
+        $query = "
+        SELECT
+            t.name AS type, power, combustion_chamber, efficiency, installation_year, production_year, data_source, tc.name AS thermal_class, dust_extractor
+        FROM
+            heaters h
+        JOIN
+            heater_types t ON t.id = h.heater_type_id
+        JOIN
+            thermal_classes tc ON tc.id = h.thermal_class_id
+        WHERE
+              building_id = ?;
+        ";
+
         $result = $this->database->executeAndFetchAll($query, $buildingId);
         $heaters = [];
 
@@ -23,7 +35,26 @@ class HeaterRepository {
     }
 
     private function mapToHeater($row) {
+        $type = $row["type"];
+        $power = $row["power"];
+        $combustionChamber = $row["combustion_chamber"];
+        $efficiency = $row["efficiency"];
+        $installationYear = $row["installation_year"];
+        $productionYear = $row["production_year"];
+        $dataSource = $row["data_source"];
+        $thermalClass = $row["thermal_class"];
+        $dustExtractor = $row["dust_extractor"];
+
         $heater = new Heater();
+        $heater->setType($type);
+        $heater->setPower($power);
+        $heater->setCombustionCHamber($combustionChamber);
+        $heater->setEfficiency($efficiency);
+        $heater->setInstallationYear($installationYear);
+        $heater->setProductionYear($productionYear);
+        $heater->setDataSource($dataSource);
+        $heater->setThermalClass($thermalClass);
+        $heater->setDustExtractor($dustExtractor);
 
         return $heater;
     }

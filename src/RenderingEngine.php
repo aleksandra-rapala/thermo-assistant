@@ -26,7 +26,7 @@ class RenderingEngine {
     private function renderTextFieldWithSuggestions($label, $property, $value, $suggestions) {
         echo <<<HTML
             <label for="$property-field">$label</label>
-            <input name="$property" id="$property-field" list="$property-suggestions" />
+            <input name="$property" id="$property-field" value="$value" list="$property-suggestions" />
             
             <datalist id="$property-suggestions">
         HTML;
