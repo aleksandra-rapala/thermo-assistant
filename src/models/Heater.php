@@ -1,5 +1,6 @@
 <?php
 class Heater {
+    private $id;
     private $type;
     private $power;
     private $combustionChamber;
@@ -7,9 +8,16 @@ class Heater {
     private $installationYear;
     private $productionYear;
     private $dataSource;
-    private $thermalEfficiencyClass;
-    private $ecoProject;
+    private $thermalClass;
     private $dustExtractor;
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
 
     public function setType($type) {
         $this->type = $type;
@@ -67,27 +75,19 @@ class Heater {
         return $this->dataSource;
     }
 
-    public function setThermalEfficiencyClass($thermalEfficiencyClass) {
-        $this->thermalEfficiencyClass = $thermalEfficiencyClass;
+    public function setThermalClass($thermalClass) {
+        $this->thermalClass = $thermalClass;
     }
 
-    public function getThermalEfficiencyClass() {
-        return $this->thermalEfficiencyClass;
-    }
-
-    public function setEcoProject($ecoProject) {
-        $this->ecoProject = $ecoProject;
-    }
-
-    public function getEcoProject() {
-        return $this->ecoProject;
+    public function getThermalClass() {
+        return $this->thermalClass;
     }
 
     public function setDustExtractor($dustExtractor) {
         $this->dustExtractor = $dustExtractor;
     }
 
-    public function getDustExtractor() {
+    public function hasDustExtractor() {
         return $this->dustExtractor;
     }
 }

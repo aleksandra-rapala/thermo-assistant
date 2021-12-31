@@ -18,6 +18,10 @@ class BuildingService {
         return $this->buildingRepository->existsByUserId($userId);
     }
 
+    public function findBuildingIdByUserId($userId) {
+        return $this->buildingRepository->selectBuildingIdByUserId($userId);
+    }
+
     public function create($userId, $properties) {
         $building = $this->mapToBuilding($properties);
         $building->setHeaters([]);
