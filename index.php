@@ -43,9 +43,9 @@ $buildingService = new BuildingService($buildingRepository, $modernizationReposi
 $buildingController = new BuildingController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
 $fuelRepository = new FuelRepository($database, $addressRepository);
 $fuelService = new FuelService($fuelRepository, $addressRepository);
-$fuelController = new FuelController($renderingEngine, $sessionContext, $fuelService);
+$fuelController = new FuelController($renderingEngine, $sessionContext, $buildingService, $fuelService);
 $heaterService = new HeaterService($heaterRepository);
-$heaterController = new HeaterController($renderingEngine, $sessionContext, $heaterService);
+$heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService);
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);

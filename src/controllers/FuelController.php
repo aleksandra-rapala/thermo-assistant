@@ -4,11 +4,13 @@ require_once("src/controllers/Controller.php");
 class FuelController implements Controller {
     private $renderingEngine;
     private $sessionContext;
+    private $buildingService;
     private $fuelService;
 
-    public function __construct($renderingEngine, $sessionContext, $fuelService) {
+    public function __construct($renderingEngine, $sessionContext, $buildingService, $fuelService) {
         $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
+        $this->buildingService = $buildingService;
         $this->fuelService = $fuelService;
     }
 
@@ -16,14 +18,12 @@ class FuelController implements Controller {
         $this->sessionContext->init();
 
         $userId = $this->sessionContext->getUserId();
-        $buildingId = 1;
-        $fuelsConsumption = $this->fuelService->findFuelsConsumptionByBuildingId($buildingId);
-        $distributors = $this->fuelService->findDistributorsByBuildingId($buildingId);
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
 
         $this->renderingEngine->renderView("fuels", [
             "fuels" => $this->fuelService->findAvailableFuels(),
-            "fuelsConsumption" => $fuelsConsumption,
-            "distributors" => $distributors
+            "fuelsConsumption" => $this->fuelService->findFuelsConsumptionByBuildingId($buildingId),
+            "distributors" => $this->fuelService->findDistributorsByBuildingId($buildingId)
         ]);
     }
 

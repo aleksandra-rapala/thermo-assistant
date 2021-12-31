@@ -213,4 +213,11 @@ class BuildingRepository {
 
         return $details;
     }
+
+    public function selectBuildingIdByUserId($userId) {
+        $query = "SELECT id FROM buildings WHERE user_id = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $userId);
+
+        return $result["id"];
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 class Heater {
+    private $id;
     private $type;
     private $power;
     private $combustionChamber;
@@ -9,6 +10,14 @@ class Heater {
     private $dataSource;
     private $thermalClass;
     private $dustExtractor;
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
 
     public function setType($type) {
         $this->type = $type;

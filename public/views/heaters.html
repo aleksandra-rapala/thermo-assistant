@@ -30,6 +30,10 @@
                         $this->renderCheckbox("Urządzenie odpylające", "dust-extractor", true, $heater->hasDustExtractor());
                         ?>
                     </div>
+
+                    <?php
+                    $this->renderHiddenField("heater-id", $heater->getId());
+                    ?>
                 </div>
                 <?php endforeach; ?>
 

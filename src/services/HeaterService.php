@@ -6,6 +6,10 @@ class HeaterService {
         $this->heaterRepository = $heaterRepository;
     }
 
+    public function existsByHeaterIdAndBuildingId($heaterId, $buildingId) {
+        return $this->heaterRepository->existsByHeaterIdAndBuildingId($heaterId, $buildingId);
+    }
+
     public function findAllHeaterTypes() {
         $heaterTypeEntities = $this->heaterRepository->selectAllTypes();
         $heaterTypes = [];

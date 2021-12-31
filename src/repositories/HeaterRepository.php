@@ -13,7 +13,7 @@ class HeaterRepository {
     public function selectAllByBuildingId($buildingId) {
         $query = "
         SELECT
-            t.name AS type, power, combustion_chamber, efficiency, installation_year, production_year, data_source, tc.name AS thermal_class, dust_extractor
+            h.id AS id, t.name AS type, power, combustion_chamber, efficiency, installation_year, production_year, data_source, tc.name AS thermal_class, dust_extractor
         FROM
             heaters h
         JOIN
@@ -35,6 +35,7 @@ class HeaterRepository {
     }
 
     private function mapToHeater($row) {
+        $id = $row["id"];
         $type = $row["type"];
         $power = $row["power"];
         $combustionChamber = $row["combustion_chamber"];
@@ -46,6 +47,7 @@ class HeaterRepository {
         $dustExtractor = $row["dust_extractor"];
 
         $heater = new Heater();
+        $heater->setId($id);
         $heater->setType($type);
         $heater->setPower($power);
         $heater->setCombustionCHamber($combustionChamber);
@@ -215,5 +217,12 @@ class HeaterRepository {
             $heater->hasDustExtractor()? "true" : "false",
             $heater->getThermalClass()
         );
+    }
+
+    public function existsByHeaterIdAndBuildingId($heaterId, $buildingId) {
+        $query = "SELECT count(*) AS count FROM heaters WHERE id = ? AND building_id = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $heaterId, $buildingId);
+
+        return $result["count"] === 1;
     }
 }

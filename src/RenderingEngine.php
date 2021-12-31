@@ -89,4 +89,10 @@ class RenderingEngine {
             </select>
         HTML;
     }
+
+    private function renderHiddenField($property, $value) {
+        echo <<<HTML
+            <input type="hidden" name="$property" value="$value" />
+        HTML;
+    }
 }
