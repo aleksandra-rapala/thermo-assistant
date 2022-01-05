@@ -73,6 +73,13 @@ a {
     color: rgb(255, 165, 0);
 }
 
+@media screen and (min-width: 1366px) {
+    form {
+        width: 1280px;
+        margin: auto;
+    }
+}
+
 @media screen and (max-width: 768px) {
     #breadcumb {
         display: flex;

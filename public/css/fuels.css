@@ -1,6 +1,6 @@
 #fuels-view form {
-    display: flex;
-    flex-flow: row;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 3em;
 }
 
@@ -13,6 +13,18 @@
 #fuels-view .distributor {
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (max-width: 972px) {
+    #fuels-view form {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 1em;
+    }
+
+    #fuels-view div:nth-of-type(3) {
+        grid-row: 2;
+        grid-column: 1 / span 2;
+    }
 }
 
 @media screen and (max-width: 768px) {
