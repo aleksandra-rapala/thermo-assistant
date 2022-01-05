@@ -17,6 +17,10 @@
 
             <div id="user-panel">
                 <form action="/signUp" method="post">
+                    <?php foreach ($warnings as $warning): ?>
+                        <div class="warning"><?= $warning; ?></div>
+                    <?php endforeach; ?>
+
                     <div>
                         <label for="name-field">Imię</label>
                         <input name="name" id="name-field" />

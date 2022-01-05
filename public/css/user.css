@@ -2,18 +2,20 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 80vh;
+    height: 100vh;
+}
+
+#user-view > div {
+    height: 80%;
 }
 
 #branding {
     color: rgb(255, 165, 0);
     font-family: sans-serif;
     font-size: larger;
-    height: 75%;
 }
 
 #user-panel {
-    width: 25%;
     min-width: 16em;
     max-width: 24em;
 }
@@ -22,14 +24,24 @@
     align-self: flex-end;
 }
 
+#user-panel .warning {
+    padding: 0.8em;
+    border-radius: 0.2em;
+    background: rgb(255, 165, 0);
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+    margin: 1em 0;
+}
+
 @media screen and (max-width: 768px) {
+    #user-view #branding {
+        height: initial;
+    }
+
     #user-view {
         display: flex;
         flex-direction: column;
         gap: 0;
-    }
-
-    #branding {
-        height: initial;
     }
 }

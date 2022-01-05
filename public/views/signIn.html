@@ -17,6 +17,10 @@
 
             <div id="user-panel">
                 <form action="/signIn" method="post">
+                    <?php foreach ($warnings as $warning): ?>
+                        <div class="warning"><?= $warning; ?></div>
+                    <?php endforeach; ?>
+
                     <div>
                         <label for="email-field">Adres e-mail</label>
                         <input type="email" name="e-mail" id="email-field" />

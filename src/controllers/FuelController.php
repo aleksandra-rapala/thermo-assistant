@@ -16,7 +16,7 @@ class FuelController implements Controller {
         $this->httpFlow = $httpFlow;
     }
 
-    public function get() {
+    public function get($variables) {
         $this->sessionContext->init();
 
         $userId = $this->sessionContext->getUserId();

@@ -61,7 +61,7 @@ $resource = parse_url($resource, PHP_URL_PATH);
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case "GET":
-        $routingService->get($resource);
+        $routingService->get($resource, $_GET);
         break;
     case "POST":
         $routingService->post($resource, $_POST);

@@ -1,5 +1,6 @@
 <?php
 require_once("src/controllers/Controller.php");
+require_once("src/exceptions/UserNotFoundException.php");
 require_once("src/exceptions/PasswordMismatchException.php");
 
 class SignInController implements Controller {
@@ -15,8 +16,16 @@ class SignInController implements Controller {
         $this->userService = $userService;
     }
 
-    public function get() {
-        $this->renderingEngine->renderView("signIn");
+    public function get($variables) {
+        $warnings = [];
+
+        if (key_exists("failure", $variables)) {
+            $warnings[] = "Niepoprawny e-mail lub hasło!";
+        }
+
+        $this->renderingEngine->renderView("signIn", [
+            "warnings" => $warnings
+        ]);
     }
 
     public function post($properties) {
@@ -25,8 +34,8 @@ class SignInController implements Controller {
 
         try {
             $this->processSignIn($email, $password);
-        } catch (PasswordMismatchException $exception) {
-            $this->httpFlow->badRequest();
+        } catch (UserNotFoundException | PasswordMismatchException $exception) {
+            $this->httpFlow->redirectTo("/signIn?failure");
         }
     }
 
