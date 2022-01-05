@@ -6,15 +6,17 @@ class FuelController implements Controller {
     private $sessionContext;
     private $buildingService;
     private $fuelService;
+    private $httpFlow;
 
-    public function __construct($renderingEngine, $sessionContext, $buildingService, $fuelService) {
+    public function __construct($renderingEngine, $sessionContext, $buildingService, $fuelService, $httpFlow) {
         $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
         $this->buildingService = $buildingService;
         $this->fuelService = $fuelService;
+        $this->httpFlow = $httpFlow;
     }
 
-    public function get() {
+    public function get($variables) {
         $this->sessionContext->init();
 
         $userId = $this->sessionContext->getUserId();
@@ -31,6 +33,9 @@ class FuelController implements Controller {
         $this->sessionContext->init();
 
         $userId = $this->sessionContext->getUserId();
-        $this->fuelService->updateFuelsConsumptionByUserId($userId, $properties);
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
+        $this->fuelService->updateFuelsConsumptionByBuildingId($buildingId, $properties);
+
+        $this->httpFlow->redirectTo("/heaters");
     }
 }

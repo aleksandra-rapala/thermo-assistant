@@ -12,9 +12,9 @@ class RoutingService {
         $this->routes[$resource] = $controller;
     }
 
-    public function get($resource) {
+    public function get($resource, $variables) {
         if (array_key_exists($resource, $this->routes)) {
-            $this->routes[$resource]->get();
+            $this->routes[$resource]->get($variables);
         } else {
             $this->httpFlow->notFound();
         }

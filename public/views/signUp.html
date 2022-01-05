@@ -3,7 +3,9 @@
 <html lang="pl">
     <head>
         <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
+        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/user.css" />
     </head>
 
@@ -15,6 +17,10 @@
 
             <div id="user-panel">
                 <form action="/signUp" method="post">
+                    <?php foreach ($warnings as $warning): ?>
+                        <div class="warning"><?= $warning; ?></div>
+                    <?php endforeach; ?>
+
                     <div>
                         <label for="name-field">Imię</label>
                         <input name="name" id="name-field" />

@@ -10,7 +10,7 @@ class LogoutController implements Controller {
         $this->sessionContext = $sessionContext;
     }
 
-    public function get() {
+    public function get($variables) {
         $this->sessionContext->kill();
         $this->httpFlow->redirectTo("/");
     }

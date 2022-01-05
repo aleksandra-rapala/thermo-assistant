@@ -14,7 +14,7 @@ class BuildingController implements Controller {
         $this->buildingService = $buildingService;
     }
 
-    public function get() {
+    public function get($variables) {
         $this->sessionContext->init();
 
         if ($this->sessionContext->isSignedIn()) {
@@ -46,5 +46,7 @@ class BuildingController implements Controller {
         } else {
             $this->buildingService->create($userId, $properties);
         }
+
+        $this->httpFlow->redirectTo("/fuels");
     }
 }

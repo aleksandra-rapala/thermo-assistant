@@ -43,9 +43,9 @@ $buildingService = new BuildingService($buildingRepository, $modernizationReposi
 $buildingController = new BuildingController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
 $fuelRepository = new FuelRepository($database, $addressRepository);
 $fuelService = new FuelService($fuelRepository, $addressRepository);
-$fuelController = new FuelController($renderingEngine, $sessionContext, $buildingService, $fuelService);
+$fuelController = new FuelController($renderingEngine, $sessionContext, $buildingService, $fuelService, $httpFlow);
 $heaterService = new HeaterService($heaterRepository);
-$heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService);
+$heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService, $httpFlow);
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);
@@ -61,7 +61,7 @@ $resource = parse_url($resource, PHP_URL_PATH);
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case "GET":
-        $routingService->get($resource);
+        $routingService->get($resource, $_GET);
         break;
     case "POST":
         $routingService->post($resource, $_POST);

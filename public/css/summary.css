@@ -1,5 +1,3 @@
-@import "form.css";
-
 #summary-view form {
     display: flex;
     flex-flow: row;

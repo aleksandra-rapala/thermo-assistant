@@ -16,8 +16,20 @@ class SignUpController implements Controller {
         $this->userService = $userService;
     }
 
-    public function get() {
-        $this->renderingEngine->renderView("signUp");
+    public function get($variables) {
+        $warnings = [];
+
+        if (key_exists("user-exists", $variables)) {
+            $warnings[] = "Taki użytkownik już istnieje!";
+        }
+
+        if (key_exists("weak-password", $variables)) {
+            $warnings[] = "Takie hasło jest zbyt słabe!";
+        }
+
+        $this->renderingEngine->renderView("signUp", [
+            "warnings" => $warnings
+        ]);
     }
 
     public function post($properties) {
@@ -29,9 +41,9 @@ class SignUpController implements Controller {
         try {
             $this->processSignUp($name, $surname, $email, $password);
         } catch (UserAlreadyExistsException $exception) {
-            $this->httpFlow->badRequest();
+            $this->httpFlow->redirectTo("/signIn?user-exists");
         } catch (WeakPasswordException $exception) {
-            $this->httpFlow->badRequest();
+            $this->httpFlow->redirectTo("/signIn?weak-password");
         }
     }
 
