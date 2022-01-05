@@ -6,12 +6,14 @@ class HeaterController implements Controller {
     private $sessionContext;
     private $buildingService;
     private $heaterService;
+    private $httpFlow;
 
-    public function __construct($renderingEngine, $sessionContext, $buildingService, $heaterService) {
+    public function __construct($renderingEngine, $sessionContext, $buildingService, $heaterService, $httpFlow) {
         $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
         $this->buildingService = $buildingService;
         $this->heaterService = $heaterService;
+        $this->httpFlow = $httpFlow;
     }
 
     public function get() {
@@ -39,5 +41,7 @@ class HeaterController implements Controller {
         } else {
             $this->heaterService->createByBuildingId($buildingId, $properties);
         }
+
+        $this->httpFlow->redirectTo("/summary");
     }
 }

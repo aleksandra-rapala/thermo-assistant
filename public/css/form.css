@@ -1,3 +1,20 @@
+h1 {
+    color: rgb(255, 165, 0);
+    font-family: sans-serif;
+}
+
+#breadcumb a {
+    text-decoration: none;
+}
+
+#action-bar {
+    margin: 1em 0;
+}
+
+#breadcumb button.active {
+    background: rgb(255, 165, 0);
+}
+
 form h2 {
     color: rgb(255, 165, 0);
     font-family: sans-serif;
@@ -6,7 +23,6 @@ form h2 {
 form > div {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2em;
 }
 
 label, span, p, table {
@@ -32,6 +48,7 @@ button {
     width: 9em;
     font-weight: bold;
     font-size: medium;
+    letter-spacing: 0.7px;
     color: white;
     background: rgb(252, 201, 129);
 }
@@ -40,7 +57,7 @@ button:hover {
     background: rgb(255, 165, 0);
 }
 
-button, input, select {
+input, select {
     margin-bottom: 1.2em;
 }
 
@@ -54,4 +71,13 @@ input[type="checkbox"] {
 
 a {
     color: rgb(255, 165, 0);
+}
+
+@media screen and (max-width: 768px) {
+    #breadcumb {
+        display: flex;
+        flex-direction: row;
+        overflow-x: scroll;
+        gap: 0.4em;
+    }
 }

@@ -3,13 +3,19 @@
 <html lang="pl">
     <head>
         <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
+        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/heaters.css" />
     </head>
 
     <body>
+        <?php
+        $this->render_breadcumb("heaters");
+        ?>
+
         <div id="heaters-view">
-            <form action="/heaters" method="post">
+            <form id="heaters" action="/heaters" method="post">
                 <?php foreach ($heaters as $index => $heater): ?>
                 <div>
                     <h2>Źródło ciepła #<?= $index + 1; ?></h2>
@@ -36,11 +42,11 @@
                     ?>
                 </div>
                 <?php endforeach; ?>
-
-                <div>
-                    <button>Zapisz</button>
-                </div>
             </form>
+        </div>
+
+        <div id="action-bar">
+            <button form="heaters">Zapisz</button>
         </div>
     </body>
 </html>

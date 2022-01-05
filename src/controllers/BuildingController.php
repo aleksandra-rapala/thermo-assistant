@@ -46,5 +46,7 @@ class BuildingController implements Controller {
         } else {
             $this->buildingService->create($userId, $properties);
         }
+
+        $this->httpFlow->redirectTo("/fuels");
     }
 }

@@ -1,18 +1,24 @@
-@import "form.css";
-
 #fuels-view form {
     display: flex;
     flex-flow: row;
     gap: 3em;
 }
 
-.fuel-sales-points {
+#fuels-view .distributors {
     display: flex;
     flex-direction: column;
     gap: 1em;
 }
 
-.fuel-sales-point {
+#fuels-view .distributor {
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (max-width: 768px) {
+    #fuels-view form {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
 }

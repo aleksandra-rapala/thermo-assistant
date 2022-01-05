@@ -1,5 +1,3 @@
-@import "form.css";
-
 #user-view {
     display: flex;
     justify-content: space-evenly;
@@ -22,4 +20,16 @@
 
 #user-panel button {
     align-self: flex-end;
+}
+
+@media screen and (max-width: 768px) {
+    #user-view {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    #branding {
+        height: initial;
+    }
 }

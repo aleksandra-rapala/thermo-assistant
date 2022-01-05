@@ -3,13 +3,19 @@
 <html lang="pl">
     <head>
         <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
+        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/fuels.css" />
     </head>
 
     <body>
+        <?php
+        $this->render_breadcumb("fuels");
+        ?>
+
         <div id="fuels-view">
-            <form acion="/fuels" method="post">
+            <form id="fuels" acion="/fuels" method="post">
                 <div>
                     <h2>Zużycie paliw w ciągu roku</h2>
 
@@ -33,13 +39,13 @@
                 <div>
                     <h2>Punkty sprzedaży paliw</h2>
 
-                    <div class="fuel-sales-points">
+                    <div class="distributors">
                         <?php if (empty($distributors)): ?>
                         <span>Brak ofert w Twojej okolicy!</span>
                         <?php endif; ?>
 
                         <?php foreach ($distributors as $distributor): ?>
-                        <div class="fuel-sales-point">
+                        <div class="distributor">
                             <span><?= $distributor->getCompanyName(); ?></span>
 
                             <dl>
@@ -74,11 +80,11 @@
                         <label for="fuels-notification-offers-field">Powiadomienie w przeglądarce</label>
                     </div>
                 </div>
-
-                <div>
-                    <button>Zapisz</button>
-                </div>
             </form>
+        </div>
+
+        <div id="action-bar">
+            <button form="fuels">Zapisz</button>
         </div>
     </body>
 </html>

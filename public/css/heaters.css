@@ -1,7 +1,13 @@
-@import "form.css";
-
 #heaters-view form {
     display: flex;
     flex-flow: row;
     gap: 3em;
+}
+
+@media screen and (max-width: 768px) {
+    #heaters-view form {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
 }

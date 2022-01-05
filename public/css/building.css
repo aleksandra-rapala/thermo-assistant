@@ -1,14 +1,19 @@
-@import "form.css";
-
 #building-view form {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 3em;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    gap: 0 3em;
 }
 
-@media screen and (max-width: 600px) {
+#building-view div:nth-of-type(1),
+#building-view div:nth-of-type(2) {
+    grid-row: 1 / span 3;
+}
+
+@media screen and (max-width: 768px) {
     #building-view form {
-        flex-flow: column;
+        display: flex;
+        flex-direction: column;
         gap: 0;
     }
 }
