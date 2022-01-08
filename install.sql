@@ -144,6 +144,27 @@ CREATE TABLE emission_indicator_rules (
     emission_indicator_id INT NOT NULL REFERENCES emission_indicators(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
+CREATE TABLE subscriptions (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(32) NOT NULL UNIQUE
+);
+
+CREATE TABLE buildings_subscriptions (
+    id SERIAL PRIMARY KEY,
+    building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    subscription_id INT NOT NULL REFERENCES subscriptions ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+INSERT INTO subscriptions
+    (name)
+VALUES
+    ('fuels-email'),
+    ('fuels-notification'),
+    ('modernization-email'),
+    ('modernization-notification'),
+    ('solar-panels-email'),
+    ('solar-panels-notification');
+
 INSERT INTO modernizations
     (id, name, label)
 VALUES

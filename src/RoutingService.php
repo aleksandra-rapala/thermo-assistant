@@ -20,9 +20,9 @@ class RoutingService {
         }
     }
 
-    public function post($resource, $properties) {
+    public function post($resource, $variables, $properties) {
         if (array_key_exists($resource, $this->routes)) {
-            $this->routes[$resource]->post($properties);
+            $this->routes[$resource]->post($variables, $properties);
         } else {
             $this->httpFlow->notFound();
         }

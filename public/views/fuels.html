@@ -7,6 +7,7 @@
         <title>thermo-assistant</title>
         <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/fuels.css" />
+        <script type="text/javascript" src="./public/js/offers.js" defer="defer"></script>
     </head>
 
     <body>
@@ -65,20 +66,9 @@
                 <div>
                     <h2>Oferty sponsorowane</h2>
 
-                    <div>
-                        <input type="checkbox" name="fuels-offers" id="fuels-offers-field">
-                        <label for="fuels-offers-field">Chcę otrzymywać oferty z punktów sprzedaży paliw działających na terenie mojej gminy</label>
-                    </div>
-
-                    <div class="indented-checkbox">
-                        <input type="checkbox" name="fuels-email-offers" id="fuels-email-offers-field">
-                        <label for="fuels-email-offers-field">Wiadomość e-mail</label>
-                    </div>
-
-                    <div class="indented-checkbox">
-                        <input type="checkbox" name="fuels-notification-offers" id="fuels-notification-offers-field">
-                        <label for="fuels-notification-offers-field">Powiadomienie w przeglądarce</label>
-                    </div>
+                    <?php
+                    require("./public/panel/fuels-offers.php");
+                    ?>
                 </div>
             </form>
         </div>

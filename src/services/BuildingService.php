@@ -7,11 +7,13 @@ class BuildingService {
     private $buildingRepository;
     private $modernizationRepository;
     private $heaterRepository;
+    private $subscriptionRepository;
 
-    public function __construct($buildingRepository, $modernizationRepository, $heaterRepository) {
+    public function __construct($buildingRepository, $modernizationRepository, $heaterRepository, $subscriptionRepository) {
         $this->buildingRepository = $buildingRepository;
         $this->modernizationRepository = $modernizationRepository;
         $this->heaterRepository = $heaterRepository;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     public function existsByUserId($userId) {
@@ -114,5 +116,17 @@ class BuildingService {
 
     public function findAvailableHeaterTypes() {
         return $this->heaterRepository->selectAllTypes();
+    }
+
+    public function findSubscriptionsByBuildingId($buildingId) {
+        return $this->subscriptionRepository->selectAllNamesByBuildingId($buildingId);
+    }
+
+    public function subscribe($buildingId, $subscriptionName) {
+        $this->subscriptionRepository->subscribe($buildingId, $subscriptionName);
+    }
+
+    public function unsubscribe($buildingId, $subscriptionName) {
+        $this->subscriptionRepository->unsubscribe($buildingId, $subscriptionName);
     }
 }

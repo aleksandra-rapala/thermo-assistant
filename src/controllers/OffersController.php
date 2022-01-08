@@ -1,7 +1,7 @@
 <?php
 require_once("src/controllers/Controller.php");
 
-class SummaryController implements Controller {
+class OffersController implements Controller {
     private $httpFlow;
     private $renderingEngine;
     private $sessionContext;
@@ -15,21 +15,17 @@ class SummaryController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->init();
-
-        if ($this->sessionContext->isSignedIn()) {
-            $userId = $this->sessionContext->getUserId();
-            $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
-
-            $this->renderingEngine->renderView("summary", [
-                "ceeb" => true
-            ]);
-        } else {
-            $this->httpFlow->redirectTo("/signIn");
-        }
+        echo json_encode($this->buildingService->findSubscriptionsByBuildingId(3));
     }
 
     public function post($variables, $properties) {
-        $this->httpFlow->methodNotAllowed();
+        $subscriptionName = $variables["subscription-name"];
+        $subscriptionStatus = $variables["active"];
+
+        if ($subscriptionStatus) {
+            $this->buildingService->subscribe(3, $subscriptionName);
+        } else {
+            $this->buildingService->unsubscribe(3, $subscriptionName);
+        }
     }
 }

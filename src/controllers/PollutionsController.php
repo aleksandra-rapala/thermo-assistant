@@ -29,7 +29,7 @@ class PollutionsController implements Controller {
         echo json_encode($pollutionsResult);
     }
 
-    public function post($properties) {
+    public function post($variables, $properties) {
         $this->httpFlow->methodNotAllowed();
     }
 }

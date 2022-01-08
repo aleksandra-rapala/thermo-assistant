@@ -20,7 +20,7 @@ class IndexController implements Controller {
         }
     }
 
-    public function post($properties) {
+    public function post($variables, $properties) {
         $this->httpFlow->methodNotAllowed();
     }
 }

@@ -1,4 +1,4 @@
-window.addEventListener("load", function(event) {
+window.addEventListener("load", () => {
     fetch("/pollutions")
         .then(response => response.json())
         .then(pollutionsResult => showInPollutionsTable(pollutionsResult))
