@@ -7,9 +7,14 @@
         <title>thermo-assistant</title>
         <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/summary.css" />
+        <script type="text/javascript" src="./public/js/summary.js" defer="defer"></script>
     </head>
 
     <body>
+        <?php
+        $this->render_breadcumb("summary");
+        ?>
+
         <div id="summary-view">
             <form>
                 <div>
@@ -18,53 +23,23 @@
                     <p>Zanieczyszczenia generowane przez Twój budynek w ciągu roku:</p>
 
                     <table id="pollutions-table">
-                        <caption>Twój budynek ma umiarkowany wpływ na środowisko</caption>
+                        <caption>Trwa obliczanie...</caption>
 
-                        <thead>
-                            <tr>
-                                <th>Substancja</th>
-                                <th>Ilość [ton]</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>CO₂</td>
-                                <td>0</td>
-                            </tr>
-
-                            <tr>
-                                <td>BaP</td>
-                                <td>0</td>
-                            </tr>
-
-                            <tr>
-                                <td>Nox</td>
-                                <td>0</td>
-                            </tr>
-
-                            <tr>
-                                <td>SO₂</td>
-                                <td>0</td>
-                            </tr>
-
-                            <tr>
-                                <td>PM10</td>
-                                <td>0</td>
-                            </tr>
-
-                            <tr>
-                                <td>PM2,5</td>
-                                <td>0</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <th>Substancja</th>
+                            <th>Ilość [ton]</th>
+                        </tr>
                     </table>
                 </div>
 
                 <div>
                     <h2>Centralna Ewidencja Emisyjności Budynków</h2>
 
-                    <p>Twój budynek spełnia wymogi rejestracji w systemie CEEB. Możesz dokonać tego za pośrednictwem <a href="https://pz.gov.pl/">profilu zaufanego</a>.</p>
+                    <?php if ($ceeb): ?>
+                        <p>Twój budynek spełnia wymogi rejestracji w systemie CEEB. Możesz dokonać tego za pośrednictwem <a href="https://pz.gov.pl/">profilu zaufanego</a>.</p>
+                    <?php else: ?>
+                        <p>Twój budynek nie spełnia obowiązku rejestracji w systemie CEEB.</p>
+                    <?php endif ?>
                 </div>
 
                 <div>

@@ -21,6 +21,8 @@ require_once("src/controllers/LogoutController.php");
 require_once("src/controllers/BuildingController.php");
 require_once("src/controllers/FuelController.php");
 require_once("src/controllers/HeaterController.php");
+require_once("src/controllers/SummaryController.php");
+require_once("src/controllers/PollutionsController.php");
 require_once("src/persistence/PgDatabaseFactory.php");
 
 $httpFlow = new HttpFlow();
@@ -31,7 +33,7 @@ $databaseFactory = new PgDatabaseFactory();
 $database = $databaseFactory->create(HOST, PORT, DATABASE, USERNAME, PASSWORD);
 $userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
-$indexController = new IndexController($httpFlow, $sessionContext, $database);
+$indexController = new IndexController($httpFlow, $sessionContext);
 $signInController = new SignInController($httpFlow, $renderingEngine, $sessionContext, $userService);
 $signUpController = new SignUpController($httpFlow, $renderingEngine, $sessionContext, $userService);
 $logoutController = new LogoutController($httpFlow, $sessionContext);
@@ -46,6 +48,8 @@ $fuelService = new FuelService($fuelRepository, $addressRepository);
 $fuelController = new FuelController($renderingEngine, $sessionContext, $buildingService, $fuelService, $httpFlow);
 $heaterService = new HeaterService($heaterRepository);
 $heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService, $httpFlow);
+$summaryController = new SummaryController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
+$pollutionsController = new PollutionsController($httpFlow);
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);
@@ -54,6 +58,8 @@ $routingService->register("logout", $logoutController);
 $routingService->register("building", $buildingController);
 $routingService->register("fuels", $fuelController);
 $routingService->register("heaters", $heaterController);
+$routingService->register("summary", $summaryController);
+$routingService->register("pollutions", $pollutionsController);
 
 $resource = $_SERVER["REQUEST_URI"];
 $resource = trim($resource, "/");

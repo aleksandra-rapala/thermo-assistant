@@ -1,7 +1,11 @@
 #summary-view form {
-    display: flex;
-    flex-flow: row;
-    gap: 3em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 3em;
+}
+
+#summary-view p {
+    margin: 0;
 }
 
 #pollutions-table {
