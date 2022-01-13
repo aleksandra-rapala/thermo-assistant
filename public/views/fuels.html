@@ -24,6 +24,7 @@
                     foreach ($fuels as $fuel) {
                         $fuelLabel = $fuel->getLabel();
                         $fuelName = $fuel->getName();
+                        $fuelUnit = $fuel->getUnit();
                         $fuelConsumption = $fuelsConsumption[$fuelName];
 
                         if ($fuelConsumption === null) {
@@ -32,7 +33,7 @@
                             $value = $fuelConsumption->getValue();
                         }
 
-                        $this->renderTextField($fuelLabel, $fuelName, $value);
+                        $this->renderTextField("$fuelLabel [$fuelUnit]", $fuelName, $value);
                     }
                     ?>
                 </div>
@@ -48,6 +49,7 @@
                         <?php foreach ($distributors as $distributor): ?>
                         <div class="distributor">
                             <span><?= $distributor->getCompanyName(); ?></span>
+                            <span><?= $distributor->getAddress(); ?></span>
 
                             <dl>
                                 <dt>Oferowane paliwa:</dt>
@@ -56,8 +58,6 @@
                                 <dd><?= $fuel; ?></dd>
                                 <?php endforeach; ?>
                             </dl>
-
-                            <span><?= $distributor->getAddress(); ?></span>
                         </div>
                         <?php endforeach; ?>
                     </div>

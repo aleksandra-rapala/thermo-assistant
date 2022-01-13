@@ -180,7 +180,9 @@ VALUES
     (3, 'heat-network', 'Sieć ciepłownicza'),
     (4, 'gas-based', 'Ogrzewanie gazowe'),
     (5, 'electric-based', 'Ogrzewanie elektryczne'),
-    (6, 'pellet-based', 'Kocioł na pellet');
+    (6, 'pellet-based', 'Kocioł na pellet'),
+    (7, 'wood-based', 'Kocioł na drewno'),
+    (8, 'fireplace', 'Kominek');
 
 INSERT INTO fuels
     (id, name, label, unit)

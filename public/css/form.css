@@ -25,7 +25,7 @@ form > div {
     flex-direction: column;
 }
 
-label, span, p, table {
+label, span, p, dl, table {
     font-family: Lato, Arial, sans-serif;
 }
 
@@ -61,7 +61,7 @@ input, select {
     margin-bottom: 1.2em;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
     margin: 0;
 }
 

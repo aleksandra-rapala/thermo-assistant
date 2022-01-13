@@ -23,13 +23,18 @@
                     <?php
                     $this->renderCombobox("Rodzaj", "type", $heaterTypes, $heater->getType());
                     $this->renderTextField("Moc", "power", $heater->getPower());
-                    $this->renderRadioGroup("Komora spalania", "combustion-chamber", ["open" => "Otwarta", "closed" => "Zamknięta"], $heater->getCombustionChamber());
-                    $this->renderTextField("Sprawność cieplna", "efficiency", $heater->getEfficiency());
+                    $this->renderTextField("Sprawność cieplna [%]", "efficiency", $heater->getEfficiency());
                     $this->renderTextField("Rok instalacji", "installation-year", $heater->getInstallationYear());
                     $this->renderTextField("Rok produkcji", "production-year", $heater->getProductionYear());
                     $this->renderTextFieldWithSuggestions("Źródło danych", "data-source", $heater->getDataSource(), ["Tabliczka znamionowa", "Dokumentacja techniczna", "Wiedza właściciela"]);
                     $this->renderCombobox("Klasa kotła", "thermal-class", $thermalClasses, $heater->getThermalClass());
                     ?>
+
+                    <div>
+                        <?php
+                        $this->renderRadioGroup("Komora spalania", "combustion-chamber", ["open" => "Otwarta", "closed" => "Zamknięta"], $heater->getCombustionChamber());
+                        ?>
+                    </div>
 
                     <div>
                         <?php
@@ -47,6 +52,8 @@
 
         <div id="action-bar">
             <button form="heaters">Zapisz</button>
+            <button>Dodaj kocioł</button>
+            <button>Usuń kocioł</button>
         </div>
     </body>
 </html>
