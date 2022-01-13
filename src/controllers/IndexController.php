@@ -4,12 +4,10 @@ require_once("src/controllers/Controller.php");
 class IndexController implements Controller {
     private $httpFlow;
     private $sessionContext;
-    private $database;
 
-    public function __construct($httpFlow, $sessionContext, $database) {
+    public function __construct($httpFlow, $sessionContext) {
         $this->httpFlow = $httpFlow;
         $this->sessionContext = $sessionContext;
-        $this->database = $database;
     }
 
     public function get($variables) {
@@ -22,7 +20,7 @@ class IndexController implements Controller {
         }
     }
 
-    public function post($properties) {
-        $this->httpFlow->methodNotSupported();
+    public function post($variables, $properties) {
+        $this->httpFlow->methodNotAllowed();
     }
 }

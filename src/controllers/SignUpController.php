@@ -32,7 +32,7 @@ class SignUpController implements Controller {
         ]);
     }
 
-    public function post($properties) {
+    public function post($variables, $properties) {
         $email = $properties["e-mail"];
         $name = $properties["name"];
         $surname = $properties["surname"];

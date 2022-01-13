@@ -1,5 +1,5 @@
 <?php
 interface Controller {
     public function get($variables);
-    public function post($properties);
+    public function post($variables, $properties);
 }

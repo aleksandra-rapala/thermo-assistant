@@ -15,7 +15,7 @@ class LogoutController implements Controller {
         $this->httpFlow->redirectTo("/");
     }
 
-    public function post($properties) {
+    public function post($variables, $properties) {
         $this->sessionContext->kill();
         $this->httpFlow->redirectTo("/");
     }

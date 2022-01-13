@@ -29,7 +29,7 @@ class HeaterController implements Controller {
         ]);
     }
 
-    public function post($properties) {
+    public function post($variables, $properties) {
         $this->sessionContext->init();
 
         $userId = $this->sessionContext->getUserId();

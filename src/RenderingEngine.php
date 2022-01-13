@@ -73,6 +73,13 @@ class RenderingEngine {
         HTML;
     }
 
+    private function renderUncheckedCheckbox($label, $property, $value) {
+        echo <<<HTML
+            <input type="checkbox" name="$property" value="$value" id="$property-$value-field">
+            <label for="$property-$value-field">$label</label>
+        HTML;
+    }
+
     private function renderCheckbox($label, $property, $value, $isChecked) {
         $checkedAttribute = $isChecked ? "checked" : "";
 

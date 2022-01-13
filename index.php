@@ -10,6 +10,7 @@ require_once("src/repositories/ModernizationRepository.php");
 require_once("src/repositories/HeaterRepository.php");
 require_once("src/repositories/FuelRepository.php");
 require_once("src/repositories/AddressRepository.php");
+require_once("src/repositories/SubscriptionRepository.php");
 require_once("src/services/UserService.php");
 require_once("src/services/BuildingService.php");
 require_once("src/services/FuelService.php");
@@ -21,6 +22,9 @@ require_once("src/controllers/LogoutController.php");
 require_once("src/controllers/BuildingController.php");
 require_once("src/controllers/FuelController.php");
 require_once("src/controllers/HeaterController.php");
+require_once("src/controllers/SummaryController.php");
+require_once("src/controllers/PollutionsController.php");
+require_once("src/controllers/OffersController.php");
 require_once("src/persistence/PgDatabaseFactory.php");
 
 $httpFlow = new HttpFlow();
@@ -31,7 +35,7 @@ $databaseFactory = new PgDatabaseFactory();
 $database = $databaseFactory->create(HOST, PORT, DATABASE, USERNAME, PASSWORD);
 $userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
-$indexController = new IndexController($httpFlow, $sessionContext, $database);
+$indexController = new IndexController($httpFlow, $sessionContext);
 $signInController = new SignInController($httpFlow, $renderingEngine, $sessionContext, $userService);
 $signUpController = new SignUpController($httpFlow, $renderingEngine, $sessionContext, $userService);
 $logoutController = new LogoutController($httpFlow, $sessionContext);
@@ -39,13 +43,17 @@ $modernizationRepository = new ModernizationRepository($database);
 $heaterRepository = new HeaterRepository($database);
 $addressRepository = new AddressRepository($database);
 $buildingRepository = new BuildingRepository($database, $modernizationRepository, $heaterRepository, $addressRepository);
-$buildingService = new BuildingService($buildingRepository, $modernizationRepository, $heaterRepository);
+$subscriptionRepository = new SubscriptionRepository($database);
+$buildingService = new BuildingService($buildingRepository, $modernizationRepository, $heaterRepository, $subscriptionRepository);
 $buildingController = new BuildingController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
 $fuelRepository = new FuelRepository($database, $addressRepository);
 $fuelService = new FuelService($fuelRepository, $addressRepository);
 $fuelController = new FuelController($renderingEngine, $sessionContext, $buildingService, $fuelService, $httpFlow);
 $heaterService = new HeaterService($heaterRepository);
 $heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService, $httpFlow);
+$summaryController = new SummaryController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
+$pollutionsController = new PollutionsController($httpFlow);
+$offersController = new OffersController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);
@@ -54,6 +62,9 @@ $routingService->register("logout", $logoutController);
 $routingService->register("building", $buildingController);
 $routingService->register("fuels", $fuelController);
 $routingService->register("heaters", $heaterController);
+$routingService->register("summary", $summaryController);
+$routingService->register("pollutions", $pollutionsController);
+$routingService->register("offers", $offersController);
 
 $resource = $_SERVER["REQUEST_URI"];
 $resource = trim($resource, "/");
@@ -64,7 +75,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $routingService->get($resource, $_GET);
         break;
     case "POST":
-        $routingService->post($resource, $_POST);
+        $routingService->post($resource, $_GET, $_POST);
         break;
     default:
         $httpFlow->methodNotAllowed();
