@@ -11,8 +11,6 @@ class OffersController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->ensureAuthorized();
-
         $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
         $subscriptions = $this->buildingService->findSubscriptionsByBuildingId($buildingId);
@@ -21,8 +19,6 @@ class OffersController implements Controller {
     }
 
     public function post($variables, $properties) {
-        $this->sessionContext->ensureAuthorized();
-
         $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
         $subscriptionName = $variables["subscription-name"];

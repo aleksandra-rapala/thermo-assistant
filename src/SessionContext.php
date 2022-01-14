@@ -9,36 +9,59 @@ class SessionContext {
     }
 
     public function signIn($userId) {
-        $sessionId = hash("sha256", openssl_random_pseudo_bytes(32));
+        $sessionId = $this->generateRandomSessionId();
+
+        $this->createSession($userId, $sessionId);
+        $this->createCookie($sessionId);
+    }
+
+    private function generateRandomSessionId() {
+        return hash("sha256", openssl_random_pseudo_bytes(32));
+    }
+
+    private function createSession($userId, $sessionId) {
         $query = "INSERT INTO sessions (user_id, ssid) VALUES (?, ?);";
         $this->database->execute($query, $userId, $sessionId);
+    }
 
+    private function createCookie($sessionId) {
         setcookie("sessionId", $sessionId, time() + 86400 * 30, "/");
     }
 
     public function getUserId() {
-        $sessionId = $_COOKIE["sessionId"];
-        $query = "SELECT user_id FROM sessions WHERE ssid = ?;";
-        $result = $this->database->executeAndFetchFirst($query, $sessionId);
+        if ( !$this->isSignedIn()) {
+            $this->httpFlow->unauthorized();
+        }
 
-        return $result["user_id"];
+        $sessionId = $_COOKIE["sessionId"];
+
+        return $this->selectUserIdBySessionId($sessionId);
     }
 
     public function isSignedIn() {
         return isset($_COOKIE["sessionId"]);
     }
 
-    public function signOut() {
-        $sessionId = $_COOKIE["sessionId"];
-        $query = "DELETE FROM sessions WHERE ssid = ?;";
-        $this->database->execute($query, $sessionId);
+    private function selectUserIdBySessionId($sessionId) {
+        $query = "SELECT user_id FROM sessions WHERE ssid = ?;";
+        $result = $this->database->executeAndFetchFirst($query, $sessionId);
 
-        setcookie("sessionId", "", 0, "/");
+        return $result["user_id"];
     }
 
-    public function ensureAuthorized() {
-        if ( !$this->isSignedIn()) {
-            $this->httpFlow->unauthorized();
-        }
+    public function signOut() {
+        $sessionId = $_COOKIE["sessionId"];
+
+        $this->removeSession($sessionId);
+        $this->removeCookie();
+    }
+
+    private function removeSession($sessionId) {
+        $query = "DELETE FROM sessions WHERE ssid = ?;";
+        $this->database->execute($query, $sessionId);
+    }
+
+    private function removeCookie() {
+        setcookie("sessionId", "", 0, "/");
     }
 }

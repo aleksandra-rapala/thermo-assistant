@@ -41,9 +41,9 @@ class SignUpController implements Controller {
         try {
             $this->processSignUp($name, $surname, $email, $password);
         } catch (UserAlreadyExistsException $exception) {
-            $this->httpFlow->redirectTo("/signIn?user-exists");
+            $this->httpFlow->redirectTo("/signUp?user-exists");
         } catch (WeakPasswordException $exception) {
-            $this->httpFlow->redirectTo("/signIn?weak-password");
+            $this->httpFlow->redirectTo("/signUp?weak-password");
         }
     }
 

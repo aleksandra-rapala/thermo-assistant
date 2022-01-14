@@ -11,11 +11,8 @@ class IndexController implements Controller {
     }
 
     public function get($variables) {
-        if ($this->sessionContext->isSignedIn()) {
-            $this->httpFlow->redirectTo("/building");
-        } else {
-            $this->httpFlow->redirectTo("/signIn");
-        }
+        $isSignedIn = $this->sessionContext->isSignedIn();
+        $this->httpFlow->redirectTo($isSignedIn? "/building" : "/signIn");
     }
 
     public function post($variables, $properties) {
