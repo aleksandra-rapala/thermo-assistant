@@ -6,7 +6,7 @@ CREATE TABLE users (
     name VARCHAR(64) NOT NULL,
     surname VARCHAR(64) NOT NULL,
     e_mail VARCHAR(128) NOT NULL,
-    password VARCHAR(80) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     is_admin BOOLEAN NOT NULL DEFAULT false
 );
 
@@ -153,6 +153,12 @@ CREATE TABLE buildings_subscriptions (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     subscription_id INT NOT NULL REFERENCES subscriptions ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE sessions (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    ssid VARCHAR(64) NOT NULL
 );
 
 INSERT INTO subscriptions

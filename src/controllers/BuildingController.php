@@ -15,8 +15,6 @@ class BuildingController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->init();
-
         if ($this->sessionContext->isSignedIn()) {
             $userId = $this->sessionContext->getUserId();
             $building = $this->buildingService->findByUserId($userId);
@@ -36,8 +34,6 @@ class BuildingController implements Controller {
     }
 
     public function post($variables, $properties) {
-        $this->sessionContext->init();
-
         $userId = $this->sessionContext->getUserId();
         $building_exists = $this->buildingService->existsByUserId($userId);
 

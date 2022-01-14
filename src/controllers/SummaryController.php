@@ -15,8 +15,6 @@ class SummaryController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->init();
-
         if ($this->sessionContext->isSignedIn()) {
             $userId = $this->sessionContext->getUserId();
             $buildingId = $this->buildingService->findBuildingIdByUserId($userId);

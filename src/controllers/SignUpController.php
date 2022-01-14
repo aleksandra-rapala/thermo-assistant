@@ -48,11 +48,7 @@ class SignUpController implements Controller {
     }
 
     private function processSignUp($name, $surname, $email, $password) {
-        $userId = $this->userService->addUser($name, $surname, $email, $password);
-
-        $this->sessionContext->init();
-        $this->sessionContext->setUserId($userId);
-
-        $this->httpFlow->redirectTo("/building");
+        $this->userService->addUser($name, $surname, $email, $password);
+        $this->httpFlow->redirectTo("/");
     }
 }

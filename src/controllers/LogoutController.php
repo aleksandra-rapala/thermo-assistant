@@ -11,12 +11,12 @@ class LogoutController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->kill();
+        $this->sessionContext->signOut();
         $this->httpFlow->redirectTo("/");
     }
 
     public function post($variables, $properties) {
-        $this->sessionContext->kill();
+        $this->sessionContext->signOut();
         $this->httpFlow->redirectTo("/");
     }
 }

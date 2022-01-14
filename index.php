@@ -29,10 +29,10 @@ require_once("src/persistence/PgDatabaseFactory.php");
 
 $httpFlow = new HttpFlow();
 $routingService = new RoutingService($httpFlow);
-$sessionContext = new SessionContext();
-$renderingEngine = new RenderingEngine();
 $databaseFactory = new PgDatabaseFactory();
 $database = $databaseFactory->create(HOST, PORT, DATABASE, USERNAME, PASSWORD);
+$sessionContext = new SessionContext($database);
+$renderingEngine = new RenderingEngine();
 $userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
 $indexController = new IndexController($httpFlow, $sessionContext);

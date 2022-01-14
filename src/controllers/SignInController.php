@@ -43,9 +43,7 @@ class SignInController implements Controller {
         $user = $this->userService->getUser($email, $password);
         $userId = $user->getId();
 
-        $this->sessionContext->init();
-        $this->sessionContext->setUserId($userId);
-
+        $this->sessionContext->signIn($userId);
         $this->httpFlow->redirectTo("/building");
     }
 }

@@ -17,8 +17,6 @@ class FuelController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->init();
-
         $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
 
@@ -30,8 +28,6 @@ class FuelController implements Controller {
     }
 
     public function post($variables, $properties) {
-        $this->sessionContext->init();
-
         $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
         $this->fuelService->updateFuelsConsumptionByBuildingId($buildingId, $properties);

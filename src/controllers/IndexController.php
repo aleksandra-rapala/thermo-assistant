@@ -11,8 +11,6 @@ class IndexController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->init();
-
         if ($this->sessionContext->isSignedIn()) {
             $this->httpFlow->redirectTo("/building");
         } else {
