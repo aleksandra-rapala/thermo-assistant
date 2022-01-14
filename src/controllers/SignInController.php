@@ -28,7 +28,7 @@ class SignInController implements Controller {
         ]);
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $email = $properties["e-mail"];
         $password = $properties["password"];
 

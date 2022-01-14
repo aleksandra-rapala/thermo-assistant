@@ -2,12 +2,12 @@
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Wiadomość e-mail", "offers", "fuels-email");
+    $this->renderUncheckedCheckbox("Wiadomość e-mail", "subscriptions", "fuels-email");
     ?>
 </div>
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "offers", "fuels-notification");
+    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "subscriptions", "fuels-notification");
     ?>
 </div>

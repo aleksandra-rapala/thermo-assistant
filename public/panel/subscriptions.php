@@ -2,13 +2,13 @@
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Wiadomość e-mail", "offers", "modernization-email");
+    $this->renderUncheckedCheckbox("Wiadomość e-mail", "subscriptions", "modernization-email");
     ?>
 </div>
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "offers", "modernization-notification");
+    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "subscriptions", "modernization-notification");
     ?>
 </div>
 
@@ -16,12 +16,12 @@
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Wiadomość e-mail", "offers", "heater-email");
+    $this->renderUncheckedCheckbox("Wiadomość e-mail", "subscriptions", "heater-email");
     ?>
 </div>
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "offers", "heater-notification");
+    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "subscriptions", "heater-notification");
     ?>
 </div>

@@ -23,7 +23,7 @@ class SummaryController implements Controller {
         ]);
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $this->httpFlow->methodNotAllowed();
     }
 }

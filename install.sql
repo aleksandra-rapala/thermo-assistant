@@ -3,11 +3,10 @@ CREATE SCHEMA public;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(64) NOT NULL,
+    name VARCHAR(32) NOT NULL,
     surname VARCHAR(64) NOT NULL,
     e_mail VARCHAR(128) NOT NULL,
-    password VARCHAR(64) NOT NULL,
-    is_admin BOOLEAN NOT NULL DEFAULT false
+    password VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE addresses (
@@ -162,6 +161,17 @@ CREATE TABLE sessions (
     ssid VARCHAR(64) NOT NULL
 );
 
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(32) UNIQUE NOT NULL
+);
+
+CREATE TABLE users_roles (
+    id SERIAL PRIMARY KEY,
+    role_id INT NOT NULL REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    user_id INT NOT NULL REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 INSERT INTO subscriptions
     (name)
 VALUES
@@ -210,3 +220,19 @@ VALUES
     (3, 'fifth', 'Klasa V', false),
     (4, 'fifth-with-eco', 'Klasa V + Eco', true),
     (5, 'eco', 'Eco', true);
+
+INSERT INTO roles
+    (name)
+VALUES
+    ('administrator'),
+    ('regular-user');
+
+INSERT INTO users
+    (id, name, surname, e_mail, password)
+VALUES
+    (1, 'asd', 'asd', 'asd@asd.asd', '$2y$10$7Y1N8nmGNxgc0Svu2kwefO8GlxIPTceuyzWqtwCDARGhcnuAougKm');
+
+INSERT INTO users_roles
+    (id, user_id, role_id)
+VALUES
+    (1, 1, 1);

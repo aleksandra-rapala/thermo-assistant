@@ -15,7 +15,7 @@ class IndexController implements Controller {
         $this->httpFlow->redirectTo($isSignedIn? "/building" : "/signIn");
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $this->httpFlow->methodNotAllowed();
     }
 }

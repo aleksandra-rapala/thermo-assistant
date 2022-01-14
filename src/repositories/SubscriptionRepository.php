@@ -56,4 +56,37 @@ class SubscriptionRepository {
 
        $this->database->execute($query, $buildingId, $subscriptionName);
     }
+
+    public function findSubscribersByCommunityAndSubscriptionName($community, $subscriptionName) {
+        $query = "
+            SELECT
+                e_mail
+            FROM
+                 users u
+            JOIN
+                buildings b ON u.id = b.user_id
+            JOIN
+                addresses a ON a.id = b.address_id
+            JOIN
+                buildings_subscriptions bs ON b.id = bs.building_id
+            JOIN
+                subscriptions s ON bs.subscription_id = s.id
+            WHERE
+                a.community = ? AND s.name = ?;
+        ";
+
+        $result = $this->database->executeAndFetchAll($query, $community, $subscriptionName);
+
+        return $this->mapToEmails($result);
+    }
+
+    private function mapToEmails($result) {
+        $emails = [];
+
+        foreach ($result as $row) {
+            $emails[] = $row["e_mail"];
+        }
+
+        return $emails;
+    }
 }

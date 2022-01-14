@@ -27,7 +27,7 @@ class FuelController implements Controller {
         ]);
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
         $this->fuelService->updateFuelsConsumptionByBuildingId($buildingId, $properties);
