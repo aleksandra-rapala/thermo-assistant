@@ -2,30 +2,36 @@
 require_once("src/controllers/Controller.php");
 
 class OffersController implements Controller {
-    private $httpFlow;
-    private $renderingEngine;
     private $sessionContext;
     private $buildingService;
 
-    public function __construct($httpFlow, $renderingEngine, $sessionContext, $buildingService) {
-        $this->httpFlow = $httpFlow;
-        $this->renderingEngine = $renderingEngine;
+    public function __construct($sessionContext, $buildingService) {
         $this->sessionContext = $sessionContext;
         $this->buildingService = $buildingService;
     }
 
     public function get($variables) {
-        echo json_encode($this->buildingService->findSubscriptionsByBuildingId(3));
+        $this->sessionContext->ensureAuthorized();
+
+        $userId = $this->sessionContext->getUserId();
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
+        $subscriptions = $this->buildingService->findSubscriptionsByBuildingId($buildingId);
+
+        echo json_encode($subscriptions);
     }
 
     public function post($variables, $properties) {
+        $this->sessionContext->ensureAuthorized();
+
+        $userId = $this->sessionContext->getUserId();
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
         $subscriptionName = $variables["subscription-name"];
-        $subscriptionStatus = $variables["active"];
+        $subscriptionStatus = boolval($variables["active"]);
 
         if ($subscriptionStatus) {
-            $this->buildingService->subscribe(3, $subscriptionName);
+            $this->buildingService->subscribe($buildingId, $subscriptionName);
         } else {
-            $this->buildingService->unsubscribe(3, $subscriptionName);
+            $this->buildingService->unsubscribe($buildingId, $subscriptionName);
         }
     }
 }

@@ -23,11 +23,11 @@ function bindActions(checkbox) {
 }
 
 function subscribe(subscriptionName) {
-    fetch("/offers?subscription-name=" + subscriptionName + "&active=true", {method: "POST"})
+    fetch("/offers?subscription-name=" + subscriptionName + "&active=1", {method: "POST"})
         .then(() => {});
 }
 
 function unsubscribe(subscriptionName) {
-    fetch("/offers?subscription-name=" + subscriptionName + "&active=false", {method: "POST"})
+    fetch("/offers?subscription-name=" + subscriptionName + "&active=0", {method: "POST"})
         .then(() => {});
 }

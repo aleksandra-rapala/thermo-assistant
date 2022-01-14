@@ -1,9 +1,11 @@
 <?php
 class SessionContext {
     private $database;
+    private $httpFlow;
 
-    public function __construct($database) {
+    public function __construct($database, $httpFlow) {
         $this->database = $database;
+        $this->httpFlow = $httpFlow;
     }
 
     public function signIn($userId) {
@@ -32,5 +34,11 @@ class SessionContext {
         $this->database->execute($query, $sessionId);
 
         setcookie("sessionId", "", 0, "/");
+    }
+
+    public function ensureAuthorized() {
+        if ( !$this->isSignedIn()) {
+            $this->httpFlow->unauthorized();
+        }
     }
 }

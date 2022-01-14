@@ -152,7 +152,8 @@ CREATE TABLE subscriptions (
 CREATE TABLE buildings_subscriptions (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    subscription_id INT NOT NULL REFERENCES subscriptions ON UPDATE CASCADE ON DELETE RESTRICT
+    subscription_id INT NOT NULL REFERENCES subscriptions ON UPDATE CASCADE ON DELETE RESTRICT,
+    UNIQUE (building_id, subscription_id)
 );
 
 CREATE TABLE sessions (

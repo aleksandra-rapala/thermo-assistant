@@ -31,7 +31,7 @@ $httpFlow = new HttpFlow();
 $routingService = new RoutingService($httpFlow);
 $databaseFactory = new PgDatabaseFactory();
 $database = $databaseFactory->create(HOST, PORT, DATABASE, USERNAME, PASSWORD);
-$sessionContext = new SessionContext($database);
+$sessionContext = new SessionContext($database, $httpFlow);
 $renderingEngine = new RenderingEngine();
 $userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
@@ -53,7 +53,7 @@ $heaterService = new HeaterService($heaterRepository);
 $heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService, $httpFlow);
 $summaryController = new SummaryController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
 $pollutionsController = new PollutionsController($httpFlow);
-$offersController = new OffersController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
+$offersController = new OffersController($sessionContext, $buildingService);
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);
