@@ -172,6 +172,15 @@ CREATE TABLE users_roles (
     user_id INT NOT NULL REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE FUNCTION assign_default_role_to_new_user() RETURNS TRIGGER LANGUAGE 'plpgsql' AS $$
+BEGIN
+    INSERT INTO users_roles (role_id, user_id) VALUES ((SELECT id FROM roles WHERE name = 'regular'), NEW.id);
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER assign_default_role_to_new_users AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE assign_default_role_to_new_user();
+
 INSERT INTO subscriptions
     (name)
 VALUES
@@ -222,10 +231,12 @@ VALUES
     (5, 'eco', 'Eco', true);
 
 INSERT INTO roles
-    (name)
+    (id, name)
 VALUES
-    ('administrator'),
-    ('regular-user');
+    (1, 'regular'),
+    (2, 'moderator'),
+    (3, 'administrator'),
+    (4, 'developer');
 
 INSERT INTO users
     (id, name, surname, e_mail, password)
@@ -233,6 +244,6 @@ VALUES
     (1, 'asd', 'asd', 'asd@asd.asd', '$2y$10$7Y1N8nmGNxgc0Svu2kwefO8GlxIPTceuyzWqtwCDARGhcnuAougKm');
 
 INSERT INTO users_roles
-    (id, user_id, role_id)
+    (user_id, role_id)
 VALUES
-    (1, 1, 1);
+    (1, 3);

@@ -27,6 +27,7 @@ require_once("src/controllers/SummaryController.php");
 require_once("src/controllers/PollutionsController.php");
 require_once("src/controllers/SubscriptionsController.php");
 require_once("src/controllers/OffersController.php");
+require_once("src/controllers/SecuredController.php");
 require_once("src/persistence/PgDatabaseFactory.php");
 
 $httpFlow = new HttpFlow();
@@ -58,6 +59,8 @@ $pollutionsController = new PollutionsController($httpFlow);
 $subscriptionsController = new SubscriptionsController($sessionContext, $buildingService);
 $offersService = new OffersService($subscriptionRepository);
 $offersController = new OffersController($httpFlow, $sessionContext, $offersService);
+$offersController = new SecuredController($httpFlow, $sessionContext, $database, $offersController);
+$offersController->requireRole("administrator");
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);
