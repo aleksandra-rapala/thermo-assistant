@@ -57,6 +57,11 @@ button:hover {
     background: rgb(255, 165, 0);
 }
 
+button[disabled] {
+    background: rgb(255, 165, 0);
+    opacity: 30%;
+}
+
 input, select {
     margin-bottom: 1.2em;
 }

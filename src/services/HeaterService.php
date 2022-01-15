@@ -66,8 +66,7 @@ class HeaterService {
         return $heater;
     }
 
-    public function createByBuildingId($buildingId, $properties) {
-        $heater = $this->mapToHeater($properties);
-        $this->heaterRepository->createByBuildingId($buildingId, $heater);
+    public function createByBuildingId($buildingId) {
+        $this->heaterRepository->createByBuildingId($buildingId);
     }
 }

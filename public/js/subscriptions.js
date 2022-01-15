@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
     document
         .querySelectorAll("input[type='checkbox'][name='subscriptions']")
         .forEach(bindActions);
-})
+});
 
 function showSubscriptions() {
     fetch("/subscriptions")

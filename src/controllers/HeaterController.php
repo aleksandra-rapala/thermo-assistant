@@ -34,10 +34,9 @@ class HeaterController implements Controller {
 
         if ($this->heaterService->existsByHeaterIdAndBuildingId($heaterId, $buildingId)) {
             $this->heaterService->updateHeaterById($heaterId, $properties);
+            $this->httpFlow->redirectTo("/summary");
         } else {
-            $this->heaterService->createByBuildingId($buildingId, $properties);
+            $this->heaterService->createByBuildingId($buildingId);
         }
-
-        $this->httpFlow->redirectTo("/summary");
     }
 }

@@ -197,26 +197,9 @@ class HeaterRepository {
         );
     }
 
-    public function createByBuildingId($buildingId, $heater) {
-        $query = "
-            INSERT INTO heaters
-                (building_id, heater_type_id, power, combustion_chamber, efficiency, installation_year, production_year, data_source, dust_extractor, thermal_class_id)
-            VALUES
-                (?, (SELECT id FROM heater_types WHERE name = ?), ?, ?, ?, ?, ?, ?, ?, (SELECT id FROM thermal_classes WHERE name = ?));
-        ";
-
-        $this->database->execute($query,
-            $buildingId,
-            $heater->getType(),
-            $heater->getPower(),
-            $heater->getCombustionChamber(),
-            $heater->getEfficiency(),
-            $heater->getInstallationYear(),
-            $heater->getProductionYear(),
-            $heater->getDataSource(),
-            $heater->hasDustExtractor()? "true" : "false",
-            $heater->getThermalClass()
-        );
+    public function createByBuildingId($buildingId) {
+        $query = "INSERT INTO heaters (building_id) VALUES (?);";
+        $this->database->execute($query, $buildingId);
     }
 
     public function existsByHeaterIdAndBuildingId($heaterId, $buildingId) {
