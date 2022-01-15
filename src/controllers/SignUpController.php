@@ -32,7 +32,7 @@ class SignUpController implements Controller {
         ]);
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $email = $properties["e-mail"];
         $name = $properties["name"];
         $surname = $properties["surname"];
@@ -41,18 +41,14 @@ class SignUpController implements Controller {
         try {
             $this->processSignUp($name, $surname, $email, $password);
         } catch (UserAlreadyExistsException $exception) {
-            $this->httpFlow->redirectTo("/signIn?user-exists");
+            $this->httpFlow->redirectTo("/signUp?user-exists");
         } catch (WeakPasswordException $exception) {
-            $this->httpFlow->redirectTo("/signIn?weak-password");
+            $this->httpFlow->redirectTo("/signUp?weak-password");
         }
     }
 
     private function processSignUp($name, $surname, $email, $password) {
-        $userId = $this->userService->addUser($name, $surname, $email, $password);
-
-        $this->sessionContext->init();
-        $this->sessionContext->setUserId($userId);
-
-        $this->httpFlow->redirectTo("/building");
+        $this->userService->addUser($name, $surname, $email, $password);
+        $this->httpFlow->redirectTo("/");
     }
 }

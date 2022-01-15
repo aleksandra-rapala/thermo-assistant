@@ -3,11 +3,10 @@ CREATE SCHEMA public;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(64) NOT NULL,
+    name VARCHAR(32) NOT NULL,
     surname VARCHAR(64) NOT NULL,
     e_mail VARCHAR(128) NOT NULL,
-    password VARCHAR(80) NOT NULL,
-    is_admin BOOLEAN NOT NULL DEFAULT false
+    password VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE addresses (
@@ -152,8 +151,35 @@ CREATE TABLE subscriptions (
 CREATE TABLE buildings_subscriptions (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    subscription_id INT NOT NULL REFERENCES subscriptions ON UPDATE CASCADE ON DELETE RESTRICT
+    subscription_id INT NOT NULL REFERENCES subscriptions ON UPDATE CASCADE ON DELETE RESTRICT,
+    UNIQUE (building_id, subscription_id)
 );
+
+CREATE TABLE sessions (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    ssid VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(32) UNIQUE NOT NULL
+);
+
+CREATE TABLE users_roles (
+    id SERIAL PRIMARY KEY,
+    role_id INT NOT NULL REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    user_id INT NOT NULL REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE FUNCTION assign_default_role_to_new_user() RETURNS TRIGGER LANGUAGE 'plpgsql' AS $$
+BEGIN
+    INSERT INTO users_roles (role_id, user_id) VALUES ((SELECT id FROM roles WHERE name = 'regular'), NEW.id);
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER assign_default_role_to_new_users AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE assign_default_role_to_new_user();
 
 INSERT INTO subscriptions
     (name)
@@ -203,3 +229,21 @@ VALUES
     (3, 'fifth', 'Klasa V', false),
     (4, 'fifth-with-eco', 'Klasa V + Eco', true),
     (5, 'eco', 'Eco', true);
+
+INSERT INTO roles
+    (id, name)
+VALUES
+    (1, 'regular'),
+    (2, 'moderator'),
+    (3, 'administrator'),
+    (4, 'developer');
+
+INSERT INTO users
+    (id, name, surname, e_mail, password)
+VALUES
+    (1, 'asd', 'asd', 'asd@asd.asd', '$2y$10$7Y1N8nmGNxgc0Svu2kwefO8GlxIPTceuyzWqtwCDARGhcnuAougKm');
+
+INSERT INTO users_roles
+    (user_id, role_id)
+VALUES
+    (1, 3);

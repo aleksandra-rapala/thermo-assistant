@@ -15,6 +15,7 @@ require_once("src/services/UserService.php");
 require_once("src/services/BuildingService.php");
 require_once("src/services/FuelService.php");
 require_once("src/services/HeaterService.php");
+require_once("src/services/OffersService.php");
 require_once("src/controllers/IndexController.php");
 require_once("src/controllers/SignInController.php");
 require_once("src/controllers/SignUpController.php");
@@ -24,15 +25,17 @@ require_once("src/controllers/FuelController.php");
 require_once("src/controllers/HeaterController.php");
 require_once("src/controllers/SummaryController.php");
 require_once("src/controllers/PollutionsController.php");
+require_once("src/controllers/SubscriptionsController.php");
 require_once("src/controllers/OffersController.php");
+require_once("src/controllers/SecuredController.php");
 require_once("src/persistence/PgDatabaseFactory.php");
 
 $httpFlow = new HttpFlow();
 $routingService = new RoutingService($httpFlow);
-$sessionContext = new SessionContext();
-$renderingEngine = new RenderingEngine();
 $databaseFactory = new PgDatabaseFactory();
 $database = $databaseFactory->create(HOST, PORT, DATABASE, USERNAME, PASSWORD);
+$sessionContext = new SessionContext($database, $httpFlow);
+$renderingEngine = new RenderingEngine();
 $userRepository = new UserRepository($database);
 $userService = new UserService($userRepository);
 $indexController = new IndexController($httpFlow, $sessionContext);
@@ -53,7 +56,11 @@ $heaterService = new HeaterService($heaterRepository);
 $heaterController = new HeaterController($renderingEngine, $sessionContext, $buildingService, $heaterService, $httpFlow);
 $summaryController = new SummaryController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
 $pollutionsController = new PollutionsController($httpFlow);
-$offersController = new OffersController($httpFlow, $renderingEngine, $sessionContext, $buildingService);
+$subscriptionsController = new SubscriptionsController($sessionContext, $buildingService);
+$offersService = new OffersService($subscriptionRepository);
+$offersController = new OffersController($httpFlow, $sessionContext, $offersService);
+$offersController = new SecuredController($httpFlow, $sessionContext, $database, $offersController);
+$offersController->requireRole("administrator");
 
 $routingService->register("", $indexController);
 $routingService->register("signIn", $signInController);
@@ -64,6 +71,7 @@ $routingService->register("fuels", $fuelController);
 $routingService->register("heaters", $heaterController);
 $routingService->register("summary", $summaryController);
 $routingService->register("pollutions", $pollutionsController);
+$routingService->register("subscriptions", $subscriptionsController);
 $routingService->register("offers", $offersController);
 
 $resource = $_SERVER["REQUEST_URI"];
@@ -75,7 +83,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $routingService->get($resource, $_GET);
         break;
     case "POST":
-        $routingService->post($resource, $_GET, $_POST);
+        $body = file_get_contents("php://input");
+        $body = json_decode($body, true);
+
+        $routingService->post($resource, $_GET, $_POST, $body);
         break;
     default:
         $httpFlow->methodNotAllowed();

@@ -1,31 +1,26 @@
 <?php
-require_once("src/controllers/Controller.php");
+require_once("src/controllers/OffersController.php");
 
 class OffersController implements Controller {
     private $httpFlow;
-    private $renderingEngine;
     private $sessionContext;
-    private $buildingService;
+    private $offersService;
 
-    public function __construct($httpFlow, $renderingEngine, $sessionContext, $buildingService) {
+    public function __construct($httpFlow, $sessionContext, $offersService) {
         $this->httpFlow = $httpFlow;
-        $this->renderingEngine = $renderingEngine;
         $this->sessionContext = $sessionContext;
-        $this->buildingService = $buildingService;
+        $this->offersService = $offersService;
     }
 
     public function get($variables) {
-        echo json_encode($this->buildingService->findSubscriptionsByBuildingId(3));
+        $this->httpFlow->methodNotAllowed();
     }
 
-    public function post($variables, $properties) {
-        $subscriptionName = $variables["subscription-name"];
-        $subscriptionStatus = $variables["active"];
+    public function post($variables, $properties, $body) {
+        $community = $body["community"];
+        $description = $body["description"];
+        $category = $body["category"];
 
-        if ($subscriptionStatus) {
-            $this->buildingService->subscribe(3, $subscriptionName);
-        } else {
-            $this->buildingService->unsubscribe(3, $subscriptionName);
-        }
+        $this->offersService->dispatchNotification($community, $description, $category);
     }
 }

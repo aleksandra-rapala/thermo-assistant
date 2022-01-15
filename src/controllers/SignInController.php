@@ -28,7 +28,7 @@ class SignInController implements Controller {
         ]);
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $email = $properties["e-mail"];
         $password = $properties["password"];
 
@@ -43,9 +43,7 @@ class SignInController implements Controller {
         $user = $this->userService->getUser($email, $password);
         $userId = $user->getId();
 
-        $this->sessionContext->init();
-        $this->sessionContext->setUserId($userId);
-
+        $this->sessionContext->signIn($userId);
         $this->httpFlow->redirectTo("/building");
     }
 }

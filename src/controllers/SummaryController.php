@@ -15,21 +15,15 @@ class SummaryController implements Controller {
     }
 
     public function get($variables) {
-        $this->sessionContext->init();
+        $userId = $this->sessionContext->getUserId();
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
 
-        if ($this->sessionContext->isSignedIn()) {
-            $userId = $this->sessionContext->getUserId();
-            $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
-
-            $this->renderingEngine->renderView("summary", [
-                "ceeb" => true
-            ]);
-        } else {
-            $this->httpFlow->redirectTo("/signIn");
-        }
+        $this->renderingEngine->renderView("summary", [
+            "ceeb" => true
+        ]);
     }
 
-    public function post($variables, $properties) {
+    public function post($variables, $properties, $body) {
         $this->httpFlow->methodNotAllowed();
     }
 }

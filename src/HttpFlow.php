@@ -5,6 +5,16 @@ class HttpFlow {
         die();
     }
 
+    public function unauthorized() {
+        http_response_code(401);
+        die();
+    }
+
+    public function forbidden() {
+        http_response_code(403);
+        die();
+    }
+
     public function notFound() {
         http_response_code(404);
         die();

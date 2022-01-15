@@ -37,8 +37,8 @@ class UserService {
 
         if ($this->userRepository->existsByEmail($email)) {
             throw new UserAlreadyExistsException();
-        } else {
-            $this->userRepository->save($user);
         }
+
+        $this->userRepository->save($user);
     }
 }
