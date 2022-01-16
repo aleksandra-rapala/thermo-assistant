@@ -27,7 +27,9 @@ class RenderingEngine {
         echo <<<HTML
             <label for="$property-field">$label</label>
             <input name="$property" id="$property-field" value="$value" list="$property-suggestions" />
-            
+        HTML;
+
+        echo <<<HTML
             <datalist id="$property-suggestions">
         HTML;
 
@@ -94,6 +96,12 @@ class RenderingEngine {
 
         echo <<<HTML
             </select>
+        HTML;
+    }
+
+    private function renderHiddenField($property, $value) {
+        echo <<<HTML
+            <input type="hidden" name="$property" value="$value" />
         HTML;
     }
 }

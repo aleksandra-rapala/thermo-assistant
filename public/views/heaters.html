@@ -5,8 +5,8 @@
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
-        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
-        <link rel="stylesheet" type="text/css" href="/public/css/heaters.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/form.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/heaters.css" />
         <script type="text/javascript" src="./public/js/header.js"></script>
         <script type="text/javascript" src="./public/js/heaters.js"></script>
     </head>
@@ -23,28 +23,30 @@
                     <h2>Źródło ciepła #<?= $index + 1; ?></h2>
 
                     <?php
-                    $this->renderCombobox("Rodzaj", "type-$index", $heaterTypes, $heater->getType());
-                    $this->renderTextField("Moc", "power-$index", $heater->getPower());
-                    $this->renderTextField("Sprawność cieplna [%]", "efficiency-$index", $heater->getEfficiency());
-                    $this->renderTextField("Rok instalacji", "installation-year-$index", $heater->getInstallationYear());
-                    $this->renderTextField("Rok produkcji", "production-year-$index", $heater->getProductionYear());
-                    $this->renderTextFieldWithSuggestions("Źródło danych", "data-source-$index", $heater->getDataSource(), ["Tabliczka znamionowa", "Dokumentacja techniczna", "Wiedza właściciela"]);
-                    $this->renderCombobox("Klasa kotła", "thermal-class-$index", $thermalClasses, $heater->getThermalClass());
+                    $this->renderCombobox("Rodzaj", "type[$index]", $heaterTypes, $heater->getType());
+                    $this->renderTextField("Moc", "power[$index]", $heater->getPower());
+                    $this->renderTextField("Sprawność cieplna [%]", "efficiency[$index]", $heater->getEfficiency());
+                    $this->renderTextField("Rok instalacji", "installation-year[$index]", $heater->getInstallationYear());
+                    $this->renderTextField("Rok produkcji", "production-year[$index]", $heater->getProductionYear());
+                    $this->renderTextFieldWithSuggestions("Źródło danych", "data-source[$index]", $heater->getDataSource(), ["Tabliczka znamionowa", "Dokumentacja techniczna", "Wiedza właściciela"]);
+                    $this->renderCombobox("Klasa kotła", "thermal-class[$index]", $thermalClasses, $heater->getThermalClass());
                     ?>
 
                     <div>
                         <?php
-                        $this->renderRadioGroup("Komora spalania", "combustion-chamber-$index", ["open" => "Otwarta", "closed" => "Zamknięta"], $heater->getCombustionChamber());
+                        $this->renderRadioGroup("Komora spalania", "combustion-chamber[$index]", ["open" => "Otwarta", "closed" => "Zamknięta"], $heater->getCombustionChamber());
                         ?>
                     </div>
 
                     <div>
                         <?php
-                        $this->renderCheckbox("Urządzenie odpylające", "dust-extractor-$index", true, $heater->hasDustExtractor());
+                        $this->renderCheckbox("Urządzenie odpylające", "dust-extractor[$index]", true, $heater->hasDustExtractor());
                         ?>
                     </div>
 
-                    <input type="hidden" name="heater-id" value="<?= $heater->getId(); ?>" />
+                    <?php
+                    $this->renderHiddenField("heater-id[$index]", $heater->getId());
+                    ?>
                 </div>
                 <?php endforeach; ?>
             </form>

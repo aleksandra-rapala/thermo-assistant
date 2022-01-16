@@ -5,8 +5,8 @@
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
-        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
-        <link rel="stylesheet" type="text/css" href="/public/css/building.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/form.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/building.css" />
         <script type="text/javascript" src="./public/js/header.js"></script>
     </head>
 
@@ -53,11 +53,11 @@
                     <?php foreach ($modernizations as $modernization): ?>
                     <div>
                         <?php
-                        $modernizationLabel = $modernization->getLabel();
-                        $modernizationName = $modernization->getName();
-                        $isCompleted = $building->hasCompletedModernization($modernizationName);
+                        $label = $modernization->getLabel();
+                        $name = $modernization->getName();
+                        $isCompleted = $building->hasCompletedModernization($name);
 
-                        $this->renderCheckbox($modernizationLabel, "completed-modernizations[]", $modernizationName, $isCompleted);
+                        $this->renderCheckbox($label, "completed-modernizations[]", $name, $isCompleted);
                         ?>
                     </div>
                     <?php endforeach; ?>
@@ -69,11 +69,11 @@
                     <?php foreach ($modernizations as $modernization): ?>
                     <div>
                         <?php
-                        $modernizationLabel = $modernization->getLabel();
-                        $modernizationName = $modernization->getName();
-                        $isPlanned = $building->hasPlannedModernization($modernizationName);
+                        $label = $modernization->getLabel();
+                        $name = $modernization->getName();
+                        $isPlanned = $building->hasPlannedModernization($name);
 
-                        $this->renderCheckbox($modernizationLabel, "planned-modernizations[]", $modernizationName, $isPlanned);
+                        $this->renderCheckbox($label, "planned-modernizations[]", $name, $isPlanned);
                         ?>
                     </div>
                     <?php endforeach; ?>
@@ -85,11 +85,11 @@
                     <?php foreach ($heaterTypes as $heaterType): ?>
                     <div>
                         <?php
-                        $heaterTypeLabel = $heaterType->getLabel();
-                        $heaterTypeName = $heaterType->getName();
-                        $isToInstall = $building->hasHeaterToInstall($heaterTypeName);
+                        $typeLabel = $heaterType->getLabel();
+                        $typeName = $heaterType->getName();
+                        $isToInstall = $building->hasHeaterToInstall($typeName);
 
-                        $this->renderCheckbox($heaterTypeLabel, "heaters-to-install[]", $heaterTypeName, $isToInstall);
+                        $this->renderCheckbox($typeLabel, "heaters-to-install[]", $typeName, $isToInstall);
                         ?>
                     </div>
                     <?php endforeach; ?>
