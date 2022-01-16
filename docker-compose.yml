@@ -9,8 +9,8 @@ services:
       - "8080:80"
     volumes:
       - .:/app/
-    links:
-      - php
+    networks:
+      - default
 
   php:
     build:
@@ -18,3 +18,13 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/app/
+    networks:
+      - default
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - default

@@ -58,7 +58,7 @@ $summaryController = new SummaryController($httpFlow, $renderingEngine, $session
 $pollutionsController = new PollutionsController($httpFlow);
 $subscriptionsController = new SubscriptionsController($sessionContext, $buildingService);
 $offersService = new OffersService($subscriptionRepository);
-$offersController = new OffersController($httpFlow, $sessionContext, $offersService);
+$offersController = new OffersController($httpFlow, $offersService);
 $offersController = new SecuredController($httpFlow, $sessionContext, $database, $offersController);
 $offersController->requireRole("administrator");
 

@@ -1,14 +1,12 @@
 <?php
-require_once("src/controllers/OffersController.php");
+require_once("src/controllers/Controller.php");
 
 class OffersController implements Controller {
     private $httpFlow;
-    private $sessionContext;
     private $offersService;
 
-    public function __construct($httpFlow, $sessionContext, $offersService) {
+    public function __construct($httpFlow, $offersService) {
         $this->httpFlow = $httpFlow;
-        $this->sessionContext = $sessionContext;
         $this->offersService = $offersService;
     }
 
@@ -18,9 +16,9 @@ class OffersController implements Controller {
 
     public function post($variables, $properties, $body) {
         $community = $body["community"];
-        $description = $body["description"];
+        $message = $body["message"];
         $category = $body["category"];
 
-        $this->offersService->dispatchNotification($community, $description, $category);
+        $this->offersService->dispatchNotification($community, $message, $category);
     }
 }

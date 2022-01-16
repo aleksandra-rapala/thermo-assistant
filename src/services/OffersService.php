@@ -6,13 +6,11 @@ class OffersService {
         $this->subscriptionRepository = $subscriptionRepository;
     }
 
-    public function dispatchNotification($community, $description, $category) {
+    public function dispatchNotification($community, $message, $category) {
         $subscribers = $this->subscriptionRepository->findSubscribersByCommunityAndSubscriptionName($community, $category . "-email");
 
-        echo "Notification: $description\n";
-
         foreach ($subscribers as $subscriber) {
-            echo "Sending to $subscriber\n";
+            mail($subscriber, "Nowe oferty [thermo-assistant]", $message, "From: oferty@thermo-assistant");
         }
     }
 }

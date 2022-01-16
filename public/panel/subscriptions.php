@@ -16,12 +16,12 @@
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Wiadomość e-mail", "subscriptions", "heater-email");
+    $this->renderUncheckedCheckbox("Wiadomość e-mail", "subscriptions", "solar-panels-email");
     ?>
 </div>
 
 <div class="indented-checkbox">
     <?php
-    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "subscriptions", "heater-notification");
+    $this->renderUncheckedCheckbox("Powiadomienie w przeglądarce", "subscriptions", "solar-panels-email");
     ?>
 </div>

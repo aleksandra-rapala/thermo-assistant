@@ -28,6 +28,10 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && apk del .build-deps
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
+RUN wget https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64
+RUN chmod +x mhsendmail_linux_amd64
+RUN mv mhsendmail_linux_amd64 /usr/bin/mhsendmail
+RUN echo "sendmail_path = '/usr/bin/mhsendmail --smtp-addr=mailhog:1025 --from=oferty@thermo-assistant'" > /usr/local/etc/php/php.ini
 
 # Copy the application code
 COPY . /app
