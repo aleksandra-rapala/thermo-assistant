@@ -7,12 +7,13 @@
         <title>thermo-assistant</title>
         <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/heaters.css" />
+        <script type="text/javascript" src="./public/js/header.js"></script>
         <script type="text/javascript" src="./public/js/heaters.js"></script>
     </head>
 
     <body>
         <?php
-        $this->renderBreadcrumb("heaters");
+        require("./public/panel/header.php");
         ?>
 
         <div id="heaters-view">
@@ -43,9 +44,7 @@
                         ?>
                     </div>
 
-                    <?php
-                    $this->renderHiddenField("heater-id", $heater->getId());
-                    ?>
+                    <input type="hidden" name="heater-id" value="<?= $heater->getId(); ?>" />
                 </div>
                 <?php endforeach; ?>
             </form>

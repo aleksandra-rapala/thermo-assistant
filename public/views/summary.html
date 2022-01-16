@@ -7,13 +7,14 @@
         <title>thermo-assistant</title>
         <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
         <link rel="stylesheet" type="text/css" href="/public/css/summary.css" />
+        <script type="text/javascript" src="./public/js/header.js"></script>
         <script type="text/javascript" src="./public/js/summary.js"></script>
         <script type="text/javascript" src="./public/js/subscriptions.js"></script>
     </head>
 
     <body>
         <?php
-        $this->renderBreadcrumb("summary");
+        require("./public/panel/header.php");
         ?>
 
         <div id="summary-view">

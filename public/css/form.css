@@ -3,10 +3,6 @@ h1 {
     font-family: sans-serif;
 }
 
-#breadcrumb a {
-    text-decoration: none;
-}
-
 #action-bar {
     margin: 1em 0;
 }
@@ -75,6 +71,7 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 a {
+    text-decoration: none;
     color: rgb(255, 165, 0);
 }
 
