@@ -44,13 +44,13 @@ window.addEventListener("load", () => {
         const isPasswordStrong = checkPasswordStrength(passwordService, passwordFieldService);
         const isPasswordConfirmed = checkPasswordConfirmation(passwordService, repeatedPasswordFieldService);
 
-        confirmButton.disable = isPasswordStrong && isPasswordConfirmed;
+        confirmButton.disabled = !isPasswordStrong || !isPasswordConfirmed;
     });
 
     repeatedPasswordField.addEventListener("blur", () => {
         const isPasswordConfirmed = checkPasswordConfirmation(passwordService, repeatedPasswordFieldService);
 
-        confirmButton.disable = isPasswordConfirmed;
+        confirmButton.disabled = !isPasswordConfirmed;
     });
 });
 
