@@ -16,8 +16,9 @@ class RenderingEngine {
         }
     }
 
-    private function render_breadcumb($activeTab) {
+    private function renderBreadcrumb($activeTab) {
         $tabs = [
+            "logout" => "Wyloguj się",
             "building" => "Informacje",
             "fuels" => "Zużycie paliw",
             "heaters" => "Źródła ciepła",
@@ -29,7 +30,7 @@ class RenderingEngine {
         HTML;
 
         echo <<<HTML
-            <div id="breadcumb">
+            <div id="breadcrumb">
         HTML;
 
         foreach ($tabs as $tab => $label) {

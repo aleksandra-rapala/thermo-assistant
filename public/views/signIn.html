@@ -16,7 +16,7 @@
             </div>
 
             <div id="user-panel">
-                <form action="/signIn" method="post">
+                <form id="sign-in-form" action="/signIn" method="post">
                     <?php foreach ($warnings as $warning): ?>
                         <div class="warning"><?= $warning; ?></div>
                     <?php endforeach; ?>
@@ -31,6 +31,8 @@
                         <button>Zaloguj się</button>
                     </div>
                 </form>
+
+                <a href="/signUp">Przejdź do rejestracji</a>
             </div>
         </div>
     </body>

@@ -5,6 +5,13 @@
     height: 100vh;
 }
 
+#user-view a {
+    text-decoration: none;
+    font-size: large;
+    margin-top: 1em;
+    display: block;
+}
+
 #user-view > div {
     height: 80%;
 }

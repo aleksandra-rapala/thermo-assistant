@@ -3,7 +3,7 @@ h1 {
     font-family: sans-serif;
 }
 
-#breadcumb a {
+#breadcrumb a {
     text-decoration: none;
 }
 
@@ -11,7 +11,7 @@ h1 {
     margin: 1em 0;
 }
 
-#breadcumb button.active {
+#breadcrumb button.active {
     background: rgb(255, 165, 0);
 }
 
@@ -80,13 +80,13 @@ a {
 
 @media screen and (min-width: 1366px) {
     form {
-        width: 1280px;
+        max-width: 1280px;
         margin: auto;
     }
 }
 
 @media screen and (max-width: 768px) {
-    #breadcumb {
+    #breadcrumb {
         display: flex;
         flex-direction: row;
         overflow-x: scroll;
