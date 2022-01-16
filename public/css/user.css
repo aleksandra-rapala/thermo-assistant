@@ -5,13 +5,6 @@
     height: 100vh;
 }
 
-#user-view a {
-    text-decoration: none;
-    font-size: large;
-    margin-top: 1em;
-    display: block;
-}
-
 #user-view > div {
     height: 80%;
 }
@@ -39,6 +32,18 @@
     font-weight: bold;
     color: white;
     margin: 1em 0;
+}
+
+#user-panel span {
+    margin-bottom: 1.2em;
+    color: red;
+}
+
+#user-panel a {
+    text-decoration: none;
+    font-size: large;
+    margin-top: 1em;
+    display: block;
 }
 
 @media screen and (max-width: 768px) {
