@@ -26,8 +26,6 @@ class BuildingService {
 
     public function create($userId, $properties) {
         $building = $this->mapToBuilding($properties);
-        $building->setHeaters([]);
-
         $this->buildingRepository->insert($userId, $building);
     }
 
@@ -93,8 +91,6 @@ class BuildingService {
 
     public function update($userId, $properties) {
         $building = $this->mapToBuilding($properties);
-        $building->setHeaters([]);
-
         $this->buildingRepository->update($userId, $building);
     }
 

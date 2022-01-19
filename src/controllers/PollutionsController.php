@@ -3,13 +3,22 @@ require_once("src/controllers/Controller.php");
 
 class PollutionsController implements Controller {
     private $httpFlow;
-    private $pollutionService;
+    private $sessionContext;
+    private $buildingService;
+    private $pollutionsService;
 
-    public function __construct($httpFlow) {
+    public function __construct($httpFlow, $sessionContext, $buildingService, $pollutionsService) {
         $this->httpFlow = $httpFlow;
+        $this->sessionContext = $sessionContext;
+        $this->buildingService = $buildingService;
+        $this->pollutionsService = $pollutionsService;
     }
 
     public function get($variables) {
+        $userId = 1;
+        $building = $this->buildingService->findByUserId($userId);
+        $pollutions = $this->pollutionsService->calculateForBuilding($building);
+
         $substances = [
             array("label" => "CO₂", "value" => 0),
             array("label" => "BaP", "value" => 0),
