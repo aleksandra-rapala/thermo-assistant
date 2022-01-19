@@ -20,12 +20,12 @@ class PollutionsController implements Controller {
         $pollutions = $this->pollutionsService->calculateForBuilding($building);
 
         $substances = [
-            array("label" => "CO₂", "value" => 0),
-            array("label" => "BaP", "value" => 0),
-            array("label" => "Nox", "value" => 0),
-            array("label" => "SO₂", "value" => 0),
-            array("label" => "PM10", "value" => 0),
-            array("label" => "PM2,5", "value" => 0)
+            array("label" => "CO₂", "value" => $pollutions["co2"]),
+            array("label" => "BaP", "value" => $pollutions["bap"]),
+            array("label" => "Nox", "value" => $pollutions["nox"]),
+            array("label" => "SO₂", "value" => $pollutions["so2"]),
+            array("label" => "PM10", "value" => $pollutions["pm10"]),
+            array("label" => "PM2,5", "value" => $pollutions["pm25"])
         ];
 
         $summary = "Twój budynek ma umiarkowany wpływ na środowisko";

@@ -10,5 +10,7 @@ class PollutionsService {
         echo "<pre>";
         var_dump($building);
         echo "</pre>";
+
+        return array();
     }
 }
