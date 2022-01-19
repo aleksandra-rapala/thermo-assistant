@@ -30,14 +30,12 @@ class HeaterController implements Controller {
     public function post($variables, $properties, $body) {
         $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
-        $heaterId = $properties["heater-id"];
 
-        if ($this->heaterService->existsByHeaterIdAndBuildingId($heaterId, $buildingId)) {
-            $this->heaterService->updateHeaterById($heaterId, $properties);
+        if (empty($properties)) {
+            $this->heaterService->createByBuildingId($buildingId);
         } else {
-            $this->heaterService->createByBuildingId($buildingId, $properties);
+            $this->heaterService->updateHeatersByBuildingId($buildingId, $properties);
+            $this->httpFlow->redirectTo("/summary");
         }
-
-        $this->httpFlow->redirectTo("/summary");
     }
 }

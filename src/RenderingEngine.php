@@ -16,37 +16,6 @@ class RenderingEngine {
         }
     }
 
-    private function render_breadcumb($activeTab) {
-        $tabs = [
-            "building" => "Informacje",
-            "fuels" => "Zużycie paliw",
-            "heaters" => "Źródła ciepła",
-            "summary" => "Podsumowanie"
-        ];
-
-        echo <<<HTML
-            <h1>Dane budynku</h1>
-        HTML;
-
-        echo <<<HTML
-            <div id="breadcumb">
-        HTML;
-
-        foreach ($tabs as $tab => $label) {
-            $activeStyle = $tab === $activeTab? "class='active'" : "";
-
-            echo <<<HTML
-                <a href="/$tab">
-                    <button $activeStyle>$label</button>
-                </a>
-            HTML;
-        }
-
-        echo <<<HTML
-            </div>
-        HTML;
-    }
-
     private function renderTextField($label, $property, $value) {
         echo <<<HTML
             <label for="$property-field">$label</label>
@@ -58,7 +27,9 @@ class RenderingEngine {
         echo <<<HTML
             <label for="$property-field">$label</label>
             <input name="$property" id="$property-field" value="$value" list="$property-suggestions" />
-            
+        HTML;
+
+        echo <<<HTML
             <datalist id="$property-suggestions">
         HTML;
 

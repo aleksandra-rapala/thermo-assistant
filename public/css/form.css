@@ -3,15 +3,11 @@ h1 {
     font-family: sans-serif;
 }
 
-#breadcumb a {
-    text-decoration: none;
-}
-
 #action-bar {
     margin: 1em 0;
 }
 
-#breadcumb button.active {
+#breadcrumb button.active {
     background: rgb(255, 165, 0);
 }
 
@@ -57,6 +53,11 @@ button:hover {
     background: rgb(255, 165, 0);
 }
 
+button[disabled] {
+    background: rgb(255, 165, 0);
+    opacity: 30%;
+}
+
 input, select {
     margin-bottom: 1.2em;
 }
@@ -70,18 +71,19 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 a {
+    text-decoration: none;
     color: rgb(255, 165, 0);
 }
 
 @media screen and (min-width: 1366px) {
     form {
-        width: 1280px;
+        max-width: 1280px;
         margin: auto;
     }
 }
 
 @media screen and (max-width: 768px) {
-    #breadcumb {
+    #breadcrumb {
         display: flex;
         flex-direction: row;
         overflow-x: scroll;

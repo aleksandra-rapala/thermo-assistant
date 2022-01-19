@@ -5,14 +5,15 @@
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
-        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
-        <link rel="stylesheet" type="text/css" href="/public/css/fuels.css" />
-        <script type="text/javascript" src="./public/js/subscriptions.js" defer="defer"></script>
+        <link rel="stylesheet" type="text/css" href="./public/css/form.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/fuels.css" />
+        <script type="text/javascript" src="./public/js/header.js"></script>
+        <script type="text/javascript" src="./public/js/subscriptions.js"></script>
     </head>
 
     <body>
         <?php
-        $this->render_breadcumb("fuels");
+        require("./public/panel/header.php");
         ?>
 
         <div id="fuels-view">

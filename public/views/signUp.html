@@ -5,8 +5,9 @@
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>thermo-assistant</title>
-        <link rel="stylesheet" type="text/css" href="/public/css/form.css" />
-        <link rel="stylesheet" type="text/css" href="/public/css/user.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/form.css" />
+        <link rel="stylesheet" type="text/css" href="./public/css/user.css" />
+        <script type="text/javascript" src="./public/js/sign-up.js"></script>
     </head>
 
     <body>
@@ -23,23 +24,25 @@
 
                     <div>
                         <label for="name-field">Imię</label>
-                        <input name="name" id="name-field" />
+                        <input name="name" id="name-field" required="required" />
 
                         <label for="surname-field">Nazwisko</label>
-                        <input name="surname" id="surname-field" />
+                        <input name="surname" id="surname-field" required="required" />
 
                         <label for="email-field">Adres e-mail</label>
-                        <input type="email" name="e-mail" id="email-field" />
+                        <input type="email" name="e-mail" id="email-field" required="required" />
 
                         <label for="password-field">Hasło</label>
-                        <input type="password" name="password" id="password-field" />
+                        <input type="password" name="password" id="password-field" required="required" />
 
                         <label for="repeated-password-field">Powtórz hasło</label>
-                        <input type="password" name="repeated-password" id="repeated-password-field" />
+                        <input type="password" name="repeated-password" id="repeated-password-field" required="required" />
 
                         <button>Zarejestruj się</button>
                     </div>
                 </form>
+
+                <a href="/signIn">Przejdź do logowania</a>
             </div>
         </div>
     </body>

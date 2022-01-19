@@ -6,10 +6,6 @@ class HeaterService {
         $this->heaterRepository = $heaterRepository;
     }
 
-    public function existsByHeaterIdAndBuildingId($heaterId, $buildingId) {
-        return $this->heaterRepository->existsByHeaterIdAndBuildingId($heaterId, $buildingId);
-    }
-
     public function findAllHeaterTypes() {
         $heaterTypeEntities = $this->heaterRepository->selectAllTypes();
         $heaterTypes = [];
@@ -36,21 +32,27 @@ class HeaterService {
         return $this->heaterRepository->selectAllByBuildingId($buildingId);
     }
 
-    public function updateHeaterById($heaterId, $properties) {
-        $heater = $this->mapToHeater($properties);
-        $this->heaterRepository->updateById($heaterId, $heater);
+    public function updateHeatersByBuildingId($buildingId, $properties) {
+        $heatersId = $properties["heater-id"];
+
+        foreach ($heatersId as $index => $heaterId) {
+            if ($this->heaterRepository->existsByHeaterIdAndBuildingId($heaterId, $buildingId)) {
+                $heater = $this->mapToHeater($properties, $index);
+                $this->heaterRepository->updateById($heaterId, $heater);
+            }
+        }
     }
 
-    private function mapToHeater($properties) {
-        $heaterType = $properties["type"];
-        $power = floatval($properties["power"]);
-        $combustionChamber = $properties["combustion-chamber"];
-        $efficiency = floatval($properties["efficiency"]);
-        $installationYear = intval($properties["installation-year"]);
-        $productionYear = intval($properties["production-year"]);
-        $dataSource = $properties["data-source"];
-        $thermalClass = $properties["thermal-class"];
-        $dustExtractor = boolval($properties["dust-extractor"]);
+    private function mapToHeater($properties, $index) {
+        $heaterType = $properties["type"][$index];
+        $power = floatval($properties["power"][$index]);
+        $combustionChamber = $properties["combustion-chamber"][$index];
+        $efficiency = floatval($properties["efficiency"][$index]);
+        $installationYear = intval($properties["installation-year"][$index]);
+        $productionYear = intval($properties["production-year"][$index]);
+        $dataSource = $properties["data-source"][$index];
+        $thermalClass = $properties["thermal-class"][$index];
+        $dustExtractor = boolval($properties["dust-extractor"][$index]);
 
         $heater = new Heater();
         $heater->setType($heaterType);
@@ -66,8 +68,7 @@ class HeaterService {
         return $heater;
     }
 
-    public function createByBuildingId($buildingId, $properties) {
-        $heater = $this->mapToHeater($properties);
-        $this->heaterRepository->createByBuildingId($buildingId, $heater);
+    public function createByBuildingId($buildingId) {
+        $this->heaterRepository->createByBuildingId($buildingId);
     }
 }

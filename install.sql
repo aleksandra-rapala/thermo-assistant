@@ -79,15 +79,15 @@ CREATE TABLE thermal_classes (
 CREATE TABLE heaters (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    power DECIMAL(7, 3) NOT NULL,
-    combustion_chamber combustion_chambers NOT NULL,
-    efficiency DECIMAL(7, 3) NOT NULL,
-    installation_year INT NOT NULL,
-    production_year INT NOT NULL,
-    data_source VARCHAR(255) NOT NULL,
-    dust_extractor BOOLEAN NOT NULL,
-    thermal_class_id INT NOT NULL REFERENCES thermal_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT
+    heater_type_id INT NOT NULL DEFAULT 1 REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    power DECIMAL(7, 3) NOT NULL DEFAULT 0.000,
+    combustion_chamber combustion_chambers DEFAULT 'closed' NOT NULL,
+    efficiency DECIMAL(7, 3) NOT NULL DEFAULT 0.000,
+    installation_year INT NOT NULL DEFAULT 0,
+    production_year INT NOT NULL DEFAULT 0,
+    data_source VARCHAR(255) NOT NULL DEFAULT '',
+    dust_extractor BOOLEAN NOT NULL DEFAULT false,
+    thermal_class_id INT NOT NULL DEFAULT 1 REFERENCES thermal_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE fuels (

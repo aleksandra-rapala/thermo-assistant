@@ -34,6 +34,17 @@
     margin: 1em 0;
 }
 
+#user-panel span {
+    margin-bottom: 1.2em;
+    color: red;
+}
+
+#user-panel a {
+    font-size: large;
+    margin-top: 1em;
+    display: block;
+}
+
 @media screen and (max-width: 768px) {
     #user-view #branding {
         height: initial;
