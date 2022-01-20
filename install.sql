@@ -73,7 +73,8 @@ CREATE TABLE thermal_classes (
     id SERIAL PRIMARY KEY,
     label VARCHAR(16) NOT NULL UNIQUE,
     name VARCHAR(64) NOT NULL UNIQUE,
-    eco_project BOOLEAN NOT NULL
+    eco_project BOOLEAN NOT NULL,
+    fifth_class BOOLEAN NOT NULL
 );
 
 CREATE TABLE heaters (
@@ -358,13 +359,13 @@ VALUES
     (67, 20, 27, 5);
 
 INSERT INTO thermal_classes
-    (id, name, label, eco_project)
+    (id, name, label, eco_project, fifth_class)
 VALUES
-    (1, 'third', 'Klasa III', false),
-    (2, 'fourth', 'Klasa IV', false),
-    (3, 'fifth', 'Klasa V', false),
-    (4, 'fifth-with-eco', 'Klasa V + Eco', true),
-    (5, 'eco', 'Eco', true);
+    (1, 'third', 'Klasa III', false, false),
+    (2, 'fourth', 'Klasa IV', false, false),
+    (3, 'fifth', 'Klasa V', false, true),
+    (4, 'fifth-with-eco', 'Klasa V + Eco', true, true),
+    (5, 'eco', 'Eco', true, false);
 
 INSERT INTO roles
     (id, name)

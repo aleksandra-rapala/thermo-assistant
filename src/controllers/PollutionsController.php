@@ -16,8 +16,8 @@ class PollutionsController implements Controller {
 
     public function get($variables) {
         $userId = 1;
-        $building = $this->buildingService->findByUserId($userId);
-        $pollutions = $this->pollutionsService->calculateForBuilding($building);
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
+        $pollutions = $this->pollutionsService->findPollutionsByBuildingId($buildingId);
 
         $substances = [
             array("label" => "CO₂", "value" => $pollutions["co2"]),
