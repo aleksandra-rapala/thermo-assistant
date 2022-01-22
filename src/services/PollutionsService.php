@@ -60,4 +60,20 @@ class PollutionsService {
 
         return $emissionIndicators;
     }
+
+    public function describePollutions($pollutions) {
+        $co2 = $pollutions["co2"];
+        $pm10 = $pollutions["pm10"];
+        $pm25 = $pollutions["pm25"];
+
+        if ($co2 > 4000*10e6 || $pm10 > 8000 || $pm25 > 6000) {
+            $label = "zauważalny";
+        } else if ($co2 > 1000*10e6 || $pm10 > 5000 || $pm25 > 4000) {
+            $label = "standardowy";
+        } else {
+            $label = "niewielki";
+        }
+
+        return "Twój budynek ma $label wpływ na środowisko";
+    }
 }

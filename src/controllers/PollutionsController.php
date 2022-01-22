@@ -15,9 +15,10 @@ class PollutionsController implements Controller {
     }
 
     public function get($variables) {
-        $userId = 1;
+        $userId = $this->sessionContext->getUserId();
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
         $pollutions = $this->pollutionsService->findPollutionsByBuildingId($buildingId);
+        $summary = $this->pollutionsService->describePollutions($pollutions);
 
         $substances = [
             array("label" => "CO₂", "value" => $pollutions["co2"]),
@@ -27,8 +28,6 @@ class PollutionsController implements Controller {
             array("label" => "PM10", "value" => $pollutions["pm10"]),
             array("label" => "PM2,5", "value" => $pollutions["pm25"])
         ];
-
-        $summary = "Twój budynek ma umiarkowany wpływ na środowisko";
 
         $pollutionsResult = array(
             "substances" => $substances,
