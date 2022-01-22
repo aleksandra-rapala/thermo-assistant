@@ -29,17 +29,29 @@ class SessionContext {
     }
 
     public function getUserId() {
-        if ( !$this->isSignedIn()) {
+        $userId = null;
+
+        if (isset($_COOKIE["sessionId"])) {
+            $sessionId = $_COOKIE["sessionId"];
+            $userId = $this->selectUserIdBySessionId($sessionId);
+        }
+
+        if ($userId === null) {
             $this->httpFlow->unauthorized();
         }
 
-        $sessionId = $_COOKIE["sessionId"];
-
-        return $this->selectUserIdBySessionId($sessionId);
+        return $userId;
     }
 
     public function isSignedIn() {
-        return isset($_COOKIE["sessionId"]);
+        $userId = null;
+
+        if (isset($_COOKIE["sessionId"])) {
+            $sessionId = $_COOKIE["sessionId"];
+            $userId = $this->selectUserIdBySessionId($sessionId);
+        }
+
+        return $userId !== null;
     }
 
     private function selectUserIdBySessionId($sessionId) {
