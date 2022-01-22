@@ -21,7 +21,7 @@ form > div {
     flex-direction: column;
 }
 
-label, span, p, dl, table {
+label, span, p, dl, table, a {
     font-family: Lato, Arial, sans-serif;
 }
 
@@ -73,6 +73,11 @@ input[type="checkbox"], input[type="radio"] {
 a {
     text-decoration: none;
     color: rgb(255, 165, 0);
+}
+
+input + span {
+    margin-bottom: 1.2em;
+    color: red;
 }
 
 @media screen and (min-width: 1366px) {

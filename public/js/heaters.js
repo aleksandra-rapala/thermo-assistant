@@ -1,11 +1,15 @@
 window.addEventListener("load", () => {
-    const createHeater = document.querySelector("#create-heater");
+    bindCreateHeaterAction();
+});
 
-    createHeater.addEventListener("click", () => {
-        createHeater.disabled = true;
-        createHeater.textContent = "Czekaj...";
+function bindCreateHeaterAction() {
+    const createHeaterButton = document.querySelector("#create-heater");
+
+    createHeaterButton.addEventListener("click", () => {
+        createHeaterButton.disabled = true;
+        createHeaterButton.textContent = "Czekaj...";
 
         fetch("/heaters", {method: "POST"})
             .then(() => window.location.reload());
     });
-});
+}

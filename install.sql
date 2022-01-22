@@ -84,8 +84,8 @@ CREATE TABLE heaters (
     power DECIMAL(7, 3) NOT NULL DEFAULT 0.000,
     combustion_chamber combustion_chambers DEFAULT 'closed' NOT NULL,
     efficiency DECIMAL(7, 3) NOT NULL DEFAULT 0.000,
-    installation_year INT NOT NULL DEFAULT 0,
-    production_year INT NOT NULL DEFAULT 0,
+    installation_year INT NOT NULL DEFAULT 2000,
+    production_year INT NOT NULL DEFAULT 2000,
     data_source VARCHAR(255) NOT NULL DEFAULT '',
     dust_extractor BOOLEAN NOT NULL DEFAULT false,
     thermal_class_id INT NOT NULL DEFAULT 1 REFERENCES thermal_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT

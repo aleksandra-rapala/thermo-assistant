@@ -23,7 +23,8 @@ class HeaterController implements Controller {
         $this->renderingEngine->renderView("heaters", [
             "heaters" => $this->heaterService->findHeatersByBuildingId($buildingId),
             "heaterTypes" => $this->heaterService->findAllHeaterTypes(),
-            "thermalClasses" => $this->heaterService->findAllThermalClasses()
+            "thermalClasses" => $this->heaterService->findAllThermalClasses(),
+            "dataSourceSuggestions" => ["Tabliczka znamionowa", "Dokumentacja techniczna", "Wiedza właściciela"]
         ]);
     }
 

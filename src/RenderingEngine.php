@@ -19,7 +19,14 @@ class RenderingEngine {
     private function renderTextField($label, $property, $value) {
         echo <<<HTML
             <label for="$property-field">$label</label>
-            <input name="$property" id="$property-field" value="$value" />
+            <input type="text" name="$property" id="$property-field" value="$value" />
+        HTML;
+    }
+
+    private function renderYearField($label, $property, $value) {
+        echo <<<HTML
+            <label for="$property-field">$label</label>
+            <input type="number" name="$property" id="$property-field" value="$value" step="1" min="1900" max="2100" />
         HTML;
     }
 
