@@ -26,9 +26,9 @@
                     $this->renderCombobox("Rodzaj", "type[$index]", $heaterTypes, $heater->getType());
                     $this->renderTextField("Moc", "power[$index]", $heater->getPower());
                     $this->renderTextField("Sprawność cieplna [%]", "efficiency[$index]", $heater->getEfficiency());
-                    $this->renderTextField("Rok instalacji", "installation-year[$index]", $heater->getInstallationYear());
-                    $this->renderTextField("Rok produkcji", "production-year[$index]", $heater->getProductionYear());
-                    $this->renderTextFieldWithSuggestions("Źródło danych", "data-source[$index]", $heater->getDataSource(), ["Tabliczka znamionowa", "Dokumentacja techniczna", "Wiedza właściciela"]);
+                    $this->renderYearField("Rok instalacji", "installation-year[$index]", $heater->getInstallationYear());
+                    $this->renderYearField("Rok produkcji", "production-year[$index]", $heater->getProductionYear());
+                    $this->renderTextFieldWithSuggestions("Źródło danych", "data-source[$index]", $heater->getDataSource(), $dataSourceSuggestions);
                     $this->renderCombobox("Klasa kotła", "thermal-class[$index]", $thermalClasses, $heater->getThermalClass());
                     ?>
 

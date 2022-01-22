@@ -1,79 +1,42 @@
-class PasswordService {
-    passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-=_+;':",./<>?])(?=.{8,})/;
+import FormService from "./forms.js";
 
-    constructor(passwordField, repeatedPasswordField) {
-        this.passwordField = passwordField;
-        this.repeatedPasswordField = repeatedPasswordField;
-    }
-
-    isPasswordStrong() {
-        return this.passwordRegex.test(this.passwordField.value);
-    }
-
-    isPasswordConfirmed() {
-        return this.passwordField.value === this.repeatedPasswordField.value;
-    }
-}
-
-class FieldService {
-    constructor(field) {
-        this.field = field;
-        this.prompt = document.createElement("span");
-    }
-
-    showPrompt(text) {
-        this.prompt.textContent = text;
-        this.field.after(this.prompt);
-    }
-
-    hidePrompt() {
-        this.prompt.remove();
-    }
-}
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-=_+;':",./<>?])(?=.{8,})/;
 
 window.addEventListener("load", () => {
     const passwordField = document.querySelector("#password-field");
     const repeatedPasswordField = document.querySelector("#repeated-password-field");
-    const confirmButton = document.querySelector("form button");
-
-    const passwordFieldService = new FieldService(passwordField);
-    const repeatedPasswordFieldService = new FieldService(repeatedPasswordField);
-    const passwordService = new PasswordService(passwordField, repeatedPasswordField);
+    const formService = new FormService();
 
     passwordField.addEventListener("blur", () => {
-        const isPasswordStrong = checkPasswordStrength(passwordService, passwordFieldService);
-        const isPasswordConfirmed = checkPasswordConfirmation(passwordService, repeatedPasswordFieldService);
-
-        confirmButton.disabled = !isPasswordStrong || !isPasswordConfirmed;
+        checkPasswordStrength(formService, passwordField);
+        checkPasswordConfirmation(formService, passwordField, repeatedPasswordField);
     });
 
     repeatedPasswordField.addEventListener("blur", () => {
-        const isPasswordConfirmed = checkPasswordConfirmation(passwordService, repeatedPasswordFieldService);
-
-        confirmButton.disabled = !isPasswordConfirmed;
+        checkPasswordConfirmation(formService, passwordField, repeatedPasswordField);
     });
 });
 
-function checkPasswordStrength(passwordService, passwordFieldService) {
-    const isPasswordStrong = passwordService.isPasswordStrong();
-
-    if (isPasswordStrong) {
-        passwordFieldService.hidePrompt();
+function checkPasswordStrength(formService, passwordField) {
+    if (isPasswordStrong(passwordField)) {
+        formService.hideWarning(passwordField);
     } else {
-        passwordFieldService.showPrompt("Słabe hasło!");
+        formService.showWarning(passwordField, "Słabe hasło!");
     }
-
-    return isPasswordStrong;
 }
 
-function checkPasswordConfirmation(passwordService, repeatedPasswordFieldService) {
-    const isPasswordConfirmed = passwordService.isPasswordConfirmed();
+function isPasswordStrong(passwordField) {
+    return passwordRegex.test(passwordField.value);
+}
 
-    if (isPasswordConfirmed) {
-        repeatedPasswordFieldService.hidePrompt();
+function checkPasswordConfirmation(formService, passwordField, repeatedPasswordField) {
+    if (isPasswordConfirmed(passwordField, repeatedPasswordField)) {
+        formService.hideWarning(repeatedPasswordField);
     } else {
-        repeatedPasswordFieldService.showPrompt("Hasła nie są takie same!");
+        formService.showWarning(repeatedPasswordField, "Hasła nie są takie same!");
     }
+}
 
-    return isPasswordConfirmed;
+function isPasswordConfirmed(passwordField, repeatedPasswordField) {
+    return passwordField.value === repeatedPasswordField.value;
 }
