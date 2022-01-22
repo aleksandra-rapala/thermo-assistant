@@ -22,7 +22,7 @@ function buildTableRow(substance) {
     const valueCell = document.createElement("td");
 
     labelCell.innerText = substance.label;
-    valueCell.innerText = substance.value;
+    valueCell.innerText = (substance.value / 1000000).toFixed(4);
 
     substanceRow.appendChild(labelCell);
     substanceRow.appendChild(valueCell);

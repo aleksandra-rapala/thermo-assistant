@@ -3,7 +3,6 @@ class Building {
     private $id;
     private $address;
     private $details;
-    private $heaters;
     private $plannedModernizations;
     private $completedModernizations;
     private $heatersToInstall;
@@ -42,14 +41,6 @@ class Building {
 
     public function getDetails() {
         return $this->details;
-    }
-
-    public function setHeaters($heaters) {
-        $this->heaters = $heaters;
-    }
-
-    public function getHeaters() {
-        return $this->heaters;
     }
 
     public function setPlannedModernizations($plannedModernizations) {

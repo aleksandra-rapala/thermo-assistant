@@ -73,7 +73,8 @@ CREATE TABLE thermal_classes (
     id SERIAL PRIMARY KEY,
     label VARCHAR(16) NOT NULL UNIQUE,
     name VARCHAR(64) NOT NULL UNIQUE,
-    eco_project BOOLEAN NOT NULL
+    eco_project BOOLEAN NOT NULL,
+    fifth_class BOOLEAN NOT NULL
 );
 
 CREATE TABLE heaters (
@@ -94,14 +95,15 @@ CREATE TABLE fuels (
     id SERIAL PRIMARY KEY,
     name VARCHAR(16) UNIQUE NOT NULL,
     label VARCHAR(32) UNIQUE NOT NULL,
-    unit VARCHAR(8) NOT NULL
+    unit VARCHAR(8) NOT NULL,
+    caloric_value DECIMAL(7, 3) NOT NULL
 );
 
 CREATE TABLE buildings_fuels (
     id SERIAL PRIMARY KEY,
     building_id INT NOT NULL REFERENCES buildings(id) ON UPDATE CASCADE ON DELETE CASCADE,
     fuel_id INT NOT NULL REFERENCES fuels(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    consumption DECIMAL(7, 3) NOT NULL CHECK (consumption > 0),
+    consumption DECIMAL(7, 3) NOT NULL CHECK (consumption >= 0),
     UNIQUE(building_id, fuel_id)
 );
 
@@ -121,19 +123,20 @@ CREATE TABLE distributors_fuels (
 CREATE TABLE emission_rules (
     id SERIAL PRIMARY KEY,
     heater_type_id INT NOT NULL REFERENCES heater_types(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    heater_class INT NOT NULL REFERENCES thermal_classes(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-    priority INT NOT NULL CHECK (priority > 0)
+    eco_project BOOLEAN NOT NULL,
+    fifth_class BOOLEAN NOT NULL,
+    priority INT NOT NULL CHECK (priority >= 0)
 );
 
 CREATE TABLE emission_indicators (
     id SERIAL PRIMARY KEY,
-    co2 INT NOT NULL CHECK (co2 > 0),
-    pm10 INT NOT NULL CHECK (pm10 > 0),
-    pm25 INT NOT NULL CHECK (pm25 > 0),
-    co INT NOT NULL CHECK (co > 0),
-    nox INT NOT NULL CHECK (nox > 0),
-    so2 INT NOT NULL CHECK (so2 > 0),
-    bap INT NOT NULL CHECK (bap > 0)
+    co2 INT NOT NULL CHECK (co2 >= 0),
+    pm10 INT NOT NULL CHECK (pm10 >= 0),
+    pm25 INT NOT NULL CHECK (pm25 >= 0),
+    co INT NOT NULL CHECK (co >= 0),
+    nox INT NOT NULL CHECK (nox >= 0),
+    so2 INT NOT NULL CHECK (so2 >= 0),
+    bap INT NOT NULL CHECK (bap >= 0)
 );
 
 CREATE TABLE emission_indicator_rules (
@@ -201,34 +204,168 @@ VALUES
 INSERT INTO heater_types
     (id, name, label)
 VALUES
-    (1, 'coal-based', 'Kocioł węglowy'),
-    (2, 'heat-pump', 'Pompa ciepła'),
-    (3, 'heat-network', 'Sieć ciepłownicza'),
-    (4, 'gas-based', 'Ogrzewanie gazowe'),
-    (5, 'electric-based', 'Ogrzewanie elektryczne'),
-    (6, 'pellet-based', 'Kocioł na pellet'),
-    (7, 'wood-based', 'Kocioł na drewno'),
-    (8, 'fireplace', 'Kominek');
+    (1, 'solid-based', 'Ogrzewanie na paliwo stałe'),
+    (2, 'gas-based', 'Ogrzewanie gazowe'),
+    (3, 'oil-based', 'Ogrzewanie olejowe'),
+    (4, 'electric-heater', 'Ogrzewanie elektryczne'),
+    (5, 'heat-network', 'Sieć ciepłownicza'),
+    (6, 'heat-pump', 'Pompa ciepła'),
+    (8, 'furmance', 'Piec'),
+    (9, 'kitchen-stove', 'Piecokuchnia'),
+    (10, 'freestanding', 'Piec wolnostojący'),
+    (11, 'tiled-stove', 'Piec kaflowy'),
+    (12, 'fireplace', 'Kominek');
 
 INSERT INTO fuels
-    (id, name, label, unit)
+    (id, name, label, unit, caloric_value)
 VALUES
-    (1, 'lump-wood', 'Drewno kawałkowe', 'kg'),
-    (2, 'nut-coal', 'Węgiel orzech', 'kg'),
-    (3, 'pellet', 'Pellet', 'kg'),
-    (4, 'natural-gas', 'Gaz ziemny', 'm³'),
-    (5, 'gas-tanks', 'Gaz butla', 'szt'),
-    (6, 'lignite', 'Węgiel brunatny', 'kg'),
-    (7, 'oil', 'Olej opałowy', 'litr');
+    (1, 'nut-coal', 'Węgiel orzech', 't', 22.67),
+    (2, 'cube-coal', 'Węgiel kostka', 't', 22.67),
+    (3, 'pea-coal', 'Węgiel groszek', 't', 22.67),
+    (4, 'coal-dust', 'Węgiel miał', 't', 22.67),
+    (5, 'lignite', 'Węgiel brunatny', 't', 8.13),
+    (6, 'lump-wood', 'Drewno kawałkowe', 't', 10.92),
+    (7, 'pellet', 'Pellet/brykiet', 't', 15.6),
+    (8, 'biomass', 'Inna biomasa', 't', 15.6),
+    (9, 'natural-gas', 'Gaz przewodowy', 'm³', 0.02782758),
+    (10, 'gas-tank', 'Gaz butla', 'litr', 47.3),
+    (11, 'oil', 'Olej opałowy', 'litr', 43);
+
+INSERT INTO emission_rules
+    (id, eco_project, fifth_class, priority, heater_type_id)
+VALUES
+    (1, false, false, 0, 12),
+    (2, false, false, 0, 8),
+    (3, false, false, 0, 9),
+    (4, false, false, 0, 10),
+    (5, true, false, 1, 12),
+    (6, true, false, 1, 8),
+    (7, true, false, 1, 9),
+    (8, true, false, 1, 10),
+    (9, false, false, 0, 11),
+    (10, false, false, 0, 1),
+    (11, false, false, 1, 1),
+    (12, false, false, 2, 1),
+    (13, false, true, 3, 1),
+    (14, false, true, 4, 1),
+    (15, false, true, 5, 1),
+    (16, false, false, 6, 1),
+    (17, false, false, 0, 2),
+    (18, false, false, 0, 3),
+    (19, false, false, 0, 6),
+    (20, false, false, 0, 5),
+    (21, false, false, 0, 4);
+
+INSERT INTO emission_indicators
+    (id, co2, pm10, pm25, co, nox, so2, bap)
+VALUES
+    (1, 94780, 667, 517, 3182, 192, 338, 0.371),
+    (2, 0, 798, 756, 5250, 60, 0, 0.13),
+    (3, 0, 126, 87, 530, 95, 0, 0.055),
+    (4, 0, 23, 22, 916, 122, 0, 0),
+    (5, 94780, 383, 297, 2797, 254, 365, 0.301),
+    (6, 0, 247, 234, 4200, 80, 0, 0.105),
+    (7, 94780, 427, 331, 5040, 170, 560, 0.28),
+    (8, 94720, 390, 304, 5365, 91, 331, 0.384),
+    (9, 103960, 545, 423, 6095, 196, 660, 0.55),
+    (10, 0, 407, 385, 4166, 60, 0, 0.127),
+    (11, 94780, 595, 411, 5040, 143, 343, 0.627),
+    (12, 94780, 250, 194, 5059, 118, 523, 0.036),
+    (13, 0, 241, 229, 5621, 86, 0, 0.19),
+    (14, 0, 74, 70, 1667, 131, 6, 0.026),
+    (15, 94780, 77, 60, 502, 274, 439, 0.004),
+    (16, 94780, 91, 70, 545, 167, 343, 0.004),
+    (17, 0, 42, 28, 537, 113, 7, 0.0253),
+    (18, 94780, 27, 21, 350, 0, 0, 0.04),
+    (19, 0, 26, 25, 323, 0, 0, 0.035),
+    (20, 94780, 18, 14, 250, 0, 0, 0.027),
+    (21, 0, 16, 11, 232, 0, 0, 0.02),
+    (22, 0, 126, 87, 530, 95, 0, 0.055),
+    (23, 55410, 0.3, 0.3, 42, 60, 0.4, 0.8),
+    (24, 77400, 2, 2, 51, 97, 111, 0.12),
+    (25, 216944, 0, 0, 0, 0, 0, 0),
+    (26, 95070, 0, 0, 0, 0, 0, 0),
+    (27, 110340, 0, 0, 0, 0, 0, 0),
+    (28, 216940, 0, 0, 0, 0, 0, 0);
+
+INSERT INTO emission_indicator_rules
+    (id, emission_rule_id, emission_indicator_id, fuel_id)
+VALUES
+    (1, 1, 1, 1),
+    (2, 1, 1, 2),
+    (3, 1, 1, 3),
+    (4, 1, 1, 4),
+    (5, 1, 2, 6),
+    (6, 1, 3, 7),
+    (7, 1, 3, 8),
+    (8, 2, 1, 1),
+    (9, 2, 1, 2),
+    (10, 2, 1, 3),
+    (11, 2, 1, 4),
+    (12, 2, 2, 6),
+    (13, 2, 3, 7),
+    (14, 2, 3, 8),
+    (15, 3, 1, 1),
+    (16, 3, 1, 2),
+    (17, 3, 1, 3),
+    (18, 3, 1, 4),
+    (19, 3, 2, 6),
+    (20, 3, 3, 7),
+    (21, 3, 3, 8),
+    (22, 4, 1, 1),
+    (23, 4, 1, 2),
+    (24, 4, 1, 3),
+    (25, 4, 1, 4),
+    (26, 4, 2, 6),
+    (27, 4, 3, 7),
+    (28, 4, 3, 8),
+    (29, 5, 4, 6),
+    (30, 6, 4, 6),
+    (31, 7, 4, 6),
+    (32, 8, 4, 6),
+    (33, 9, 5, 1),
+    (34, 9, 5, 2),
+    (35, 9, 5, 3),
+    (36, 9, 5, 4),
+    (37, 9, 6, 6),
+    (38, 10, 7, 1),
+    (39, 10, 7, 2),
+    (40, 10, 7, 3),
+    (41, 10, 8, 4),
+    (42, 10, 9, 5),
+    (43, 10, 10, 6),
+    (44, 11, 11, 1),
+    (45, 11, 11, 2),
+    (46, 11, 11, 3),
+    (47, 11, 12, 4),
+    (48, 11, 13, 6),
+    (49, 11, 14, 7),
+    (50, 12, 15, 3),
+    (51, 12, 16, 4),
+    (52, 12, 17, 7),
+    (53, 13, 18, 3),
+    (54, 13, 19, 6),
+    (55, 14, 18, 3),
+    (56, 14, 19, 6),
+    (57, 15, 20, 3),
+    (58, 15, 21, 7),
+    (59, 16, 22, 7),
+    (60, 17, 23, 9),
+    (61, 18, 24, 11),
+    (63, 20, 26, 1),
+    (64, 20, 26, 2),
+    (65, 20, 26, 3),
+    (66, 20, 26, 4),
+    (67, 20, 27, 5);
 
 INSERT INTO thermal_classes
-    (id, name, label, eco_project)
+    (id, name, label, eco_project, fifth_class)
 VALUES
-    (1, 'third', 'Klasa III', false),
-    (2, 'fourth', 'Klasa IV', false),
-    (3, 'fifth', 'Klasa V', false),
-    (4, 'fifth-with-eco', 'Klasa V + Eco', true),
-    (5, 'eco', 'Eco', true);
+    (1, 'third', 'Klasa III', false, false),
+    (2, 'fourth', 'Klasa IV', false, false),
+    (3, 'fifth', 'Klasa V', false, true),
+    (4, 'fifth-with-eco', 'Klasa V + Eco', true, true),
+    (5, 'eco', 'Eco', true, false);
 
 INSERT INTO roles
     (id, name)

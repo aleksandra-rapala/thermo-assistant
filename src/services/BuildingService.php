@@ -26,8 +26,6 @@ class BuildingService {
 
     public function create($userId, $properties) {
         $building = $this->mapToBuilding($properties);
-        $building->setHeaters([]);
-
         $this->buildingRepository->insert($userId, $building);
     }
 
@@ -93,8 +91,6 @@ class BuildingService {
 
     public function update($userId, $properties) {
         $building = $this->mapToBuilding($properties);
-        $building->setHeaters([]);
-
         $this->buildingRepository->update($userId, $building);
     }
 
@@ -107,11 +103,20 @@ class BuildingService {
     }
 
     public function findAvailableUsageOptions() {
-        return ["little" => "Niewielkie", "standard" => "Standardowe", "noticeable" => "Zauważalne"];
+        return [
+            "little" => "Niewielkie",
+            "standard" => "Standardowe",
+            "noticeable" => "Zauważalne"
+        ];
     }
 
     public function findAvailableDestinationOptions() {
-        return ["residential" => "Mieszkalny", "service" => "Usługowy", "industrial" => "Przemysłowy", "residential-n-service" => "Mieszkalno-Usługowy"];
+        return [
+            "residential" => "Mieszkalny",
+            "service" => "Usługowy",
+            "industrial" => "Przemysłowy",
+            "residential-n-service" => "Mieszkalno-Usługowy"
+        ];
     }
 
     public function findAvailableHeaterTypes() {
@@ -128,5 +133,19 @@ class BuildingService {
 
     public function unsubscribe($buildingId, $subscriptionName) {
         $this->subscriptionRepository->unsubscribe($buildingId, $subscriptionName);
+    }
+
+    public function isObligatedToRegisterInCEEB($buildingId) {
+        $heaters = $this->heaterRepository->selectAllByBuildingId($buildingId);
+
+        foreach ($heaters as $heater) {
+            $power = $heater->getPower();
+
+            if ($power != 0 && $power <= 1000) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

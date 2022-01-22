@@ -19,7 +19,7 @@ class SummaryController implements Controller {
         $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
 
         $this->renderingEngine->renderView("summary", [
-            "ceeb" => true
+            "ceeb" => $this->buildingService->isObligatedToRegisterInCEEB($buildingId)
         ]);
     }
 

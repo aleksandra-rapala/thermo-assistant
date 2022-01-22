@@ -3,23 +3,31 @@ require_once("src/controllers/Controller.php");
 
 class PollutionsController implements Controller {
     private $httpFlow;
-    private $pollutionService;
+    private $sessionContext;
+    private $buildingService;
+    private $pollutionsService;
 
-    public function __construct($httpFlow) {
+    public function __construct($httpFlow, $sessionContext, $buildingService, $pollutionsService) {
         $this->httpFlow = $httpFlow;
+        $this->sessionContext = $sessionContext;
+        $this->buildingService = $buildingService;
+        $this->pollutionsService = $pollutionsService;
     }
 
     public function get($variables) {
-        $substances = [
-            array("label" => "CO₂", "value" => 0),
-            array("label" => "BaP", "value" => 0),
-            array("label" => "Nox", "value" => 0),
-            array("label" => "SO₂", "value" => 0),
-            array("label" => "PM10", "value" => 0),
-            array("label" => "PM2,5", "value" => 0)
-        ];
+        $userId = $this->sessionContext->getUserId();
+        $buildingId = $this->buildingService->findBuildingIdByUserId($userId);
+        $pollutions = $this->pollutionsService->findPollutionsByBuildingId($buildingId);
+        $summary = $this->pollutionsService->describePollutions($pollutions);
 
-        $summary = "Twój budynek ma umiarkowany wpływ na środowisko";
+        $substances = [
+            array("label" => "CO₂", "value" => $pollutions["co2"]),
+            array("label" => "BaP", "value" => $pollutions["bap"]),
+            array("label" => "Nox", "value" => $pollutions["nox"]),
+            array("label" => "SO₂", "value" => $pollutions["so2"]),
+            array("label" => "PM10", "value" => $pollutions["pm10"]),
+            array("label" => "PM2,5", "value" => $pollutions["pm25"])
+        ];
 
         $pollutionsResult = array(
             "substances" => $substances,
